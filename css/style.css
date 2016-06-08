@@ -1,0 +1,38 @@
+﻿/*修正table設定寬度問題*/
+.table {
+	table-layout:fixed;
+}
+
+/*修正table內過長的文字溢出問題*/
+.table td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*修正autocomplete list 在Modal內高度不足問題*/
+.ui-autocomplete {
+	z-index: 1100;
+}
+
+/*修正textarea水平調整溢出問題*/
+textarea {
+    resize: vertical;
+}
+
+
+/*處理列印範圍, 結構為 <body>主要內容</body><div class='genPrint'>列印內容</div>*/
+@media print {
+	body{
+		display: none;
+	}
+    .genPrint {
+        visibility: visible;
+    }
+}
+
+@media screen {
+    .genPrint {
+		display: none;
+    }
+}
