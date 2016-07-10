@@ -6,6 +6,11 @@
 	box-shadow: 0 3px 6px rgba(0,0,0,.175);
 }*/
 
+#main{
+	position: absolute;
+	height: calc(100% - 100px);
+}
+
 @media screen and (max-width: 768px) {
 	.dropdown-submenu>.dropdown-menu{
 		left: 0px;
@@ -15,7 +20,7 @@
 
 @media screen and (min-width: 992px) {
     .nav-sidebar{
-        padding: 20px 0px; width: 200px; position: fixed; top: 52px; left: 0px; z-index: 100;
+        padding: 20px 0px; width: 200px; position: fixed; top: 52px; left: 0px; z-index: 10;
     }
 	
 	.nav-sidebar li{
@@ -39,6 +44,7 @@
 	
 	#main{
 		width: calc(100% - 200px);
+		height: calc(100% - 150px);
 		position: absolute;
 		left: 200px;
 	}

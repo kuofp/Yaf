@@ -1,0 +1,3 @@
+[submodule "vendor/Snake"]
+	path = vendor/Snake
+	url = https://github.com/kuofp/Snake.git

@@ -2,5 +2,10 @@
     "require": {
         "catfan/Medoo": "^1.0",
         "phpmailer/phpmailer": "^5.2"
+    },
+	"autoload": {
+        "classmap": [
+			"vendor/"
+		]
     }
 }

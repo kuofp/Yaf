@@ -5,7 +5,7 @@ class Form{
 	public $unique_id;
 	
 	public $file;
-    private $db_name;
+	private $db_name;
 	private $table_name;
 	public $col_en = array();
 	public $col_ch = array();
@@ -24,8 +24,10 @@ class Form{
 	
 	public $arg;
 	public $act;
+	
+	private $tpl;
 
-    public function __construct($file, $db_name, $table_name, $col_en, $col_ch, $empty_chk, $exist_chk, $chain_chk, $route_chk, $show, $type, $auth){
+	public function __construct($file, $db_name, $table_name, $col_en, $col_ch, $empty_chk, $exist_chk, $chain_chk, $route_chk, $show, $type, $auth){
 		global $database;
 		global $mailbase;
 		
@@ -50,7 +52,8 @@ class Form{
 		$this->col_num = count($col_en);
 		$this->uid = 0;
 		
-    }
+		$this->tpl = new Snake('include/template/form.tpl');
+	}
 	public function __destruct(){
 		
 	}
@@ -145,89 +148,41 @@ class Form{
 		if($this->authCheck('review')){
 			$result = 'err_auth';
 		}else{
-			//global var for all things
-			echo "<input id='" . $this->unique_id . "_item_cnt' type='hidden' value=''>";
-			echo "<input id='" . $this->unique_id . "_target_id' type='hidden' value=''>";
-			echo "<input id='" . $this->unique_id . "_review_complete' type='hidden' value='trigger change when review table complete'>";
-			echo "<input id='" . $this->unique_id . "_checked_list' type='hidden' value=''>";
-			echo "<input id='" . $this->unique_id . "_create_preset' type='hidden' value='" . $preset . "'>";
-			
-			
-			echo "<div class='panel panel-default' id='" . $this->unique_id . "_panel'>";
-			echo "<div class='panel-body' style='padding: 15px 0px 15px 15px'>";
-			
-			
-			//button tool lists
-			echo "
-				<div class='btn-group toollist'>
-					<button type='button' class='btn btn-default main'>操作</button>
-					<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-						<span class='caret'></span>
-						<span class='sr-only'>Toggle Dropdown</span>
-					</button>
-					<ul class='dropdown-menu toollist'>
-					</ul>
-				</div>
-			";
 			
 			$style_effect = $style == 'sub'? 'hidden': 'text';
 			
-			//search and advance search option which can filter more keywords
-			echo "<div class='btn-group'>";
-				echo "<input class='form-control search' type='" . $style_effect . "' placeholder='搜尋' style='width: 160px'/>";
-				echo "<input class='form-control search_adv' type='hidden' value='" . $query . "' />";
-			echo "</div>";
-			
-			
-			//form text and info area has hidden-xs class attribute
-			echo "<div class='btn-group'>
-					<span class='hidden-xs'>目前顯示</span>&nbsp;<div class='badge'><span class='item_cnt'></span></div><span class='hidden-xs'> 項結果</span>
-				</div>";
-			
-			
-			
-			//with chkall
-			echo "<div style='padding: 0px 15px 0px 0px;'><table class='table' style='margin: 0px;'>";
-			echo "<thead class='form_title'><th class='chkall' style='width: 30px; cursor: pointer'><i class='fa fa-square-o'></i></th>";
-			
-			
-			//with order (search adv)
+			$html = $this->tpl->block('main')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'style_effect'=> $style_effect,
+					'query'       => $query,
+					'preset'      => $preset,
+					'url'         => $this->file,
+					'table'       => $this->table_name,
+					
+				)
+			);
 			for($i = 0; $i < $this->col_num; $i++){
-				echo "<th class='" . $this->show[$i] . " order' name='" . $this->col_en[$i] . "' style='cursor: pointer'>" . $this->col_ch[$i] . "<i class='fa'></i></th>";
-			}
-			
-			echo "</thead></table></div>";
-			
-			echo "<div class='table_wrap sub' style='overflow-y: scroll'>";
-			echo "<table class='table table-hover review' style='cursor: pointer;'>";
-			
-			echo "<thead class='hidden'>";
-			for($i = 0; $i < $this->col_num; $i++){
-				echo "<th class='" . $this->show[$i] . "' name='" . $this->col_en[$i] . "'>" . $this->col_ch[$i] . "</th>";
-			}
-			echo "</thead>";
-			echo "<tbody class='last'>";
-			echo "</tbody>";
-			echo "</table>";
-			echo "<p class='hidden empty_text' align='center'>資料底端，沒有找到更多</p><button class='btn btn-default btn-block review'>顯示更多50筆+</button>";
-			echo "</div></div></div></div>";
-			
-			
-			$height = ($style == 'sub')? 0: 255;
-			
-			echo "<script>$(window).resize(function() {
-				var h = " . $height . ";
-				if($(window).width()<992){
-					h = 196;
-				}
-				$('#" . $this->unique_id . "_panel').find('div.table_wrap').css('height', $(window).height()-h);
-				}); $(window).trigger('resize');</script>";
+				$col = $this->tpl->block('th')->assign(
+							array(
+								'class' => $this->show[$i],
+								'name'=>$this->col_en[$i],
+								'data'=>$this->col_ch[$i],
+							)
+						);
 				
+				$html->assign(
+					array(
+						'th'=>$col
+					)
+				);
+			}
 			
-
+			echo $html->render();
+		
 			$this->genFormModal($preset);
 			
-			$this->ajaxOnRefresh();
+			
 			$this->ajaxOnChange();
 			$this->createTool();
 			$this->modifyTool();
@@ -235,8 +190,7 @@ class Form{
 			
 			
 			$this->mailTool();
-			$this->gridTool();
-			$this->viewComplete();
+			$this->exportTool();
 		}
 		
 		return $result;
@@ -312,19 +266,13 @@ class Form{
 		if($this->authCheck('create')){
 			$result = 'err_auth';
 		}else{
-			$html = "<script>
-					$('#" . $this->unique_id . "_panel').find('div.toollist').find('button.main').text('新增').addClass('create');
-					$('#" . $this->unique_id . "_Modal').find('.modal-footer').find('div.create').append('<button class=\'btn btn-default create\'>新增</button>');
-					$('#" . $this->unique_id . "_panel').find('div.toollist').find('button.create').click(function(){
-						$('#" . $this->unique_id . "_Modal').find('form')[0].reset();
-						$('#" . $this->unique_id . "_Modal').find('.modal-footer').children('div').hide();
-						$('#" . $this->unique_id . "_Modal').find('.modal-footer').find('div.create').show();
-						$('#" . $this->unique_id . "_Modal').modal('show');
-					});
-					
-					</script>";
-			echo $html;
-			$this->ajaxByMethod('create');
+			$html = $this->tpl->block('create')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'url'         => $this->file,
+				)
+			);
+			echo $html->render();
 		}		
 		return $result;
 	}
@@ -351,9 +299,13 @@ class Form{
 		if($this->authCheck('modify')){
 			$result = 'err_auth';
 		}else{
-			$html = "<script>$('#" . $this->unique_id . "_Modal').find('.modal-footer').find('div.modify').append('<button class=\'btn btn-default modify\'>儲存</button>');</script>";
-			echo $html;
-			$this->ajaxByMethod('modify');
+			$html = $this->tpl->block('modify')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'url'         => $this->file,
+				)
+			);
+			echo $html->render();
 		}
 		return $result;
 	}
@@ -387,38 +339,14 @@ class Form{
 		if($this->authCheck('delete')){
 			$result = 'err_auth';
 		}else{
-			$html = "<script>
-				$('#" . $this->unique_id . "_Modal').find('.modal-footer').find('div.modify').append('<button class=\'btn btn-danger delete\'><i class=\'fa fa-trash-o fa-lg\'></i> 刪除</button>');
-				
-				$('#" . $this->unique_id . "_Modal').find('button.delete').click(function(){
-					
-					
-				if(confirm('確定要刪除?')){
-					var btn = $(this).addClass('buttonLoading').button('loading');
-					var pdata={data:{},where:{ AND:{}}};
-					
-					pdata['where']['AND']['id'] = $('#" . $this->unique_id . "_target_id').val();
-					$.ajax({
-						url: '" . $this->file . "',
-						type: 'POST',
-						data: { jdata: JSON.stringify({ pdata: pdata, method: 'delete' }) },
-						success: function(re) {
-							var jdata = JSON.parse(re);
-							if(jdata['err'] == 'success'){
-								$('#" . $this->unique_id . "_panel').find('table.review').trigger('refresh',{type:'delete', id: jdata['id']});
-								$('#" . $this->unique_id . "_Modal').modal('hide');
-							}else if(jdata['err'] == 'err_delete'){
-								customAlert('刪除失敗');
-								$('.buttonLoading').button('reset');
-								$('#" . $this->unique_id . "_Modal').modal('hide');
-							}
-							else console.log(re);}
-					});
-				}
-				});</script>";
-			echo $html;
+			$html = $this->tpl->block('delete')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'url'         => $this->file,
+				)
+			);
+			echo $html->render();
 		}
-		
 		return $result;
 	}
 	public function delete($pdata){
@@ -476,140 +404,40 @@ class Form{
 		return $result;
 	}
 	
-	
 	public function mailTool(){
 		$result = 'success';
 		if($this->authCheck('review')){
 			$result = 'err_auth';
 		}else{
-			$this->genMailModal();
-			$html = "<script>
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').append('<li><a href=\'#\' class=\'mail\'>從郵件寄送</a></li>');
-				
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').find('a.mail').click(function(){
-					$('#" . $this->unique_id . "_Mail_Modal').find('form')[0].reset();
-					$('#" . $this->unique_id . "_Mail_Modal').find('[name=title]').val('【通知】資料報表通知: " . date("Y-m-d") . "');
-					$('#" . $this->unique_id . "_Mail_Modal').find('[name=report]').empty().css('padding', 0);
-					
-					
-					$('#" . $this->unique_id . "_Mail_Modal').modal('show');
-					
-					var str = $('#" . $this->unique_id . "_checked_list').val();
-					var arr = str.split(',');
-					var pdata={data:{},where:{ }};
-					pdata['where']['" . $this->table_name . ".id'] = arr;
-					pdata['where']['ORDER'] = ['" . $this->table_name . ".id', arr]; //last choose at last
-					
-					$.ajax({
-						url: '" . $this->file . "&style=print',
-						type: 'POST',
-						data: { jdata: JSON.stringify({ pdata: pdata, method: 'review' }) },
-						success: function(re) {
-							var jdata = JSON.parse(re);
-							
-							if(jdata.cnt == 0){
-								$('#" . $this->unique_id . "_Mail_Modal').find('[name=report]').append('<p>未勾選資料表項目</p>');
-							}else{
-								$('#" . $this->unique_id . "_Mail_Modal').find('[name=report]').css('padding', '50px 0').append(jdata.data);
-							}
-						}
-					});
-				});
-				
-				$('#" . $this->unique_id . "_Mail_Modal').find('div.mail').append('<button class=\'btn btn-primary mail\'>寄送</button>');
-				
-				
-				$('#" . $this->unique_id . "_Mail_Modal').find('button.mail').click(function(){
-					$(this).addClass('buttonLoading').button('loading');
-					var pdata = {
-						data: {
-							from: '" . $_SESSION['user_mail'] . "',
-							mailto: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'mailto\']').val(),
-							mailcc: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'mailcc\']').val(),
-							title: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'title\']').val(),
-							content: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'content\']').val(),
-							report: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'report\']').html(),
-							attach: $('#" . $this->unique_id . "_Mail_Modal').find('[name=\'attach\']').val(),
-							attach_name: $('#" . $this->unique_id . "_Mail_Modal').find('.attach_label').text()
-						}
-					};
-					
-					$.ajax({
-						url: '" . $this->file . "',
-						type: 'POST',
-						data: { jdata: JSON.stringify({ pdata: pdata, method: 'mailto' }) },
-						success: function(re) {
-							if(re == 'success'){
-								customAlert('寄送成功!', 1);
-								$('#" . $this->unique_id . "_Mail_Modal').modal('hide');
-							}
-							else if(re == 'err_mailer') customAlert('請檢查收件者等欄位');
-							
-							$('.buttonLoading').button('reset');
-						}
-					});
-				});
-				</script>";
-			echo $html;
+			$html = $this->tpl->block('mail')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'url'         => $this->file,
+					'table'       => $this->table_name,
+					'source'      => json_encode($this->database->select('t_account', 'mail')),
+					'mailfrom'    => $_SESSION['user_mail'],
+				)
+			);
+			echo $html->render();
 		}
 		
 		return $result;
 	}
 	
-	public function gridTool(){
+	public function exportTool(){
 		$result = 'success';
 		if($this->authCheck('review')){
 			$result = 'err_auth';
 		}else{
-			$this->genGridModal();
-			$html = "<script>
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').append('<li><a href=\'#\' class=\'print\'>列印表格</a></li>');
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').append('<li><a href=\'#\' class=\'excel\'>匯出至Excel表格</a></li>');
-				
-				
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').find('a.print').click(function(){
-					
-					var str = $('#" . $this->unique_id . "_checked_list').val();
-					var arr = str.split(',');
-					var pdata={data:{},where:{ OR:{}}};
-					pdata['where']['" . $this->table_name . ".id'] = arr;
-					pdata['where']['ORDER'] = ['" . $this->table_name . ".id', arr]; //last choose at last
-					$.ajax({
-						url: '" . $this->file . "&style=print',
-						type: 'POST',
-						data: { jdata: JSON.stringify({ pdata: pdata, method: 'review' }) },
-						success: function(re) {
-							var jdata = JSON.parse(re);
-							
-							$('.genPrint').remove();
-							$('body').after('<div class=\'genPrint\'>' + $('title').text() + '<br>' + jdata.data + '</div>');
-							window.print();
-							
-							
-						}
-					});
-				});
-				$('#" . $this->unique_id . "_panel').find('ul.toollist').find('a.excel').click(function(){
-					var str = $('#" . $this->unique_id . "_checked_list').val();
-					var arr = str.split(',');
-					var pdata={data:{},where:{ OR:{}}};
-					pdata['where']['" . $this->table_name . ".id'] = arr;
-					pdata['where']['ORDER'] = ['" . $this->table_name . ".id', arr]; //last choose at last
-					$.ajax({
-						url: '" . $this->file . "&style=print',
-						type: 'POST',
-						data: { jdata: JSON.stringify({ pdata: pdata, method: 'review' }) },
-						success: function(re) {
-							var jdata = JSON.parse(re);
-							
-							open('POST', './?m=exp_excel&method=print', {data: jdata.data}, '_blank');
-						}
-					});
-				});
-				</script>";
-			echo $html;
+			$html = $this->tpl->block('export')->assign(
+				array(
+					'unique_id'   => $this->unique_id,
+					'url'         => $this->file,
+					'table'       => $this->table_name,
+				)
+			);
+			echo $html->render();
 		}
-		
 		return $result;
 	}
 	
@@ -845,72 +673,10 @@ class Form{
 		return $result;
 	}
 	
-	public function genMailModal(){
-		$result = 'success';
-		$html = '';
-		
-		$html .= "<div class='modal fade' id='" . $this->unique_id . "_Mail_Modal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'><!--div class='modal-dialog'><div class='modal-content'--><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-				<h4 class='modal-title'>寄送通知</h4></div><div class='modal-body'>";
-		$html .= "<form><table class='table'>";
-		
-		$html .= "<thead><tr>";
-		$html .= "<th class='col-xs-1 col-sm-1 col-md-1'></th>";
-		$html .= "<th class='col-xs-2 col-sm-2 col-md-2'></th>";
-		$html .= "</tr></thead>";
-
-		
-		$datas = $this->database->select('t_account', 'mail');
-		$uid_mailto = $this->getUid();
-		$uid_mailcc = $this->getUid();
-		
-		$html .= "
-			<tr><td align='center'>收件者(必填)</td><td><input class='form-control input-sm' name='mailto' type='text' value='' id='" . $uid_mailto . "'/></td></tr>
-			<tr><td align='center'>副本</td><td><input class='form-control input-sm' name='mailcc' type='text' value='' id='" . $uid_mailcc . "'/></td></tr>
-			<tr><td align='center'>標題</td><td><input class='form-control input-sm' name='title' type='text' value=''/></td></tr>
-			<tr><td align='center'>內文</td><td><textarea class='form-control' name='content' type='text' rows='7'></textarea></td></tr>
-			<tr><td align='center'>附檔</td><td><p class='attach_label'></p><p class='attach_link'></p><input name='attach' type='hidden'/></td></tr>
-			<tr><td colspan='2' align='center'><div name='report' style='overflow-x: auto'></div></td></tr>			
-			</table></form>";
-
-		$html .= "
-		<script>$('#" . $uid_mailto . "').autocomplete({source: " . json_encode($datas) . "});
-				$('#" . $uid_mailcc . "').autocomplete({source: " . json_encode($datas) . "});
-				
-				
-		</script>";
-		$html .= "</div><div class='modal-footer'><div class='mail'></div></div><!--/div></div--></div>";
-		
-		
-		
-		
-		echo $html;
-		return $result;
-	}
-	
-	public function genGridModal(){
-		$result = 'success';
-		$html = '';
-		
-		$html .= "<div class='modal fade container' id='" . $this->unique_id . "_Grid_Modal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'><!--div class='modal-dialog'><div class='modal-content'--><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-				<h4 class='modal-title'>預覽列印</h4></div><div class='modal-body'>";
-		$html .= "<div name='report' style='overflow-x: auto'></div>";
-		$html .= "</div><div class='modal-footer'><div class='grid'></div></div><!--/div></div--></div>";
-		
-		echo $html;
-		return $result;
-	}
-	
 	public function getJson($pdata){//translate autocomplete only
-	
-		
 		
 		$arr_col = $pdata['data']?$pdata['data']:'*';
-		if(isset($pdata['where']['link'])){
-			unset($pdata['where']['link']);
-			$datas = $this->getData($pdata);
-		}else{
-			$datas = $this->database->select($this->table_name, $arr_col, $pdata['where']);
-		}
+		$datas = $this->database->select($this->table_name, $arr_col, $pdata['where']);
 		
 		return json_encode($datas);
 	}
@@ -1085,42 +851,6 @@ class Form{
 		return $this->unique_id . '_uid_' . $this->uid++;
 	}
 	
-	public function ajaxByMethod($method){
-		$result = 'success';
-		$html = '';
-		
-		if($method != ''){		
-			$html .= "<script>$('#" . $this->unique_id . "_Modal').find('button." . $method . "').click(function(){var btn = $(this).addClass('buttonLoading').button('loading');";
-			$html .= "var pdata={data:{},where:{AND:{}}};
-			pdata['data'] = $('#" . $this->unique_id . "_Modal').find('form:first').serialize();
-			
-			$.ajax({
-				url: '" . $this->file . "',
-				type: 'POST',
-				data: { jdata: JSON.stringify({ pdata: pdata, method: '" . $method . "' }) },
-				success: function(re) {
-					var jdata = JSON.parse(re);
-					if(jdata['err'] == 'success'){
-						$('#" . $this->unique_id . "_panel').find('table.review').trigger('refresh',{type:'" . $method . "', id: jdata['id']});
-						$('#" . $this->unique_id . "_Modal').modal('hide');
-					}else if(jdata['err'] == 'err_empty'){
-						customAlert('請檢查必填欄位');
-					}else if(jdata['err'] == 'err_exist'){
-						customAlert('請檢查重複值');
-					}else console.log(re);
-					$('.buttonLoading').button('reset');
-				},
-				error: function() {alert('ajax ERROR!!!');}});});</script>";
-				
-			echo $html;
-		}else{
-			$result = 'err_empty';
-		}
-		
-		return $result;
-		
-	}
-	
 	public function ajaxOnChange(){
 		$result = 'success';
 		$html = '';
@@ -1129,7 +859,7 @@ class Form{
 				var pdata={
 							data: {},
 							where:{
-								AND:{ id: $('#" . $this->unique_id . "_target_id').val() }
+								AND:{ id: $(this).val() }
 							}
 				};
 				$.ajax({
@@ -1146,165 +876,26 @@ class Form{
 				for($i = 0; $i < $this->col_num; $i++){
 					switch($this->type[$i]){
 						case "radiobox":
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').each(function(i){ this.checked=this.value==pdata['" . $this->col_en[$i] . "']?true:false; });";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').each(function(i){ this.checked=this.value==pdata['" . $this->col_en[$i] . "']?true:false; });";
 							break;
 						case "checkbox":
 							$html .= "var arr=[]; if(pdata['" . $this->col_en[$i] . "']){arr = pdata['" . $this->col_en[$i] . "'].split(',');} ";
 							//prop('checked', false) v.s. attr('checked', false) attr會使checked完全移除, form reset時預設值的checked不會勾選
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').prop('checked', false).each(function(i){for(var j=0; j<arr.length; j++){if(arr[j] == this.value) this.checked = true;} });";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').prop('checked', false).each(function(i){for(var j=0; j<arr.length; j++){if(arr[j] == this.value) this.checked = true;} });";
 							break;
 						case "autocomplete":
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').val(pdata['" . $this->col_en[$i] . "']);";
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').trigger('preset');";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']);";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset');";
 							break;
 						case "chainselect":
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').trigger('preset', [pdata['" . $this->col_en[$i] . "']]);";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset', [pdata['" . $this->col_en[$i] . "']]);";
 							break;
 						default:
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=\'" . $this->col_en[$i] . "\']').val(pdata['" . $this->col_en[$i] . "']);";
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']);";
 							break;
 					}
 				}
 		$html .= "},error: function() {alert('ajax ERROR!!!');}});  });</script>";
-		echo $html;
-		return $result;
-	}
-	
-	public function ajaxOnRefresh(){
-		$result = 'success';
-		$html = '';
-		$html .= "<script>$('#" . $this->unique_id . "_panel').find('table.review').on('refresh', function (e,obj){";
-
-			$html .= "
-			var str_id = (typeof obj.id === 'undefined') ? '' : obj.id;
-			var arr_id = str_id.split(',');
-			for(var i = 0; i < arr_id.length; i++){
-				var int_id = parseInt(arr_id[i]);
-			
-			var pdata={data:{},where:{ AND: {}}}; var arr_like={}; var arr_or={}; var max_ = (typeof obj.max === 'undefined') ? 50 : obj.max; var rule_ = (typeof obj.rule === 'undefined') ? 'id DESC' : obj.rule; var keyword = $('#" . $this->unique_id . "_panel').find('input.search').val();var keyword_adv = $('#" . $this->unique_id . "_panel').find('input.search_adv').val();";
-			
-			$html .= "
-				switch(obj.type){
-					case 'review':
-						$('#" . $this->unique_id . "_item_cnt').val(0);
-					case 'append':
-						pdata['where']['ORDER'] = rule_;
-						pdata['where']['LIMIT'] = [$('#" . $this->unique_id . "_item_cnt').val(), max_];
-						pdata['where']['SEARCH'] = keyword;
-						pdata['where']['SEARCH_ADV'] = keyword_adv;
-						break;
-					case 'create':
-					case 'modify':
-					case 'delete':
-						pdata['where']['AND']['" . $this->table_name . ".id'] = int_id;
-						pdata['where']['SEARCH'] = keyword;
-						pdata['where']['SEARCH_ADV'] = keyword_adv;
-						break;
-					default:
-						break;
-				}
-				
-				
-				$.ajax({
-					url: '" . $this->file . "',
-					idx: i,
-					type: 'POST',
-					data: {jdata: JSON.stringify({ pdata: pdata, method: 'review' })},
-					success: function(re) {
-						var int_id = parseInt(arr_id[this.idx]);
-						
-						var jdata = JSON.parse(re);
-						//console.log('Info: refresh err ' + jdata['err'].join(', '));
-						
-						//debug for search_adv 
-						//console.log(jdata['err']);
-						
-						switch(obj.type){
-							
-							case 'review':
-								$('#" . $this->unique_id . "_item_cnt').val(0);
-							case 'append':
-								
-								if($('#" . $this->unique_id . "_item_cnt').val() == 0){
-									$('#" . $this->unique_id . "_panel').find('table.review').find('.datalist').remove();
-								}
-								if(jdata['cnt'] > 0){
-									$('#" . $this->unique_id . "_panel').find('table.review').find('.last').append(jdata['data']);
-								}
-								if(jdata['cnt'] == max_){
-									$('#" . $this->unique_id . "_panel').find('button.review').show();
-									$('#" . $this->unique_id . "_panel').find('p.empty_text').addClass('hidden');
-								}else{
-									$('#" . $this->unique_id . "_panel').find('button.review').hide();
-									$('#" . $this->unique_id . "_panel').find('p.empty_text').removeClass('hidden');
-								}
-								break;
-							case 'create':
-								$('#" . $this->unique_id . "_panel').find('table.review').find('.last').prepend(jdata['data']);
-								break;
-							case 'modify':
-								$('#" . $this->unique_id . "_panel').find('table.review').find('[name=\'id\']').filter(function() {
-									return $(this).text() == int_id;
-								}).parent('.datalist').replaceWith(jdata['data']);
-								break;
-							case 'delete':
-								$('#" . $this->unique_id . "_panel').find('table.review').find('[name=\'id\']').filter(function() {
-									return $(this).text() == int_id;
-								}).parent('.datalist').remove();
-								break;
-							default:
-								break;
-						}
-						
-						
-						$('#" . $this->unique_id . "_review_complete').trigger('change');
-					},
-			error: function() {alert('ajax ERROR!!!');}}); } }).trigger('refresh',{type: 'review'}); </script>";
-			
-		echo $html;
-		return $result;
-	}
-	
-	
-	public function viewComplete(){
-		$result = 'success';
-		$html = "<script>
-		
-			$('#" . $this->unique_id . "_panel').find('input.search').on('input', function (){ $('#" . $this->unique_id . "_panel').find('table.review').trigger('refresh',{type: 'review'}); });
-			$('#" . $this->unique_id . "_panel').find('input.search_adv').on('keyup keydown change', function (){ $('#" . $this->unique_id . "_panel').find('table.review').trigger('refresh',{type: 'review'}); });
-			$('#" . $this->unique_id . "_item_cnt').change(function(){ $('#" . $this->unique_id . "_panel').find('.item_cnt').text($(this).val()); });
-			bindFormSort('" . $this->unique_id . "');
-			bindFormChkall('" . $this->unique_id . "');
-			$('#" . $this->unique_id . "_panel').find('button.review').click(function(){ $(this).addClass('buttonLoading').button('loading'); $('#" . $this->unique_id . "_panel').find('table.review').trigger('refresh',{type: 'append', max: 50});});
-	
-	
-			$('#" . $this->unique_id . "_review_complete').change(function(){
-				
-				
-				//set newdatalist js events
-				$('#" . $this->unique_id . "_panel').find('table.review').find('.newdatalist').children().not('.chklist').click(function(){
-					$('#" . $this->unique_id . "_target_id').val( $(this).parent().find(' [name=\'id\'] ').text());
-					$('#" . $this->unique_id . "_target_id').trigger('change');
-					$('#" . $this->unique_id . "_Modal').find('.modal-footer').children('div').hide();
-					$('#" . $this->unique_id . "_Modal').find('.modal-footer').find('div.modify').show();
-					$('#" . $this->unique_id . "_Modal').modal('show');
-				});
-				
-				
-				bindFormChkall2('" . $this->unique_id . "');
-				
-				
-				$('.buttonLoading').button('reset');
-				$('#" . $this->unique_id . "_panel').find('table.review').find('.newdatalist').addClass('datalist').removeClass('newdatalist');
-				//$('#" . $this->unique_id . "_panel').find('table.review').find('.last').sortable();
-				
-				
-				//item count
-				$('#" . $this->unique_id . "_item_cnt').val( $('#" . $this->unique_id . "_panel').find('table.review').find('.datalist').size() ).trigger('change');
-				console.log('Info: total ' + $('#" . $this->unique_id . "_item_cnt').val() + ' items');
-			});
-		</script>";
-		
 		echo $html;
 		return $result;
 	}
@@ -1352,7 +943,6 @@ class Form{
 		return $result;
 	}
 	
-	
 	public function searchTool(){
 		//search adv
 		
@@ -1369,15 +959,10 @@ class Form{
 	}
 	
 	public function render(){
-		echo "<div id='" . $this->unique_id . "'>";
-		echo "<div class='row'>";
-		echo "<div class='col-sm-12 col-md-12 col-lg-12'>";
+		
 		$this->reviewTool();
-		echo "</div>";
-		echo "</div>";
-		echo "</div>";
+		
 	}
 }
-
 
 ?>

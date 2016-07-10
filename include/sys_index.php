@@ -48,11 +48,7 @@
 <body>
 <div id="header"></div>
 <div id="nav"></div>
-<div class="container-fluid">
-	<div class="row">
-		<div id="main" class="col-sm-12 col-md-12 col-lg-12"></div>
-	</div>
-</div>
+<div id="main" class="col-sm-12 col-md-12 col-lg-12"></div>
 <div id="footer"></div>
 </body>
 </html>
