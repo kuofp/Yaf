@@ -8,20 +8,19 @@ require_once 'include/class/auth.class.php';
 require 'vendor/autoload.php';
 
 
-session_start();
+
 $htmlbase = new Control();
+
 
 // database
 $database = $htmlbase->newMedoo($cfg_db_medoo);
-// $database = $htmlbase->newSOME_ORM($cfg_db_SOME_CONFIG);
 
 // mail
 $mailbase = $htmlbase->newPHPMailer($cfg_mail_PHPMailer);
-// $mailbase = $htmlbase->newSOME_MAILER($cfg_mail_SOME_MAILER);
 
 
-$module = $htmlbase->get('m')?:'index';
-$htmlbase->make($module);
+// do the work
+$htmlbase->make();
 
 
 ?>

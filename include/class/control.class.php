@@ -20,7 +20,9 @@ class Control {
 		echo $html;
 	}
 	
-	function make($module){
+	function make(){
+		$module = $this->get('m')?:'index';
+		
 		global $cfg_title;
 		global $cfg_brand;
 		
@@ -29,6 +31,19 @@ class Control {
 		
 		global $database;
 		global $mailbase;
+		
+		// Reduce session lock
+		session_start();
+		switch($module){
+			case 'sys_login':
+			case 'sys_index':
+			case 'index':
+				// Write session
+				break;
+			default:
+				session_write_close();
+				break;
+		}
 		
 		
 		// Include file

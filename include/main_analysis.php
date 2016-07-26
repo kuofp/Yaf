@@ -81,12 +81,10 @@
 	$arr_job = $database->select('t_job', '*');
 	$arr_title = $database->select('t_title', '*');
 	$arr_income = $database->select('t_income', '*');
-	
-	$unique_id = 'analysis_' . rand();
 ?>
 	
-<div id='<?=$unique_id?>' class='container-fluid'>
-	<div class='row table_wrap' style='height: 500px;overflow-y: scroll'>
+<div class='container-fluid'>
+	<div class='row' style='height: 500px;overflow-y: scroll'>
 		<div class='col-md-12 col-sm-12'>
 			<h3>行為分析 <span class='label label-default'>Analysis</span></h3>
 			<div class='panel panel-default'>
@@ -190,13 +188,6 @@ $(function(){
 			}
 		});
 	});
-	$(window).resize(function(){
-		var h = 150;
-		if($(window).width()<992){
-			h = 90;
-		}
-		$('#<?=$unique_id?>').find('div.table_wrap').css('height', $(window).height()-h);
-	});
-	$(window).trigger('resize');
+	
 });
 </script>
