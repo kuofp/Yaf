@@ -156,7 +156,6 @@ class Form{
 					'unique_id'   => $this->unique_id,
 					'style_effect'=> $style_effect,
 					'query'       => $query,
-					'preset'      => $preset,
 					'url'         => $this->file,
 					'table'       => $this->table_name,
 					
@@ -489,23 +488,23 @@ class Form{
 			}
 			
 			
-			$val = '';
+			$pre = '';
 			$tag = ''; //select: selected, radio/checkbox: checked, autocomplete: label
 			if(isset($arr_pre[$this->col_en[$i]])){
-				$val = implode(',', $arr_pre[$this->col_en[$i]]);
+				$pre = implode(',', $arr_pre[$this->col_en[$i]]);
 			}
 			switch($this->type[$i]){
 				case "hidden":
 					$html .= "<td class='hidden'><input name='" . $this->col_en[$i] . "' value=''/></td>";
 					break;
 				case "text";
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $val . "'/></td>";
+					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $pre . "'/></td>";
 					break;
 				case "password";
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='password' value='" . $val . "'/></td>";
+					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='password' value='" . $pre . "'/></td>";
 					break;
 				case "textarea":
-					$html .= "<td><textarea class='form-control' name='" . $this->col_en[$i] . "' type='text' rows='7'/>" . $val . "</textarea></td>";
+					$html .= "<td><textarea class='form-control' name='" . $this->col_en[$i] . "' type='text' rows='7'/>" . $pre . "</textarea></td>";
 					break;
 				case "select":
 					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
@@ -514,9 +513,9 @@ class Form{
 					$html .= "<td><select class='form-control input-sm' name='" . $this->col_en[$i] . "'>";
 					$html .= "<option value=0>請選擇</option>";
 					
-					foreach($datas as $item){
-						$tag = ($val==$item[$arr_tmp[2]])? 'selected': '';
-						$html .= "<option value='" . $item[$arr_tmp[2]] . "' " . $tag . ">" . $item[$arr_tmp[1]] . "</option>";
+					foreach($datas as $arr){
+						$tag = ($pre==$arr[$arr_tmp[2]])? 'selected': '';
+						$html .= "<option value='" . $arr[$arr_tmp[2]] . "' " . $tag . ">" . $arr[$arr_tmp[1]] . "</option>";
 					}
 					$html .= "</td></select>";
 					break;
@@ -579,9 +578,9 @@ class Form{
 					$datas = $this->database->select($arr_tmp[0], '*');
 					$html .= "<td>";
 					
-					foreach($datas as $item){
-						$tag = ($val==$item[$arr_tmp[2]])? 'checked': '';
-						$html .= "<label><input type='radio' class='form' name='" . $this->col_en[$i] . "' value='" . $item[$arr_tmp[2]] . "' " . $tag . "/>" . $item[$arr_tmp[1]] . "</label><br>";
+					foreach($datas as $arr){
+						$tag = ($pre==$arr[$arr_tmp[2]])? 'checked': '';
+						$html .= "<label><input type='radio' class='form' name='" . $this->col_en[$i] . "' value='" . $arr[$arr_tmp[2]] . "' " . $tag . "/>" . $arr[$arr_tmp[1]] . "</label><br>";
 					}
 					$html .= "</td>";
 					break;
@@ -591,22 +590,22 @@ class Form{
 					$datas = $this->database->select($arr_tmp[0], '*');
 					$html .= "<td>";
 					
-					foreach($datas as $item){
-						$arr = explode(',', $val);
-						$tag = (in_array($item[$arr_tmp[2]], $arr))? 'checked': '';
-						$html .= "<div class='checkbox'><label><input type='checkbox' class='form' name='" . $this->col_en[$i] . "' value='" . $item[$arr_tmp[2]] . "' " . $tag . "/>" . $item[$arr_tmp[1]] . "</label></div>";
+					foreach($datas as $arr){
+						$tmp = explode(',', $pre);
+						$tag = (in_array($arr[$arr_tmp[2]], $tmp))? 'checked': '';
+						$html .= "<div class='checkbox'><label><input type='checkbox' class='form' name='" . $this->col_en[$i] . "' value='" . $arr[$arr_tmp[2]] . "' " . $tag . "/>" . $arr[$arr_tmp[1]] . "</label></div>";
 					}
 					$html .= "</td>";
 					break;
 				case "autocomplete":
 					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
-					if($val){
-						$datas = $this->database->select($arr_tmp[0], $arr_tmp[1], array($arr_tmp[2]=>$val));
+					if($pre){
+						$datas = $this->database->select($arr_tmp[0], $arr_tmp[1], array($arr_tmp[2]=>$pre));
 						$tag = $datas[0];
 					}
 					$uid = $this->getUid();
 					$html .= "<td><input class='form-control input-sm' type='text' value='" . $tag . "' id='" . $uid . "_label'/>
-								  <input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='hidden' value='" . $val . "' id='" . $uid . "'/>
+								  <input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='hidden' value='" . $pre . "' id='" . $uid . "'/>
 							</td>";
 					
 					$html .= "<script>
@@ -657,8 +656,8 @@ class Form{
 					break;
 				case "datepicker":
 					$uid = $this->getUid();
-					$val = $val != ''? date('Y-m-d', $val) :date('Y-m-d');
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $val . "' id='" . $uid . "'/></td>";
+					$pre = $pre != ''? date('Y-m-d', $pre) :date('Y-m-d');
+					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $pre . "' id='" . $uid . "'/></td>";
 					$html .= "<script>$( '#" . $uid . "' ).datepicker({dateFormat: 'yy-mm-dd', closeText: 'Close', changeYear: true, changeMonth: true, beforeShow: function() {setTimeout(function(){ $('.ui-datepicker').css('z-index', 1070);}, 0);}});</script>";
 					break;
 				default:
@@ -673,7 +672,7 @@ class Form{
 		return $result;
 	}
 	
-	public function getJson($pdata){//translate autocomplete only
+	public function getJson($pdata){//get raw data
 		
 		$arr_col = $pdata['data']?$pdata['data']:'*';
 		$datas = $this->database->select($this->table_name, $arr_col, $pdata['where']);
@@ -884,10 +883,11 @@ class Form{
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').prop('checked', false).each(function(i){for(var j=0; j<arr.length; j++){if(arr[j] == this.value) this.checked = true;} });";
 							break;
 						case "autocomplete":
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']);";
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset');";
+							// put value and trigger preset
+							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']).trigger('preset');";
 							break;
 						case "chainselect":
+							// put value and trigger preset
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset', [pdata['" . $this->col_en[$i] . "']]);";
 							break;
 						default:
@@ -895,7 +895,9 @@ class Form{
 							break;
 					}
 				}
-		$html .= "},error: function() {alert('ajax ERROR!!!');}});  });</script>";
+		$html .= "
+			$('#" . $this->unique_id . "_change_complete').trigger('change');
+		},error: function() {alert('ajax ERROR!!!');}});  });</script>";
 		echo $html;
 		return $result;
 	}

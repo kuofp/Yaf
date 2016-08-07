@@ -4,7 +4,7 @@
 	<input id='{unique_id}_target_id'       type='hidden' value=''>
 	<input id='{unique_id}_review_complete' type='hidden' value='trigger change when review table complete'>
 	<input id='{unique_id}_checked_list'    type='hidden' value=''>
-	<input id='{unique_id}_create_preset'   type='hidden' value='{preset}'>
+	<input id='{unique_id}_change_complete' type='hidden' value='trigger change when modal fetch data complete'>
 		
 	<div class='panel panel-default' id='{unique_id}_panel' style="height: 100%">
 		<div class='panel-body' style="height: 100%">
