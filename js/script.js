@@ -7,30 +7,11 @@
 ];
 
 $(document).ready(function(){
-	setInterval("getTips()", 10000);
+	setInterval(function(){
+		$('#random_tips').text("-"+tips[Math.floor((Math.random()*tips.length))]+"-");
+	}, 10000);
 });
 
-function getTips(){
-	var pdata={ where:{ AND:{ valid_id: 1}}};
-	$.ajax({
-		url: './?m=form_bulletin',
-		type: 'POST',
-		data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
-		success: function(re) {
-			var jdata = JSON.parse(re);
-			if(jdata.length){
-				var random_id = Math.floor((Math.random()*jdata.length));
-				$('#random_tips').text("-[公告事項] "+jdata[random_id]['date']+": "+jdata[random_id]['content']);
-			}else{
-				$('#random_tips').text("-"+tips[Math.floor((Math.random()*tips.length))]+"-");
-			}
-		},
-		error: function(){
-				$('#random_tips').text("-"+tips[Math.floor((Math.random()*tips.length))]+"-");
-			}
-		});
-	
-}
 
 function open(verb, url, data, target) {
 	var form = document.createElement("form");
@@ -38,12 +19,12 @@ function open(verb, url, data, target) {
 	form.method = verb;
 	form.target = target || "_self";
 	if (data) {
-	for (var key in data) {
-	var input = document.createElement("textarea");
-	input.name = key;
-	input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
-	form.appendChild(input);
-	}
+		for (var key in data) {
+			var input = document.createElement("textarea");
+			input.name = key;
+			input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+			form.appendChild(input);
+		}
 	}
 	form.style.display = 'none';
 	document.body.appendChild(form);
@@ -185,7 +166,7 @@ function bindFormViewComplete(uid){
 		
 		
 		//item count
-		c.val( f.find('table.review').find('.datalist').size() ).trigger('change');
+		c.val( f.find('table.review').find('.datalist').length ).trigger('change');
 		console.log('Info: total ' + c.val() + ' items');
 	});
 }

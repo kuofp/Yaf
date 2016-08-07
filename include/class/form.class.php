@@ -255,7 +255,7 @@ class Form{
 		}
 		
 		$result = array('cnt'=>count($datas['data']), 'data'=>$html, 'err'=>$datas['err']);
-		return json_encode($result);
+		return json_encode($result, JSON_UNESCAPED_UNICODE);
 		
 	}
 	
@@ -289,7 +289,7 @@ class Form{
 				$result['err'] = $err;
 			}
 		}
-		return json_encode($result);
+		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
 	//modify
@@ -329,7 +329,7 @@ class Form{
 				}
 			}
 		}
-		return json_encode($result);
+		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
 	//delete
@@ -361,7 +361,7 @@ class Form{
 				$result['id'] = $pdata['where']['AND']['id'];
 			}
 		}
-		return json_encode($result);
+		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
 	public function mailto($pdata){
@@ -413,7 +413,7 @@ class Form{
 					'unique_id'   => $this->unique_id,
 					'url'         => $this->file,
 					'table'       => $this->table_name,
-					'source'      => json_encode($this->database->select('t_account', 'mail')),
+					'source'      => json_encode($this->database->select('t_account', 'mail'), JSON_UNESCAPED_UNICODE),
 					'mailfrom'    => $_SESSION['user_mail'],
 				)
 			);
@@ -533,7 +533,7 @@ class Form{
 					$('#" . $uid . "').on('click', function(){
 						
 						//if there is only one option, then send ajax! (preset has only one option ) I can't find one for dropdown and another for click option
-						if($('#" . $uid . "').children().size() == 1){
+						if($('#" . $uid . "').children().length == 1){
 							$('#" . $this->unique_id . "_Modal').find('.modal-body').find('[name=\'" . $this->col_en[$i-1] . "\']').trigger('change');
 						}
 					});
@@ -590,8 +590,9 @@ class Form{
 					$datas = $this->database->select($arr_tmp[0], '*');
 					$html .= "<td>";
 					
+					
+					$tmp = explode(',', $pre);
 					foreach($datas as $arr){
-						$tmp = explode(',', $pre);
 						$tag = (in_array($arr[$arr_tmp[2]], $tmp))? 'checked': '';
 						$html .= "<div class='checkbox'><label><input type='checkbox' class='form' name='" . $this->col_en[$i] . "' value='" . $arr[$arr_tmp[2]] . "' " . $tag . "/>" . $arr[$arr_tmp[1]] . "</label></div>";
 					}
@@ -677,7 +678,7 @@ class Form{
 		$arr_col = $pdata['data']?$pdata['data']:'*';
 		$datas = $this->database->select($this->table_name, $arr_col, $pdata['where']);
 		
-		return json_encode($datas);
+		return json_encode($datas, JSON_UNESCAPED_UNICODE);
 	}
 	
 	public function getData($pdata){//translate all data
