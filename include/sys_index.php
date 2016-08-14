@@ -60,7 +60,12 @@
 	}else{
 		$html->assign(
 			array(
-				'main'  => $tpl->block('login')->assign(array('title'=>$cfg_title)),
+				'main'  => $tpl->block('login')->assign(
+					array(
+						'title' => $cfg_title,
+						'brand' => $cfg_brand,
+					)
+				),
 				'footer'=> '',
 				
 			)

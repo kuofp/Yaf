@@ -271,15 +271,15 @@ body{
 </style>
 
 <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-<div id="login_panel" class="panel panel-default"><div class="panel-body"><h1>{title}</h1>
+<div id="login_panel" class="panel panel-default"><div class="panel-body"><h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
 	<form class="ajax" method="POST" action="./?m=sys_login&method=login">
-		<input type="text" name="user" class="form-control alphanumeric_check" placeholder="帳號"/>
+		<input type="text" name="user" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
 		<br/>
-		<input type="password" name="password" class="form-control" placeholder="密碼"/>
+		<input type="password" name="password" class="form-control input-sm" placeholder="密碼"/>
 		<br/>
-		<button type="submit" class="btn btn-primary btn-lg btn-block login" data-loading-text="登入中...">登入</button>
+		<button type="submit" class="btn btn-primary login pull-right" data-loading-text="登入中...">登入<i class="fa fa-sign-in" aria-hidden="true"></i></button>
 	</form>
-</div><div class="panel-footer">{title}</div></div>
+</div><div class="panel-footer">{brand}</div></div>
 </div>
 <!-- @login -->
 
