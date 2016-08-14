@@ -778,7 +778,7 @@ class Form{
 									continue;
 								}
 								array_push($err, '-order : (' . $arr_order[0] . ') ' . $arr_order[1]);
-								$pdata['where']['ORDER'] = $arr_order[0] . ' ' . $arr_order[1];
+								$pdata['where']['ORDER'] = array($arr_order[0] => $arr_order[1]);
 								break;
 							default:
 								array_push($err, 'err (unknown arg): ' . $arr_tmp[$i]);

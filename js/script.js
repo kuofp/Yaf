@@ -186,7 +186,7 @@ function bindFormAjaxOnRefresh(uid, url, table){
 			var arr_like={};
 			var arr_or={};
 			var max_ = (typeof obj.max === 'undefined') ? 50 : obj.max;
-			var rule_ = (typeof obj.rule === 'undefined') ? 'id DESC' : obj.rule;
+			var rule_ = (typeof obj.rule === 'undefined') ? {'id': 'DESC'} : obj.rule;
 			var keyword = f.find('input.search').val();
 			var keyword_adv = f.find('input.search_adv').val();
 	
@@ -382,7 +382,7 @@ function bindFormMailTool(uid, url, table, source){
 		var arr = str.split(',');
 		var pdata={data:{},where:{ }};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = [table + '.id', arr]; //last choose at last
+		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
 		
 		$.ajax({
 			url: url + '&style=print',
@@ -448,7 +448,7 @@ function bindFormExportTool(uid, url, table){
 		var arr = str.split(',');
 		var pdata={data:{},where:{ OR:{}}};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = [table + '.id', arr]; //last choose at last
+		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
 		$.ajax({
 			url: url + '&style=print',
 			type: 'POST',
@@ -469,7 +469,7 @@ function bindFormExportTool(uid, url, table){
 		var arr = str.split(',');
 		var pdata={data:{},where:{ OR:{}}};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = [table + '.id', arr]; //last choose at last
+		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
 		$.ajax({
 			url: url + '&style=print',
 			type: 'POST',
