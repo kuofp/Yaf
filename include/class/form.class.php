@@ -177,7 +177,7 @@ class Form{
 				);
 			}
 			
-			echo $html->render();
+			$html->render();
 		
 			$this->genFormModal($preset);
 			
@@ -271,7 +271,7 @@ class Form{
 					'url'         => $this->file,
 				)
 			);
-			echo $html->render();
+			$html->render();
 		}		
 		return $result;
 	}
@@ -304,7 +304,7 @@ class Form{
 					'url'         => $this->file,
 				)
 			);
-			echo $html->render();
+			$html->render();
 		}
 		return $result;
 	}
@@ -344,7 +344,7 @@ class Form{
 					'url'         => $this->file,
 				)
 			);
-			echo $html->render();
+			$html->render();
 		}
 		return $result;
 	}
@@ -417,7 +417,7 @@ class Form{
 					'mailfrom'    => $_SESSION['user_mail'],
 				)
 			);
-			echo $html->render();
+			$html->render();
 		}
 		
 		return $result;
@@ -435,7 +435,7 @@ class Form{
 					'table'       => $this->table_name,
 				)
 			);
-			echo $html->render();
+			$html->render();
 		}
 		return $result;
 	}

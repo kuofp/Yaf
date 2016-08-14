@@ -9,17 +9,6 @@ class Control {
 		
 	}
 	
-	function jLoad($arr){
-		$html = '';
-		$html.= '<script>$(function(){';
-		foreach($arr as $key=>$item){
-			$html.= '$("' . $key . '").load("./?m=' . $item . '");';
-		}
-		$html.= '});</script>';
-		
-		echo $html;
-	}
-	
 	function make(){
 		$module = $this->get('m')?:'index';
 		
@@ -88,21 +77,6 @@ class Control {
 		return $mail;
 	}
 	
-	function index(){
-		$this->sys_index();
-	}
-	
-	function sys_index(){
-		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
-			$this->jLoad( array('#header'=>'sys_header',
-								'#main'=>'sys_intro',
-								'#nav'=>'sys_nav',
-								'#footer'=>'sys_footer'));
-		}else{
-			$this->jLoad( array('#main'=>'sys_login'));
-			session_destroy();
-		}
-	}
 }
 
 ?>

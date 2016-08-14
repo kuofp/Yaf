@@ -174,8 +174,8 @@
 $(function(){
 	
 
-	$('form.analysis').submit(function (ev) {
-		ev.preventDefault();
+	$('form.analysis').submit(function(){
+		
 		$('button.analysis').button('loading');
 		$.ajax({
 			type: $(this).attr('method'),
@@ -187,6 +187,7 @@ $(function(){
 				$('div.result').empty().append(re);
 			}
 		});
+		return false;
 	});
 	
 });
