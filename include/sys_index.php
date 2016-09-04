@@ -28,7 +28,7 @@
 		return $html;
 	}
 	function getOnClick($link){
-		return ($link=='')? '': 'onclick="' . "$('#main').load('./?m=" . $link . "');" . '"';
+		return ($link=='')? '': 'onclick="' . "$('#main').load('', {m: '" . $link . "'});" . '"';
 	}
 	function authCheck($item, $offset=2){
 		return ($item[$offset]=='') || isset($_SESSION['auth'][$item[$offset]]);
@@ -60,6 +60,8 @@
 	}else{
 		$html->assign(
 			array(
+				'header' => '',
+				'nav'   => '',
 				'main'  => $tpl->block('login')->assign(
 					array(
 						'title' => $cfg_title,

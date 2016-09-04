@@ -1,11 +1,19 @@
 {
     "require": {
         "catfan/Medoo": "^1.0",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+		"kuofp/Snake": "@dev"
     },
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/kuofp/Snake.git"
+        }
+    ],
 	"autoload": {
         "classmap": [
-			"vendor/"
+			"vendor/",
+			"include/"
 		]
     }
 }

@@ -1,8 +1,10 @@
 <?php
 class Control {
 	
+	protected $act;
+	
 	function __construct(){
-		
+		$this->act = isset($_REQUEST['m'])? $_REQUEST['m']: 'index';
 	}
 	
 	function __destruct(){
@@ -10,7 +12,6 @@ class Control {
 	}
 	
 	function make(){
-		$module = $this->get('m')?:'index';
 		
 		global $cfg_title;
 		global $cfg_brand;
@@ -23,7 +24,7 @@ class Control {
 		
 		// Reduce session lock
 		session_start();
-		switch($module){
+		switch($this->act){
 			case 'sys_login':
 			case 'sys_index':
 			case 'index':
@@ -36,21 +37,13 @@ class Control {
 		
 		
 		// Include file
-		if(isset($cfg_mod[$module]) && file_exists($cfg_mod[$module])){
-			require $cfg_mod[$module];
+		if(isset($cfg_mod[$this->act]) && file_exists($cfg_mod[$this->act])){
+			require $cfg_mod[$this->act];
 		}
 		// Call method
-		if(method_exists($this, $module)){
-			$this->{$module}();
+		if(method_exists($this, $this->act)){
+			$this->{$this->act}();
 		}
-	}
-	
-	function get($key){
-		return isset($_GET[$key])? $_GET[$key]: '';
-	}
-	
-	function newMedoo($arr){
-		return new medoo($arr);
 	}
 	
 	function newPHPMailer($arr){

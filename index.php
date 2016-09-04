@@ -13,7 +13,7 @@ $htmlbase = new Control();
 
 
 // database
-$database = $htmlbase->newMedoo($cfg_db_medoo);
+$database = $htmlbase->medoo($cfg_db_medoo);
 
 // mail
 $mailbase = $htmlbase->newPHPMailer($cfg_mail_PHPMailer);
