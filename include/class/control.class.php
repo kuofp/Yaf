@@ -1,10 +1,13 @@
 <?php
+
 class Control {
 	
 	protected $act;
+	protected $obj;
 	
 	function __construct(){
-		$this->act = isset($_REQUEST['m'])? $_REQUEST['m']: 'index';
+		$this->act = $_REQUEST['m'] ?? 'index';
+		$this->obj = $_REQUEST['o'] ?? 0;
 	}
 	
 	function __destruct(){
@@ -35,14 +38,18 @@ class Control {
 				break;
 		}
 		
-		
-		// Include file
-		if(isset($cfg_mod[$this->act]) && file_exists($cfg_mod[$this->act])){
+		if(class_exists($this->obj)){
+			// new obj directly
+			$c = $this->obj;
+			return new $c;
+			
+		}elseif(class_exists($cfg_mod[$this->act] ?? '')){
+			// new obj via module table
+			return new $cfg_mod[$this->act];
+			
+		}elseif(file_exists($cfg_mod[$this->act] ?? '')){
+			// include file
 			require $cfg_mod[$this->act];
-		}
-		// Call method
-		if(method_exists($this, $this->act)){
-			$this->{$this->act}();
 		}
 	}
 	
@@ -56,8 +63,7 @@ class Control {
 			$mail->Password = $arr['Password'];               // SMTP password
 			$mail->SMTPSecure = $arr['SMTPSecure'];           // Enable TLS encryption, `ssl` also accepted
 			$mail->Port = $arr['Port'];                       // TCP port to connect to
-			
-			$mail->isHTML($arr['isHTML']);                              // Set email format to HTML
+			$mail->isHTML($arr['isHTML']);                    // Set email format to HTML
 		
 			//http://www.weste.net/2013/7-17/92746.html  yahoo failed issue
 			$mail->CharSet = $arr['CharSet'];
@@ -69,7 +75,4 @@ class Control {
 		
 		return $mail;
 	}
-	
 }
-
-?>

@@ -270,7 +270,7 @@ body{
 }
 </style>
 
-<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4" style="max-width: 500px">
 <div id="login_panel" class="panel panel-default"><div class="panel-body"><h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
 	<form class="ajax" method="POST" action="./?m=sys_login&method=login">
 		<input type="text" name="user" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
@@ -430,14 +430,7 @@ $('.intro').click(function(){ $('#main').load('./?m=sys_intro'); });
 
 
 <!-- @intro -->
-<div class='well' style="height: 100%;">
-	<table class="table"></table>
-	<h3>系統資訊</h3>
-	<a href='file/manual.pdf'>使用說明</a>
-	<ul>
-		<li>[優化] 選單分類調整</li>
-		<li>[優化] 全選功能優化</li>
-		<li>[新增] 點擊欄位標題排序功能</li>
-	</ul>
-</div>
+<script>
+$('#main').load('./?m=sys_intro');
+</script>
 <!-- @intro -->

@@ -86,7 +86,7 @@ function bindFormChkall2(uid){
 	var l = $('#' + uid + '_checked_list');
 	
 	
-	f.find('table.review').find('.newdatalist').prepend('<td class=\'chklist\' style=\'width: 30px;\'><i class=\'fa fa-square-o\'></i></td>');
+	f.find('table.review').find('.newdatalist').prepend('<td class="chklist" style="width: 30px;"><i class="fa fa-square-o"></i></td>');
 	f.find('.newdatalist').find('.chklist').click(function() {
 		if($(this).children().hasClass('fa-check-square-o')){
 			$(this).children().removeClass('fa-check-square-o').addClass('fa-square-o');
@@ -308,7 +308,7 @@ function bindFormCreateTool(uid, url){
 	var m = $('#' + uid + '_Modal');
 	
 	f.find('div.toollist').find('button.main').text('新增').addClass('create');
-	m.find('.modal-footer').find('div.create').append('<button class=\'btn btn-default create\'>新增</button>');
+	m.find('.modal-footer').find('div.create').append('<button class="btn btn-default create">新增</button>');
 	f.find('div.toollist').find('button.create').click(function(){
 		m.find('form')[0].reset();
 		m.find('.modal-footer').children('div').hide();
@@ -323,7 +323,7 @@ function bindFormCreateTool(uid, url){
 function bindFormModifyTool(uid, url){
 	var m = $('#' + uid + '_Modal');
 	
-	m.find('.modal-footer').find('div.modify').append('<button class=\'btn btn-default modify\'>儲存</button>');
+	m.find('.modal-footer').find('div.modify').append('<button class="btn btn-default modify">儲存</button>');
 	bindFormAjaxByMethod(uid, url, 'modify');
 }
 
@@ -333,7 +333,7 @@ function bindFormDeleteTool(uid, url){
 	var m = $('#' + uid + '_Modal');
 	var t = $('#' + uid + '_target_id');
 	
-	m.find('.modal-footer').find('div.modify').append('<button class=\'btn btn-danger delete\'><i class=\'fa fa-trash-o fa-lg\'></i> 刪除</button>');
+	m.find('.modal-footer').find('div.modify').append('<button class="btn btn-danger delete"><i class="fa fa-trash-o fa-lg"></i> 刪除</button>');
 	m.find('button.delete').click(function(){
 		if(confirm('確定要刪除?')){
 			var btn = $(this).addClass('buttonLoading').button('loading');
@@ -369,7 +369,7 @@ function bindFormMailTool(uid, url, table, source){
 	var f = $('#' + uid + '_panel');
 	var l = $('#' + uid + '_checked_list');
 	
-	f.find('ul.toollist').append('<li><a href=\'#\' class=\'mail\'>從郵件寄送</a></li>');
+	f.find('ul.toollist').append('<li><a href="#" class="mail">從郵件寄送</a></li>');
 	f.find('ul.toollist').find('a.mail').click(function(){
 		mm.find('form')[0].reset();
 		mm.find('[name=title]').val('【通知】資料報表通知: ' + $.datepicker.formatDate('yy-mm-dd', new Date()));
@@ -400,7 +400,7 @@ function bindFormMailTool(uid, url, table, source){
 		});
 	});
 	
-	mm.find('div.mail').append('<button class=\'btn btn-primary mail\'>寄送</button>');
+	mm.find('div.mail').append('<button class="btn btn-primary mail">寄送</button>');
 	
 	
 	mm.find('button.mail').click(function(){
@@ -439,8 +439,8 @@ function bindFormExportTool(uid, url, table){
 	var f = $('#' + uid + '_panel');
 	var l = $('#' + uid + '_checked_list');
 	
-	f.find('ul.toollist').append('<li><a href=\'#\' class=\'print\'>列印表格</a></li>');
-	f.find('ul.toollist').append('<li><a href=\'#\' class=\'excel\'>匯出至Excel表格</a></li>');
+	f.find('ul.toollist').append('<li><a href="#" class="print">列印表格</a></li>');
+	f.find('ul.toollist').append('<li><a href="#" class="excel">匯出至Excel表格</a></li>');
 	
 	f.find('ul.toollist').find('a.print').click(function(){
 		
@@ -457,7 +457,7 @@ function bindFormExportTool(uid, url, table){
 				var jdata = JSON.parse(re);
 				
 				$('.genPrint').remove();
-				$('body').after('<div class=\'genPrint\'>' + $('title').text() + '<br>' + jdata.data + '</div>');
+				$('body').after('<div class="genPrint">' + $('title').text() + '<br>' + jdata.data + '</div>');
 				window.print();
 				
 				
@@ -477,7 +477,7 @@ function bindFormExportTool(uid, url, table){
 			success: function(re) {
 				var jdata = JSON.parse(re);
 				
-				open('POST', './?m=exp_excel&method=print', {data: jdata.data}, '_blank');
+				open('POST', './?m=plugin_excel&method=print', {data: jdata.data}, '_blank');
 			}
 		});
 	});

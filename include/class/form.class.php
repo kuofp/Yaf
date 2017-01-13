@@ -52,7 +52,7 @@ class Form{
 		$this->col_num = count($col_en);
 		$this->uid = 0;
 		
-		$this->tpl = new Snake('include/template/form.tpl');
+		$this->tpl = new Snake('../include/html/form.tpl');
 	}
 	public function __destruct(){
 		

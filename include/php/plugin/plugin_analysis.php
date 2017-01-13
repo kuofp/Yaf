@@ -1,5 +1,14 @@
 <?php
+namespace Plugin;
+
+class Analysis{
 	
+	function __construct(){
+		
+	}
+}
+
+	global $database;
 	if(isset($_POST['analysis'])){
 		
 		if(isset($_POST['age_s'])){

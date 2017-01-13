@@ -17,7 +17,6 @@ class Auth {
 	
 	function login(){
 		
-		
 		//check parameter
 		if(empty($_POST['user']) || empty($_POST['password'])){
 			echo 'err_empty';
@@ -35,9 +34,7 @@ class Auth {
 			echo 'err_fail';
 			
 		}else{
-			
 			echo 'success';
-			
 			
 			if(!empty($datas[0]['auth'])){
 				
@@ -78,7 +75,6 @@ class Auth {
 		$user = $this->database->select('t_account', '*', array('id'=>$_SESSION['user_id']));
 		$password = isset($_POST['password'])? $_POST['password']: '';
 		
-		
 		if(empty($password)){
 			echo 'err_empty';
 			
@@ -89,9 +85,5 @@ class Auth {
 			
 			echo 'success';
 		}
-		
-		
 	}
 }
-
-?>
