@@ -1,9 +1,9 @@
 <?php
 require_once '../config/config.php';
-require_once '../include/class/control.class.php';
-require_once '../include/class/form.class.php';
-require_once '../include/class/auth.class.php';
-require_once '../include/class/helper.class.php';
+require_once '../include/class/control.php';
+require_once '../include/class/form.php';
+require_once '../include/class/auth.php';
+require_once '../include/class/helper.php';
 
 // Third-Party Dependencies
 require '../vendor/autoload.php';
