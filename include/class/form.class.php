@@ -163,12 +163,12 @@ class Form{
 			);
 			for($i = 0; $i < $this->col_num; $i++){
 				$col = $this->tpl->block('th')->assign(
-							array(
-								'class' => $this->show[$i],
-								'name'=>$this->col_en[$i],
-								'data'=>$this->col_ch[$i],
-							)
-						);
+					array(
+						'class' => $this->show[$i],
+						'name'=>$this->col_en[$i],
+						'data'=>$this->col_ch[$i],
+					)
+				);
 				
 				$html->assign(
 					array(
@@ -366,8 +366,6 @@ class Form{
 	
 	public function mailto($pdata){
 		//base64 encoding http://reader.roodo.com/linpapa/archives/10000107.html
-		
-		
 		$result = '';
 		
 		//The message
@@ -967,5 +965,3 @@ class Form{
 		
 	}
 }
-
-?>

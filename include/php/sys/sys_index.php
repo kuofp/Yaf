@@ -16,13 +16,13 @@ class Index{
 		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
 			$html->assign(
 				array(
-					'header' => $tpl->block('header'),
+					'header' => '',
 					'nav'    => $tpl->block('nav')->assign(
 						array(
 							'user' => $_SESSION['user_name'],
 							'mail' => $_SESSION['user_mail'],
 							'brand'=> $cfg_brand,
-							'nav'  => $this->getSubMenu($cfg_nav),
+							'side' => $this->getSubMenu($cfg_nav),
 							
 						)
 					),
