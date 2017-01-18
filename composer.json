@@ -2,12 +2,12 @@
     "require": {
         "catfan/Medoo": "^1.0",
         "phpmailer/phpmailer": "^5.2",
-		"kuofp/Snake": "@dev"
+		"kuofp/Yatp": "@dev"
     },
 	"repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/kuofp/Snake.git"
+            "url": "https://github.com/kuofp/Yatp.git"
         }
     ],
 	"autoload": {

@@ -9,7 +9,7 @@ class Index{
 		global $cfg_title;
 		global $cfg_nav;
 		
-		$tpl = new \Snake('../include/html/form.tpl');
+		$tpl = new \Yatp('../include/html/form.tpl');
 		
 		$html = $tpl->block('index')->assign(array('title' => $cfg_title));
 		
