@@ -37,7 +37,7 @@
 							<i class='fa fa-square-o'></i>
 						</th>
 						<!-- @th-->
-						<th class='{class} order' name='{name}' style='cursor: pointer'>{data}<i class='fa'></i></th>
+						<th class='{class} order' name='{name}' style='cursor: pointer'>{text}<i class='fa'></i></th>
 						<!-- @th-->
 					</thead>
 				</table>
@@ -45,7 +45,15 @@
 			
 			<div class='table_wrap sub' style='overflow-y: scroll; height: calc(100% - 70px);'>
 				<table class='table table-hover review' style='cursor: pointer;'>
-					<tbody class='last'></tbody>
+					<tbody class='last'>
+						<!-- @tr-->
+						<tr class='newdatalist'>
+							<!-- @td-->
+							<td class="{class}" name="{name}">{text}</td>
+							<!-- @td-->
+						</tr>
+						<!-- @tr-->
+					</tbody>
 				</table>
 				<p class='hidden empty_text' align='center'>資料底端，沒有找到更多</p>
 				<button class='btn btn-default btn-block review'>顯示更多50筆+</button>
@@ -434,3 +442,38 @@ $('.intro').click(function(){ $('#main').load('./?m=sys_intro'); });
 $('#main').load('./?m=sys_intro');
 </script>
 <!-- @intro -->
+
+<!-- @table -->
+	<!-- @print -->
+		<table style="border:3px #000 solid; width:1500px; table-layout:fixed; text-align: center;" rules="all" class="pure-table">
+			<tr>
+				<!-- @th -->
+				<th style="text-align: center">{text}</th>
+				<!-- @th -->
+			</tr>
+			<!-- @tr -->
+			<tr>
+				<!-- @td -->
+				<td style="white-space: normal; overflow: visible; word-wrap: break-word;" name="{name}">{text}</td>
+				<!-- @td -->
+			</tr>
+			<!-- @tr -->
+		</table>
+	<!-- @print -->
+	<!-- @excel -->
+		<table>
+			<tr>
+				<!-- @th -->
+				<th>{text}</th>
+				<!-- @th -->
+			</tr>
+			<!-- @tr -->
+			<tr>
+				<!-- @td -->
+				<td>{text}</td>
+				<!-- @td -->
+			</tr>
+			<!-- @tr -->
+		</table>
+	<!-- @excel -->
+<!-- @table -->

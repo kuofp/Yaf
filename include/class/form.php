@@ -158,24 +158,21 @@ class Form{
 					'query'       => $query,
 					'url'         => $this->file,
 					'table'       => $this->table_name,
-					
+					'tr'          => '',
 				)
 			);
+			
+			$th = [];
 			for($i = 0; $i < $this->col_num; $i++){
-				$col = $this->tpl->block('th')->assign(
-					array(
-						'class' => $this->show[$i],
-						'name'=>$this->col_en[$i],
-						'data'=>$this->col_ch[$i],
-					)
-				);
-				
-				$html->assign(
-					array(
-						'th'=>$col
-					)
+				$th[] = array(
+					'class' => $this->show[$i],
+					'name'  => $this->col_en[$i],
+					'text'  => $this->col_ch[$i],
 				);
 			}
+			$html->assign(array(
+				'th' => $this->tpl->block('main.th')->nest($th)
+			));
 			
 			$html->render();
 		
@@ -197,62 +194,47 @@ class Form{
 	}
 	public function review($pdata){
 		$datas = $this->getData($pdata);
-		$html = '';
 		
 		$style = isset($_GET['style'])? $_GET['style']: '';
+		
+		$th = array_map(function($v){
+				return array('text' => $v);
+			}, $this->col_ch);
+		
+		// produce tr
+		$block = $style? 'table.' . $style: 'main';
+		
+		$tr = [];
+		for($i = 0; $i < count($datas['data']); $i++){
+			$td = [];
+			for($j = 0; $j < $this->col_num; $j++){
+				$td[] = array(
+					'class' => $this->show[$j],
+					'name'  => $this->col_en[$j],
+					'text'  => htmlspecialchars($datas['data'][$i][$this->col_en[$j]])
+				);
+			}
+			
+			$tr[] = array(
+				'td' => $this->tpl->block($block . '.td')->nest($td)
+			);
+		}
+		
+		// produce th
 		switch($style){
 			case 'print':
-				$html .= "<table style='border:3px #000 solid; width:1500px; table-layout:fixed; text-align: center;' rules='all' class='pure-table'><thead><tr>";
-				for($i = 0; $i < $this->col_num; $i++){
-					if($this->col_en[$i] != 'id'){
-						$html .= "<th style='text-align: center'>" . $this->col_ch[$i] . "</th>";
-					}
-				}
-				
-				$html .= "</tr></thead>";
-				
-				for($i = 0; $i < count($datas['data']); $i++){
-					$html .= "<tr>";
-					for($j = 0; $j < $this->col_num; $j++){
-						if($this->col_en[$j] != 'id'){
-							$html .= "<td style='white-space: normal; overflow: visible; word-wrap: break-word;' name='" . $this->col_en[$j] . "'>" . htmlspecialchars($datas['data'][$i][$this->col_en[$j]]) . "</td>";
-						}
-					}
-					$html .= "</tr>";
-				}
-				
-				$html .= "</table>"; 
-				break;
 			case 'excel':
-				$html .= "<table><thead><tr>";
-				for($i = 0; $i < $this->col_num; $i++){
-					if($this->col_en[$i] != 'id'){
-						$html .= "<th>" . $this->col_ch[$i] . "</th>";
-					}
-				}
-				$html .= "</tr></thead>";
-				for($i = 0; $i < count($datas['data']); $i++){
-					$html .= "<tr>";
-					for($j = 0; $j < $this->col_num; $j++){
-						if($this->col_en[$j] != 'id'){
-							$html .= "<td>" . htmlspecialchars($datas['data'][$i][$this->col_en[$j]]) . "</td>";
-						}
-					}
-					$html .= "</tr>";
-				}
-				$html .= "</table>"; 
+				$html = $this->tpl->block($block)->assign(array(
+					'th' => $this->tpl->block($block . '.th')->nest($th),
+					'tr' => $this->tpl->block($block . '.tr')->nest($tr)
+				));
 				break;
 				
 			default:
-				for($i = 0; $i < count($datas['data']); $i++){
-					$html .= "<tr class='newdatalist'>";
-					for($j = 0; $j < $this->col_num; $j++){
-						$html .= "<td class='" . $this->show[$j] . "' name='" . $this->col_en[$j] . "'>" . htmlspecialchars($datas['data'][$i][$this->col_en[$j]]) . "</td>";
-					}
-					$html .= "</tr>";
-				}
+				$html = $this->tpl->block($block . '.tr')->nest($tr);
 				break;
 		}
+		$html = $html->render(false);
 		
 		$result = array('cnt'=>count($datas['data']), 'data'=>$html, 'err'=>$datas['err']);
 		return json_encode($result, JSON_UNESCAPED_UNICODE);
