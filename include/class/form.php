@@ -433,16 +433,15 @@ class Form{
 			}
 		}
 		
-		$star = '';
-		if($this->empty_chk[$i]){
-			$star .= '(必填)';
-		}
-		if($this->exist_chk[$i]){
-			$star .= '(唯一)';
-		}
-		
 		$tr = [];
 		for($i = 0; $i < $this->col_num; $i++){
+			$star = '';
+			if($this->empty_chk[$i]){
+				$star .= '(必填)';
+			}
+			if($this->exist_chk[$i]){
+				$star .= '(唯一)';
+			}
 			
 			$pre = '';
 			$tag = ''; //select: selected, radio/checkbox: checked, autocomplete: label
@@ -658,22 +657,21 @@ class Form{
 			$arr_chain = array();
 			$arr_col = array();
 			for($i = 0; $i < $this->col_num; $i++){
-				$arr_col[$i] = $this->table_name . "." . $this->col_en[$i];
-				
+				$arr_col[$i] = $this->table_name . '.' . $this->col_en[$i];
 			}
 			for($i = 0; $i < $this->col_num; $i++){
 				if($this->type[$i] == 'checkbox') continue;
 				if($this->chain_chk[$i] != ''){
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
-					$arr_col[$i] = "t" . $i . "." . $arr_tmp[1] . "(" . $this->col_en[$i] . ")";
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
+					$arr_col[$i] = 't' . $i . '.' . $arr_tmp[1] . '(' . $this->col_en[$i] . ')';
 					
-					$arr_chain["[>]" . $arr_tmp[0] . "(t" . $i . ")"] = array($this->col_en[$i] => $arr_tmp[2]);
+					$arr_chain['[>]' . $arr_tmp[0] . '(t' . $i . ')'] = array($this->col_en[$i] => $arr_tmp[2]);
 				}
 			}
 			
 			//for search
 			if(isset($pdata['where']['SEARCH'])){
-				$keyword = preg_split("/[\s,]+/", $pdata['where']['SEARCH']);
+				$keyword = preg_split('/[\s,]+/', $pdata['where']['SEARCH']);
 				
 				for($j = 0; $j < count($keyword); $j++){
 					if(!empty($keyword[$j])){
@@ -683,10 +681,10 @@ class Form{
 								continue;
 							}
 							if($this->chain_chk[$i] != ''){
-								$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
-								$arr_search["t" . $i . "." . $arr_tmp[1] . "[~]"] = $keyword[$j];
+								$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
+								$arr_search['t' . $i . '.' . $arr_tmp[1] . '[~]'] = $keyword[$j];
 							}else{
-								$arr_search[$this->table_name . "." . $this->col_en[$i] . "[~]"] = $keyword[$j];
+								$arr_search[$this->table_name . '.' . $this->col_en[$i] . '[~]'] = $keyword[$j];
 							}
 						}
 						$pdata['where']['AND']['OR #muti keyword' . $j] = $arr_search;
@@ -699,7 +697,7 @@ class Form{
 			if(isset($pdata['where']['SEARCH_ADV'])){
 				$keyword_adv = $pdata['where']['SEARCH_ADV'];
 				if(!empty($keyword_adv)){
-					$arr_tmp = preg_split("/[\s]+/", $keyword_adv);
+					$arr_tmp = preg_split('/[\s]+/', $keyword_adv);
 					$action = '';
 					for($i = 0; $i < count($arr_tmp); $i++){
 						if($action == ''){
@@ -708,7 +706,7 @@ class Form{
 						}
 						switch($action){
 							case '-period':
-								$arr_period = preg_split("/[\s,]+/", $arr_tmp[$i]);
+								$arr_period = preg_split('/[\s,]+/', $arr_tmp[$i]);
 								if(count($arr_period) != 3){
 									array_push($err, 'err -period (wrong arg num): ' . count($arr_period) . ' total 3');
 									continue;
@@ -730,7 +728,7 @@ class Form{
 								}
 								break;
 							case '-order':
-								$arr_order = preg_split("/[\s,]+/", $arr_tmp[$i]);
+								$arr_order = preg_split('/[\s,]+/', $arr_tmp[$i]);
 								if(count($arr_order) != 2){
 									array_push($err, 'err -order (wrong arg num): ' . count($arr_order) . ' total 2');
 									continue;
@@ -770,7 +768,7 @@ class Form{
 				for($j = 0; $j < $this->col_num; $j++){
 					if($this->type[$j] == 'checkbox'){
 
-						$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$j]);
+						$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$j]);
 						$arr_result = array();
 						
 						$datas_checkbox = $this->database->select($arr_tmp[0], array($arr_tmp[1], $arr_tmp[2]));
@@ -793,13 +791,13 @@ class Form{
 						if($this->type[$j] == 'checkbox'){
 							
 							if($datas[$i][$this->col_en[$j]] != ''){
-								$arr_vtmp = preg_split("/[\s,]+/", $datas[$i][$this->col_en[$j]]);
+								$arr_vtmp = preg_split('/[\s,]+/', $datas[$i][$this->col_en[$j]]);
 								$arr_result = array();
 								$cnt_arr_vtmp = count($arr_vtmp);
 								for($k = 0; $k < $cnt_arr_vtmp; $k++){
 									$arr_result[$k] = $arr_checkbox_list[$j][$arr_vtmp[$k]];
 								}
-								$datas[$i][$this->col_en[$j]] = htmlspecialchars(implode(",", $arr_result));
+								$datas[$i][$this->col_en[$j]] = htmlspecialchars(implode(',', $arr_result));
 							}
 							
 						}else continue;
@@ -841,19 +839,19 @@ class Form{
 
 				for($i = 0; $i < $this->col_num; $i++){
 					switch($this->type[$i]){
-						case "radiobox":
+						case 'radiobox':
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').each(function(i){ this.checked=this.value==pdata['" . $this->col_en[$i] . "']?true:false; });";
 							break;
-						case "checkbox":
+						case 'checkbox':
 							$html .= "var arr=[]; if(pdata['" . $this->col_en[$i] . "']){arr = pdata['" . $this->col_en[$i] . "'].split(',');} ";
 							//prop('checked', false) v.s. attr('checked', false) attr會使checked完全移除, form reset時預設值的checked不會勾選
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').prop('checked', false).each(function(i){for(var j=0; j<arr.length; j++){if(arr[j] == this.value) this.checked = true;} });";
 							break;
-						case "autocomplete":
+						case 'autocomplete':
 							// put value and trigger preset
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']).trigger('preset');";
 							break;
-						case "chainselect":
+						case 'chainselect':
 							// put value and trigger preset
 							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset', [pdata['" . $this->col_en[$i] . "']]);";
 							break;
