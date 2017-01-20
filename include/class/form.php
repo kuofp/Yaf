@@ -423,18 +423,6 @@ class Form{
 	public function genFormModal($preset){
 		$result = 'success';
 		
-		$html = '';
-		
-		$html .= "<div class='modal fade' id='" . $this->unique_id . "_Modal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true' ><!--div class='modal-dialog'><div class='modal-content'--><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-				<h4 class='modal-title'>詳細資訊</h4></div><div class='modal-body'>";
-		$html .= "<form><table class='table'>";
-		
-		
-		$html .= "<thead><tr>";
-		$html .= "<th class='col-xs-1 col-sm-1 col-md-1'>項目</th>";
-		$html .= "<th class='col-xs-2 col-sm-2 col-md-2'>內容</th>";
-		$html .= "</tr></thead>";
-		
 		if($preset){
 			//靜態預設值(Preset)用於載入子分頁, 點擊新增時Reset可回復到預設值
 			$arr_pre = array();
@@ -445,28 +433,16 @@ class Form{
 			}
 		}
 		
+		$star = '';
+		if($this->empty_chk[$i]){
+			$star .= '(必填)';
+		}
+		if($this->exist_chk[$i]){
+			$star .= '(唯一)';
+		}
 		
+		$tr = [];
 		for($i = 0; $i < $this->col_num; $i++){
-			
-			$star = '';
-			if($this->empty_chk[$i]){
-				$star .= '(必填)';
-			}
-			if($this->exist_chk[$i]){
-				$star .= '(唯一)';
-			}
-			
-			$html .= "<tr>";
-			
-			switch($this->type[$i]){
-				case "hidden":
-					$html .= "<td class='hidden'>" . $this->col_ch[$i] . $star . "</td>";
-					break;
-				default:
-					$html .= "<td align='center'>" . $this->col_ch[$i] . $star . "</td>";
-					break;
-			}
-			
 			
 			$pre = '';
 			$tag = ''; //select: selected, radio/checkbox: checked, autocomplete: label
@@ -474,34 +450,57 @@ class Form{
 				$pre = implode(',', $arr_pre[$this->col_en[$i]]);
 			}
 			switch($this->type[$i]){
-				case "hidden":
-					$html .= "<td class='hidden'><input name='" . $this->col_en[$i] . "' value=''/></td>";
+				case 'hidden':
+					$td = $this->tpl->block('modal-detail.td.hidden')->assign(array(
+						'meta' => $this->col_ch[$i] . $star,
+						'name' => $this->col_en[$i]
+					));
 					break;
-				case "text";
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $pre . "'/></td>";
+				case 'text';
+					$td = $this->tpl->block('modal-detail.td.text')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'name'  => $this->col_en[$i],
+						'value' => $pre,
+					));
 					break;
-				case "password";
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='password' value='" . $pre . "'/></td>";
+				case 'password';
+					$td = $this->tpl->block('modal-detail.td.password')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'name'  => $this->col_en[$i],
+						'value' => $pre,
+					));
 					break;
-				case "textarea":
-					$html .= "<td><textarea class='form-control' name='" . $this->col_en[$i] . "' type='text' rows='7'/>" . $pre . "</textarea></td>";
+				case 'textarea':
+					$td = $this->tpl->block('modal-detail.td.textarea')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'name'  => $this->col_en[$i],
+						'value' => $pre,
+					));
 					break;
-				case "select":
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
+				case 'select':
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
 					
 					$datas = $this->database->select($arr_tmp[0], '*');
-					$html .= "<td><select class='form-control input-sm' name='" . $this->col_en[$i] . "'>";
-					$html .= "<option value=0>請選擇</option>";
 					
+					$tmp = [];
 					foreach($datas as $arr){
-						$tag = ($pre==$arr[$arr_tmp[2]])? 'selected': '';
-						$html .= "<option value='" . $arr[$arr_tmp[2]] . "' " . $tag . ">" . $arr[$arr_tmp[1]] . "</option>";
+						$tmp[] = array(
+							'value'    => $arr[$arr_tmp[2]],
+							'selected' => ($pre==$arr[$arr_tmp[2]])? 'selected': '',
+							'text'     => $arr[$arr_tmp[1]],
+						);
 					}
-					$html .= "</td></select>";
+					
+					$td = $this->tpl->block('modal-detail.td.select')->assign(array(
+						'meta'   => $this->col_ch[$i] . $star,
+						'name'   => $this->col_en[$i],
+						'option' => $this->tpl->block('modal-detail.td.select.option')->nest($tmp),
+					));
+					
 					break;
-				/*case "chainselect":
+				/*case 'chainselect':
 					$uid = $this->getUid();
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
 					$html .= "<td><select class='form-control input-sm' name='" . $this->col_en[$i] . "' id='" . $uid . "'>";
 					$html .= "</td></select>";
 					$html .= "<script>
@@ -552,104 +551,91 @@ class Form{
 					
 					</script>";
 					break;*/
-				case "radiobox":
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
+				case 'radiobox':
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
 					
 					$datas = $this->database->select($arr_tmp[0], '*');
-					$html .= "<td>";
 					
+					$tmp = [];
 					foreach($datas as $arr){
-						$tag = ($pre==$arr[$arr_tmp[2]])? 'checked': '';
-						$html .= "<label><input type='radio' class='form' name='" . $this->col_en[$i] . "' value='" . $arr[$arr_tmp[2]] . "' " . $tag . "/>" . $arr[$arr_tmp[1]] . "</label><br>";
+						$tmp[] = array(
+							'value'   => $arr[$arr_tmp[2]],
+							'checked' => ($pre==$arr[$arr_tmp[2]])? 'checked': '',
+							'text'    => $arr[$arr_tmp[1]],
+							'name'    => $this->col_en[$i],
+						);
 					}
-					$html .= "</td>";
+					
+					$td = $this->tpl->block('modal-detail.td.radiobox')->assign(array(
+						'meta'   => $this->col_ch[$i] . $star,
+						'option' => $this->tpl->block('modal-detail.td.radiobox.option')->nest($tmp),
+					));
 					break;
-				case "checkbox":
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
+				case 'checkbox':
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
 					
 					$datas = $this->database->select($arr_tmp[0], '*');
-					$html .= "<td>";
 					
-					
-					$tmp = explode(',', $pre);
+					$tmp = [];
 					foreach($datas as $arr){
-						$tag = (in_array($arr[$arr_tmp[2]], $tmp))? 'checked': '';
-						$html .= "<div class='checkbox'><label><input type='checkbox' class='form' name='" . $this->col_en[$i] . "' value='" . $arr[$arr_tmp[2]] . "' " . $tag . "/>" . $arr[$arr_tmp[1]] . "</label></div>";
+						$tmp[] = array(
+							'value'   => $arr[$arr_tmp[2]],
+							'checked' => (in_array($arr[$arr_tmp[2]], $tmp))? 'checked': '',
+							'text'    => $arr[$arr_tmp[1]],
+							'name'    => $this->col_en[$i],
+						);
 					}
-					$html .= "</td>";
+					
+					$td = $this->tpl->block('modal-detail.td.checkbox')->assign(array(
+						'meta'   => $this->col_ch[$i] . $star,
+						'option' => $this->tpl->block('modal-detail.td.checkbox.option')->nest($tmp),
+					));
 					break;
-				case "autocomplete":
-					$arr_tmp = preg_split("/[\s,]+/", $this->chain_chk[$i]);
+				case 'autocomplete':
+					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
 					if($pre){
 						$datas = $this->database->select($arr_tmp[0], $arr_tmp[1], array($arr_tmp[2]=>$pre));
 						$tag = $datas[0];
 					}
 					$uid = $this->getUid();
-					$html .= "<td><input class='form-control input-sm' type='text' value='" . $tag . "' id='" . $uid . "_label'/>
-								  <input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='hidden' value='" . $pre . "' id='" . $uid . "'/>
-							</td>";
 					
-					$html .= "<script>
+					$td = $this->tpl->block('modal-detail.td.autocomplete')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'text'  => $tag,
+						'value' => $pre,
+						'name'  => $this->col_en[$i],
+						'uid'   => $uid,
+						'url'   => $this->route_chk[$i],
+						'label' => $arr_tmp[2],
+						'val'   => $arr_tmp[1],
+					));
 					
-					//id 'label' compare with the id 'label_h' to determine if the id 'autocomplete_id' should be reset
-					//use keypress to overcome type tool problem (keyup/keydown failed)
-					//use 'input' instead of the 'change' event for rapid effect
-					$('#" . $uid . "_label').on('keypress input', function(){
-						var pdata = {data: { 0: '" . $arr_tmp[1] . "(label)', 1: '" . $arr_tmp[2] . "(val)'}, where: { '" . $arr_tmp[1] . "[~]': $(this).val() }};
-						
-						$.ajax({
-							url: '" . $this->route_chk[$i] . "',
-							type: 'POST',
-							data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
-							success: function(re) {
-								
-								var jdata = JSON.parse(re);
-								var arr = Object.keys(jdata).map(function (key) {return jdata[key]});
-								$( '#" . $uid . "_label' ).autocomplete({
-									source: arr,
-									select: function(event, ui){
-										$('#" . $uid . "_label').val(ui.item.label);
-										$('#" . $uid . "').val(ui.item.val).trigger('change');
-									}
-								});
-							}
-						});
-					}).trigger('keypress'); //init autocomplete or words will be cut at first input
-					
-					$('#" . $uid . "').on('preset', function(){
-						var pdata = {data: { 0: '" . $arr_tmp[1] . "' }, where: { AND :{'" . $arr_tmp[2] . "': $('#" . $uid . "').val()} }};
-						$.ajax({
-							url: '" . $this->route_chk[$i] . "',
-							type: 'POST',
-							data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
-							success: function(re) {
-								
-								var jdata = JSON.parse(re);
-								if(jdata[0]){
-									$( '#" . $uid . "_label' ).val(jdata[0]['" . $arr_tmp[1] . "']);
-								}else{
-									$( '#" . $uid . "_label' ).val('');
-								}
-							}
-						});
-					});
-					</script>";
 					break;
-				case "datepicker":
+				case 'datepicker':
 					$uid = $this->getUid();
 					$pre = $pre != ''? date('Y-m-d', $pre) :date('Y-m-d');
-					$html .= "<td><input class='form-control input-sm' name='" . $this->col_en[$i] . "' type='text' value='" . $pre . "' id='" . $uid . "'/></td>";
-					$html .= "<script>$( '#" . $uid . "' ).datepicker({dateFormat: 'yy-mm-dd', closeText: 'Close', changeYear: true, changeMonth: true, beforeShow: function() {setTimeout(function(){ $('.ui-datepicker').css('z-index', 1070);}, 0);}});</script>";
+					
+					$td = $this->tpl->block('modal-detail.td.datepicker')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'value' => $pre,
+						'name'  => $this->col_en[$i],
+						'uid'   => $uid,
+					));
 					break;
 				default:
 					break;
 			}
-			$html .= "</tr>";
+			
+			$tr[] = array(
+				'td' => array($td)
+			);
 		}
 		
-		$html .= "</table></form>";
-		$html .= "</div><div class='modal-footer'><div class='create'></div><div class='modify'></div></div><!--/div></div--><div class='modal-area-label'></div><div class='modal-area'></div></div>";
-		echo $html;
+		$this->tpl->block('modal-detail')->assign(array(
+			'unique_id' => $this->unique_id,
+			'tr' => $this->tpl->block('modal-detail.tr')->nest($tr)
+		))->render();
+		
 		return $result;
 	}
 	

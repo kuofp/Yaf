@@ -482,3 +482,57 @@ function bindFormExportTool(uid, url, table){
 		});
 	});
 }
+
+function bindInputAutoComplete(uid, url, val, label){
+	
+	var u = $('#' + uid);
+	var l = $('#' + uid + '_label');
+	
+	//id 'label' compare with the id 'label_h' to determine if the id 'autocomplete_id' should be reset
+	//use keypress to overcome type tool problem (keyup/keydown failed)
+	//use 'input' instead of the 'change' event for rapid effect
+	l.on('keypress input', function(){
+		//var pdata = {data: { 0: label + '(label)', 1: val + '(val)'}, where: { label + '[~]': $(this).val() }};
+		var pdata = {data: { 0: label + '(label)', 1: val + '(val)'}, where: { }};
+		pdata['where'][label + '[~]'] = $(this).val();
+		pdata['where']['LIMIT'] = 10;
+		
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
+			success: function(re) {
+				
+				var jdata = JSON.parse(re);
+				var arr = Object.keys(jdata).map(function (key) {return jdata[key]});
+				l.autocomplete({
+					source: arr,
+					select: function(event, ui){
+						l.val(ui.item.label);
+						u.val(ui.item.val).trigger('change');
+					}
+				});
+			}
+		});
+	}).trigger('keypress'); //init autocomplete or words will be cut at first input
+	
+	u.on('preset', function(){
+		//var pdata = {data: { 0: label }, where: { AND :{'val': u.val()} }};
+		var pdata = {data: { 0: label }, where: { AND :{} }};
+		pdata['where']['AND'][val] = u.val();
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
+			success: function(re) {
+				
+				var jdata = JSON.parse(re);
+				if(jdata[0]){
+					l.val(jdata[0][label]);
+				}else{
+					l.val('');
+				}
+			}
+		});
+	});
+}

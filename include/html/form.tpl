@@ -477,3 +477,110 @@ $('#main').load('./?m=sys_intro');
 		</table>
 	<!-- @excel -->
 <!-- @table -->
+
+<!-- @modal-detail -->
+<div class="modal fade" id="{unique_id}_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	<!--div class="modal-dialog"><div class="modal-content"-->
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">詳細資訊</h4>
+		</div>
+		<div class="modal-body">
+			<form>
+				<table class="table">
+					<tr>
+						<th class="col-xs-1 col-sm-1 col-md-1">項目</th>
+						<th class="col-xs-2 col-sm-2 col-md-2">內容</th>
+					</tr>
+				<!-- @tr -->
+					<tr>
+					<!-- @td -->
+						<!-- @hidden -->
+						<td class="hidden"></td>
+						<td class="hidden">
+							<input name="{name}"/>
+						</td>
+						<!-- @hidden -->
+						<!-- @text -->
+						<td align="center">{meta}</td>
+						<td>
+							<input class="form-control input-sm" name="{name}" type="text" value="{value}"/>
+						</td>
+						<!-- @text -->
+						<!-- @password -->
+						<td align="center">{meta}</td>
+						<td>
+							<input class="form-control input-sm" name="{name}" type="password" value="{value}"/>
+						</td>
+						<!-- @password -->
+						<!-- @textarea -->
+						<td align="center">{meta}</td>
+						<td>
+							<textarea class="form-control input-sm" name="{name}" type="text" rows="7"/>{value}</textarea>
+						</td>
+						<!-- @textarea -->
+						<!-- @select -->
+						<td align="center">{meta}</td>
+						<td>
+							<select class="form-control input-sm" name="{name}">
+								<option value="0">請選擇</option>
+							<!-- @option -->
+								<option value="{value}" {selected}>{text}</option>
+							<!-- @option -->
+							</select>
+						</td>
+						<!-- @select -->
+						<!-- @radiobox -->
+						<td align="center">{meta}</td>
+						<td>
+							<!-- @option -->
+							<div class="radio">
+								<label><input type="radio" name="{name}" value="{value}" {checked}/>{text}</label>
+							</div>
+							<!-- @option -->
+						</td>
+						<!-- @radiobox -->
+						<!-- @checkbox -->
+						<td align="center">{meta}</td>
+						<td>
+							<!-- @option -->
+							<div class="checkbox">
+								<label><input type="checkbox" name="{name}" value="{value}" {checked}/>{text}</label>
+							</div>
+							<!-- @option -->
+						</td>
+						<!-- @checkbox -->
+						<!-- @autocomplete -->
+						<td align="center">{meta}</td>
+						<td>
+							<input class="form-control input-sm" type="text" value="{text}" id="{uid}_label"/>
+							<input class="form-control input-sm" name="{name}" type="hidden" value="{value}" id="{uid}"/>
+							<script>
+								bindInputAutoComplete('{uid}', '{url}', '{label}', '{val}');
+							</script>
+						</td>
+						<!-- @autocomplete -->
+						<!-- @datepicker -->
+						<td align="center">{meta}</td>
+						<td>
+							<input class="form-control input-sm" name="{name}" type="text" value="{value}" id="{uid}"/>
+							<script>
+								$('#{uid}').datepicker({dateFormat: 'yy-mm-dd', closeText: 'Close', changeYear: true, changeMonth: true, beforeShow: function() {setTimeout(function(){ $('.ui-datepicker').css('z-index', 1070);}, 0);}});
+							</script>
+						</td>
+						<!-- @datepicker -->
+					<!-- @td -->
+					</tr>
+				<!-- @tr -->
+				</table>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div class="create"></div>
+			<div class="modify"></div>
+		</div>
+	<!--/div></div-->
+	<div class="modal-area-label"></div>
+	<div class="modal-area"></div>
+</div>
+<!-- @modal-detail -->
