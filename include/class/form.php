@@ -28,6 +28,7 @@ class Form{
 	private $tpl;
 
 	public function __construct($file, $db_name, $table_name, $col_en, $col_ch, $empty_chk, $exist_chk, $chain_chk, $route_chk, $show, $type, $auth){
+		
 		global $database;
 		global $mailbase;
 		
@@ -61,11 +62,13 @@ class Form{
 	public function getDB(){
 		return $this->db_name;
 	}
+	
 	public function getTable(){
 		return $this->table_name;
 	}
 	
 	public function authCheck($mode){
+		
 		switch($mode){
 			case 'review':
 				if($this->auth[0] == '' || isset($_SESSION['auth'][$this->auth[0]])) return 0;
@@ -80,6 +83,7 @@ class Form{
 				if($this->auth[3] == '' || isset($_SESSION['auth'][$this->auth[3]])) return 0;
 				break;
 		}
+		
 		return 1;
 	}
 	
@@ -119,7 +123,6 @@ class Form{
 				$data = array();
 			}
 			
-			
 			$result['pdata']['data'] = $data;
 			$result['pdata']['where'] = isset($jdata['pdata']['where'])? array_filter($jdata['pdata']['where']): array();
 			
@@ -131,7 +134,6 @@ class Form{
 			$this->arg = $result['pdata'];
 		}
 		
-		
 		return $result;
 	}
 	
@@ -141,8 +143,6 @@ class Form{
 		$style = isset($_GET['style'])? $_GET['style']: '';
 		$query = isset($_GET['query'])? $_GET['query']: '';
 		$preset = isset($_GET['preset'])? $_GET['preset']: '';
-		
-		
 		
 		$result = 'success';
 		if($this->authCheck('review')){
@@ -190,9 +190,10 @@ class Form{
 		}
 		
 		return $result;
-
 	}
+	
 	public function review($pdata){
+		
 		$datas = $this->getData($pdata);
 		
 		$style = isset($_GET['style'])? $_GET['style']: '';
@@ -243,21 +244,23 @@ class Form{
 	
 	//create
 	public function createTool(){
+		
 		$result = 'success';
+		
 		if($this->authCheck('create')){
 			$result = 'err_auth';
 		}else{
-			$html = $this->tpl->block('create')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'url'         => $this->file,
-				)
-			);
-			$html->render();
-		}		
+			$this->tpl->block('create')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'url'         => $this->file,
+			))->render();
+		}
+		
 		return $result;
 	}
+	
 	public function create($pdata){
+		
 		$result = array('err'=>'success', 'id'=>0);
 		
 		if($this->authCheck('create')){
@@ -271,26 +274,29 @@ class Form{
 				$result['err'] = $err;
 			}
 		}
+		
 		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
 	//modify
 	public function modifyTool(){
+		
 		$result = 'success';
+		
 		if($this->authCheck('modify')){
 			$result = 'err_auth';
 		}else{
-			$html = $this->tpl->block('modify')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'url'         => $this->file,
-				)
-			);
-			$html->render();
+			$this->tpl->block('modify')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'url'         => $this->file,
+			))->render();
 		}
+		
 		return $result;
 	}
+	
 	public function modify($pdata){
+		
 		$result = array('err'=>'success', 'id'=>'');
 		
 		if($this->authCheck('modify')){
@@ -311,26 +317,29 @@ class Form{
 				}
 			}
 		}
+		
 		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
 	//delete
 	public function deleteTool(){
+		
 		$result = 'success';
+		
 		if($this->authCheck('delete')){
 			$result = 'err_auth';
 		}else{
-			$html = $this->tpl->block('delete')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'url'         => $this->file,
-				)
-			);
-			$html->render();
+			$this->tpl->block('delete')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'url'         => $this->file,
+			))->render();
 		}
+		
 		return $result;
 	}
+	
 	public function delete($pdata){
+		
 		$result = array('err'=>'success', 'id'=>0);
 		
 		if($this->authCheck('delete')){
@@ -343,6 +352,7 @@ class Form{
 				$result['id'] = $pdata['where']['AND']['id'];
 			}
 		}
+		
 		return json_encode($result, JSON_UNESCAPED_UNICODE);
 	}
 	
@@ -384,43 +394,43 @@ class Form{
 	}
 	
 	public function mailTool(){
+		
 		$result = 'success';
+		
 		if($this->authCheck('review')){
 			$result = 'err_auth';
 		}else{
-			$html = $this->tpl->block('mail')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'url'         => $this->file,
-					'table'       => $this->table_name,
-					'source'      => json_encode($this->database->select('t_account', 'mail'), JSON_UNESCAPED_UNICODE),
-					'mailfrom'    => $_SESSION['user_mail'],
-				)
-			);
-			$html->render();
+			$this->tpl->block('mail')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'url'         => $this->file,
+				'table'       => $this->table_name,
+				'source'      => json_encode($this->database->select('t_account', 'mail'), JSON_UNESCAPED_UNICODE),
+				'mailfrom'    => $_SESSION['user_mail'],
+			))->render();
 		}
 		
 		return $result;
 	}
 	
 	public function exportTool(){
+		
 		$result = 'success';
+		
 		if($this->authCheck('review')){
 			$result = 'err_auth';
 		}else{
-			$html = $this->tpl->block('export')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'url'         => $this->file,
-					'table'       => $this->table_name,
-				)
-			);
-			$html->render();
+			$this->tpl->block('export')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'url'         => $this->file,
+				'table'       => $this->table_name,
+			))->render();
 		}
+		
 		return $result;
 	}
 	
 	public function genFormModal($preset){
+		
 		$result = 'success';
 		
 		if($preset){
@@ -816,60 +826,22 @@ class Form{
 	}
 	
 	public function ajaxOnChange(){
+		
 		$result = 'success';
-		$html = '';
-		$html .= "<script>
-			$('#" . $this->unique_id . "_target_id').change(function(){
-				var pdata={
-							data: {},
-							where:{
-								AND:{ id: $(this).val() }
-							}
-				};
-				$.ajax({
-					url: '" . $this->file . "',
-					type: 'POST',
-					data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
-					success: function(re) {
-					
-					var jdata = JSON.parse(re);
-					pdata = jdata[0];
-					";
-					
-
-				for($i = 0; $i < $this->col_num; $i++){
-					switch($this->type[$i]){
-						case 'radiobox':
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').each(function(i){ this.checked=this.value==pdata['" . $this->col_en[$i] . "']?true:false; });";
-							break;
-						case 'checkbox':
-							$html .= "var arr=[]; if(pdata['" . $this->col_en[$i] . "']){arr = pdata['" . $this->col_en[$i] . "'].split(',');} ";
-							//prop('checked', false) v.s. attr('checked', false) attr會使checked完全移除, form reset時預設值的checked不會勾選
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').prop('checked', false).each(function(i){for(var j=0; j<arr.length; j++){if(arr[j] == this.value) this.checked = true;} });";
-							break;
-						case 'autocomplete':
-							// put value and trigger preset
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']).trigger('preset');";
-							break;
-						case 'chainselect':
-							// put value and trigger preset
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').trigger('preset', [pdata['" . $this->col_en[$i] . "']]);";
-							break;
-						default:
-							$html .= "$('#" . $this->unique_id . "_Modal').find('[name=" . $this->col_en[$i] . "]').val(pdata['" . $this->col_en[$i] . "']);";
-							break;
-					}
-				}
-		$html .= "
-			$('#" . $this->unique_id . "_change_complete').trigger('change');
-		},error: function() {alert('ajax ERROR!!!');}});  });</script>";
-		echo $html;
+		
+		$this->tpl->block('change')->assign(array(
+			'unique_id' => $this->unique_id,
+			'url'       => $this->file,
+			'type'      => json_encode($this->type, JSON_UNESCAPED_UNICODE),
+			'col'       => json_encode($this->col_en, JSON_UNESCAPED_UNICODE),
+		))->render();
+		
 		return $result;
 	}
 
 	public function dataCheck(&$data){
-		$result = 'success';
 		
+		$result = 'success';
 		
 		for($i = 0; $i < $this->col_num; $i++){
 			if($this->col_en[$i] == 'id') continue; //skip id

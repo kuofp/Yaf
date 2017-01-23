@@ -151,6 +151,12 @@
 </script>
 <!-- @export -->
 
+<!-- @change -->
+<script>
+	bindInputAjaxOnChange('{unique_id}', '{url}', {type}, {col});
+</script>
+<!-- @change -->
+
 
 
 

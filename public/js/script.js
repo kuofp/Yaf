@@ -536,3 +536,67 @@ function bindInputAutoComplete(uid, url, val, label){
 		});
 	});
 }
+
+function bindInputAjaxOnChange(uid, url, type, col){
+	
+	var t = $('#' + uid + '_target_id');
+	var c = $('#' + uid + '_change_complete');
+	var m = $('#' + uid + '_Modal');
+	
+	t.change(function(){
+		var pdata={
+			data: {},
+			where:{
+				AND:{ id: $(this).val() }
+			}
+		};
+		$.ajax({
+			url:  url,
+			type: 'POST',
+			data: { jdata: JSON.stringify({ pdata: pdata, method: 'getJson' }) },
+			success: function(re) {
+				
+				var jdata = JSON.parse(re);
+				pdata = jdata[0];
+			
+
+				for(var i in col){
+					switch(type[i]){
+						case 'radiobox':
+							m.find('[name=' + col[i] + ']').each(function(i){
+								this.checked = (this.value == pdata[col[i]])? true: false;
+							});
+							break;
+						case 'checkbox':
+							var arr=[];
+							if(pdata[col[i]]){
+								arr = pdata[col[i]].split(',');
+							}
+							//prop('checked', false) v.s. attr('checked', false) attr會使checked完全移除, form reset時預設值的checked不會勾選
+							m.find('[name=' + col[i] + ']').prop('checked', false).each(function(i){
+								for(var j=0; j<arr.length; j++){
+									if(arr[j] == this.value) this.checked = true;
+								}
+							});
+							break;
+						case 'autocomplete':
+							// put value and trigger preset
+							m.find('[name=' + col[i] + ']').val(pdata[col[i]]).trigger('preset');
+							break;
+						//case 'chainselect':
+							// put value and trigger preset
+							//m.find('[name=' + col[i] + ']').trigger('preset', [pdata[col[i]]]);
+							//break;
+						default:
+							m.find('[name=' + col[i] + ']').val(pdata[col[i]]);
+							break;
+					}
+				}
+				c.trigger('change');
+			},
+			error: function(){
+				alert('ajax ERROR!!!');
+			}
+		}); 
+	});
+}
