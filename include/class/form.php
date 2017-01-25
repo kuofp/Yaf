@@ -660,13 +660,13 @@ class Form{
 			$arr_chain = array();
 			$arr_col = array();
 			for($i = 0; $i < $this->col_num; $i++){
-				$arr_col[] = $this->table_name . '.' . $this->col_en[$i];
+				$arr_col[$i] = $this->table_name . '.' . $this->col_en[$i];
 			}
 			for($i = 0; $i < $this->col_num; $i++){
 				if($this->type[$i] == 'checkbox') continue;
 				if($this->chain_chk[$i] != ''){
 					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
-					$arr_col[] = 't' . $i . '.' . $arr_tmp[1] . '(' . $this->col_en[$i] . ')';
+					$arr_col[$i] = 't' . $i . '.' . $arr_tmp[1] . '(' . $this->col_en[$i] . ')';
 					
 					$arr_chain['[>]' . $arr_tmp[0] . '(t' . $i . ')'] = array($this->col_en[$i] => $arr_tmp[2]);
 				}
