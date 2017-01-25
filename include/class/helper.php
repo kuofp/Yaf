@@ -1,7 +1,7 @@
 <?php
 
 function _url($str){
-	return './?o=' . urlencode($str);
+	return './?m=' . urlencode($str);
 }
 
 function dd($arr){

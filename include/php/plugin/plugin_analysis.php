@@ -100,7 +100,7 @@ class Analysis{
 				<div class='panel-body'>
 					說明: 請勾選或輸入要篩選的項目，系統將列出符合的資料。<strong>預設全選</strong><br/>
 					<hr/>
-					<form class='analysis' method='POST' action='./?m=main_analysis'>
+					<form class='analysis' method='POST' action='./?m=plugin_analysis'>
 						<table>
 							<tr>
 								<th class='col-md-2'>項目</th>

@@ -7,7 +7,6 @@ class Control {
 	
 	function __construct(){
 		$this->act = $_REQUEST['m'] ?? 'index';
-		$this->obj = $_REQUEST['o'] ?? 0;
 	}
 	
 	function __destruct(){
@@ -38,9 +37,9 @@ class Control {
 				break;
 		}
 		
-		if(class_exists($this->obj)){
+		if(class_exists($this->act)){
 			// new obj directly
-			$c = $this->obj;
+			$c = $this->act;
 			return new $c;
 			
 		}elseif(class_exists($cfg_mod[$this->act] ?? '')){
