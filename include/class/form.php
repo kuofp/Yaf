@@ -151,17 +151,6 @@ class Form{
 			
 			$style_effect = $style == 'sub'? 'hidden': 'text';
 			
-			$html = $this->tpl->block('main')->assign(
-				array(
-					'unique_id'   => $this->unique_id,
-					'style_effect'=> $style_effect,
-					'query'       => $query,
-					'url'         => $this->file,
-					'table'       => $this->table_name,
-					'tr'          => '',
-				)
-			);
-			
 			$th = [];
 			for($i = 0; $i < $this->col_num; $i++){
 				$th[] = array(
@@ -170,11 +159,16 @@ class Form{
 					'text'  => $this->col_ch[$i],
 				);
 			}
-			$html->assign(array(
-				'th' => $this->tpl->block('main.th')->nest($th)
-			));
 			
-			$html->render();
+			$this->tpl->block('main')->assign(array(
+				'unique_id'   => $this->unique_id,
+				'style_effect'=> $style_effect,
+				'query'       => $query,
+				'url'         => $this->file,
+				'table'       => $this->table_name,
+				'tr'          => '',
+				'th'          => $this->tpl->block('main.th')->nest($th),
+			))->render();
 		
 			$this->genFormModal($preset);
 			
@@ -488,7 +482,6 @@ class Form{
 					break;
 				case 'select':
 					$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$i]);
-					
 					$datas = $this->database->select($arr_tmp[0], '*');
 					
 					$tmp = [];
@@ -777,40 +770,29 @@ class Form{
 				$arr_checkbox_list = array();
 				for($j = 0; $j < $this->col_num; $j++){
 					if($this->type[$j] == 'checkbox'){
-
+						
 						$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$j]);
-						$arr_result = array();
-						
 						$datas_checkbox = $this->database->select($arr_tmp[0], array($arr_tmp[1], $arr_tmp[2]));
-						$arr_map = array();
-						$cnt_datas_checkbox = count($datas_checkbox);
-						for($k = 0; $k < $cnt_datas_checkbox; $k++){
-							$arr_map[$datas_checkbox[$k][$arr_tmp[2]]] = $datas_checkbox[$k][$arr_tmp[1]];
-						}
-						$arr_checkbox_list[$j] = $arr_map;
-
 						
-					}else continue;
+						foreach($datas_checkbox as $arr){
+							$arr_checkbox_list[$this->col_en[$j]][$arr[$arr_tmp[2]]] = $arr[$arr_tmp[1]];
+						}
+					}
 				}
-				
 				
 				$cnt_datas = count($datas);
 				for($i = 0; $i < $cnt_datas; $i++){
-					
-					for($j = 0; $j < $this->col_num; $j++){
-						if($this->type[$j] == 'checkbox'){
+					foreach($arr_checkbox_list as $key=>$arr){
+						if($datas[$i][$key] != ''){
+							$arr_vtmp = preg_split('/[\s,]+/', $datas[$i][$key]);
+							$arr_result = array();
 							
-							if($datas[$i][$this->col_en[$j]] != ''){
-								$arr_vtmp = preg_split('/[\s,]+/', $datas[$i][$this->col_en[$j]]);
-								$arr_result = array();
-								$cnt_arr_vtmp = count($arr_vtmp);
-								for($k = 0; $k < $cnt_arr_vtmp; $k++){
-									$arr_result[$k] = $arr_checkbox_list[$j][$arr_vtmp[$k]];
-								}
-								$datas[$i][$this->col_en[$j]] = htmlspecialchars(implode(',', $arr_result));
+							foreach($arr_vtmp as $val){
+								$arr_result[] = $arr[$val];
 							}
 							
-						}else continue;
+							$datas[$i][$key] = htmlspecialchars(implode(',', $arr_result));
+						}
 					}
 				}
 			}
