@@ -380,9 +380,9 @@ function bindFormMailTool(uid, url, table, source){
 		
 		var str = l.val();
 		var arr = str.split(',');
-		var pdata={data:{},where:{ }};
+		var pdata={data:{},where:{ ORDER:{}}};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
+		pdata['where']['ORDER'][table + '.id'] = arr; //last choose at last
 		
 		$.ajax({
 			url: url + '&style=print',
@@ -446,9 +446,10 @@ function bindFormExportTool(uid, url, table){
 		
 		var str = l.val();
 		var arr = str.split(',');
-		var pdata={data:{},where:{ OR:{}}};
+		var pdata={data:{},where:{ ORDER:{}, OR:{}}};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
+		pdata['where']['ORDER'][table + '.id'] = arr; //last choose at last
+		
 		$.ajax({
 			url: url + '&style=print',
 			type: 'POST',
@@ -467,9 +468,10 @@ function bindFormExportTool(uid, url, table){
 	f.find('ul.toollist').find('a.excel').click(function(){
 		var str = l.val();
 		var arr = str.split(',');
-		var pdata={data:{},where:{ OR:{}}};
+		var pdata={data:{},where:{ ORDER:{}, OR:{}}};
 		pdata['where'][table + '.id'] = arr;
-		pdata['where']['ORDER'] = {[table + '.id']: arr}; //last choose at last
+		pdata['where']['ORDER'][table + '.id'] = arr; //last choose at last
+		
 		$.ajax({
 			url: url + '&style=print',
 			type: 'POST',
