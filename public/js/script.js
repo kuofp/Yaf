@@ -560,8 +560,8 @@ function bindInputAjaxOnChange(uid, url, type, col){
 				
 				var jdata = JSON.parse(re);
 				pdata = jdata[0];
-			
-
+				//wait for modal expand
+				m.on('shown', function() {
 				for(var i in col){
 					switch(type[i]){
 						case 'radiobox':
@@ -581,6 +581,7 @@ function bindInputAjaxOnChange(uid, url, type, col){
 								}
 							});
 							break;
+						case 'uploadfile':
 						case 'autocomplete':
 							// put value and trigger preset
 							m.find('[name=' + col[i] + ']').val(pdata[col[i]]).trigger('preset');
@@ -594,6 +595,7 @@ function bindInputAjaxOnChange(uid, url, type, col){
 							break;
 					}
 				}
+				});
 				c.trigger('change');
 			},
 			error: function(){

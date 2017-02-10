@@ -32,6 +32,7 @@
 		'sys_login'        => 'Sys\Login',
 		'plugin_analysis'  => 'Plugin\Analysis',
 		'plugin_excel'     => 'Plugin\Excel',
+		'plugin_files'     => 'Plugin\Files',
 		'form_bulletin'    => 'Form\Bulletin',
 		'form_ad'          => 'Form\Ad',
 		'form_user'        => 'Form\User',

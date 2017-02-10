@@ -624,6 +624,16 @@ class Form{
 						'uid'   => $uid,
 					));
 					break;
+				case 'uploadfile':
+					$uid = $this->getUid();
+					
+					$td = $this->tpl->block('modal-detail.td.uploadfile')->assign(array(
+						'meta'  => $this->col_ch[$i] . $star,
+						'value' => $pre,
+						'name'  => $this->col_en[$i],
+						'uid'   => $uid,
+					));
+					break;
 				default:
 					break;
 			}

@@ -202,6 +202,7 @@
 	
 	<!-- js -->
 	<script src="js/script.js"></script>
+	<script src="js/img.js"></script>
 	<script src="js/jquery-datepicker-zh-TW.js"></script>
 
 	<!-- css -->
@@ -575,6 +576,15 @@ $('#main').load('./?m=sys_intro');
 							</script>
 						</td>
 						<!-- @datepicker -->
+						<!-- @uploadfile -->
+						<td align="center">{meta}</td>
+						<td>
+							<input class="form-control input-sm" name="{name}" type="hidden" value="" id="{uid}"/>
+							<script>
+								$('#{uid}').uploadfile();
+							</script>
+						</td>
+						<!-- @uploadfile -->
 					<!-- @td -->
 					</tr>
 				<!-- @tr -->
