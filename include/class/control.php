@@ -3,9 +3,9 @@
 class Control {
 	
 	protected $act;
-	protected $obj;
 	
 	function __construct(){
+		
 		$this->act = $_REQUEST['m'] ?? 'index';
 	}
 	
@@ -15,14 +15,9 @@ class Control {
 	
 	function make(){
 		
-		global $cfg_title;
-		global $cfg_brand;
+		global $di;
 		
-		global $cfg_mod;
-		global $cfg_nav;
-		
-		global $database;
-		global $mailbase;
+		$cfg_mod  = $di->val('cfg_mod');
 		
 		// Reduce session lock
 		session_start();
@@ -50,28 +45,5 @@ class Control {
 			// include file
 			require $cfg_mod[$this->act];
 		}
-	}
-	
-	function newPHPMailer($arr){
-		$mail = new PHPMailer;
-		if($arr['isSMTP']){
-			$mail->isSMTP();                                  // Set mailer to use SMTP
-			$mail->Host = $arr['Host'];                       // Specify main and backup SMTP servers
-			$mail->SMTPAuth = $arr['SMTPAuth'];               // Enable SMTP authentication
-			$mail->Username = $arr['Username'];               // SMTP username
-			$mail->Password = $arr['Password'];               // SMTP password
-			$mail->SMTPSecure = $arr['SMTPSecure'];           // Enable TLS encryption, `ssl` also accepted
-			$mail->Port = $arr['Port'];                       // TCP port to connect to
-			$mail->isHTML($arr['isHTML']);                    // Set email format to HTML
-		
-			//http://www.weste.net/2013/7-17/92746.html  yahoo failed issue
-			$mail->CharSet = $arr['CharSet'];
-			
-			$mail->FromName = "=?UTF-8?B?". base64_encode($arr['FromName'])."?=";
-		}else{
-			
-		}
-		
-		return $mail;
 	}
 }

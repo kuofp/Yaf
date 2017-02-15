@@ -44,9 +44,10 @@
 		'form_banner'      => 'Form\Banner',
 	);
 	
+	// nav table
 	$cfg_nav = array(
-		array(array('<i class="fa fa-television"></i> 前台設置','', 'admin_review'),
-			array('<i class="fa fa-television"></i> 輪播區塊','form_banner', ''),
+		array(array('<i class="fa fa-television"></i> 前台設置', '', 'admin_review'),
+			array('<i class="fa fa-television"></i> 輪播區塊', 'form_banner', ''),
 			array('<i class="fa fa-bullhorn"></i> 廣告區塊', 'form_ad', ''),
 		),
 		

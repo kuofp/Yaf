@@ -29,8 +29,7 @@ class Form{
 
 	public function __construct($file, $db_name, $table_name, $col_en, $col_ch, $empty_chk, $exist_chk, $chain_chk, $route_chk, $show, $type, $auth){
 		
-		global $database;
-		global $mailbase;
+		global $di;
 		
 		$this->unique_id = 'form_' . uniqid();
 		
@@ -47,8 +46,8 @@ class Form{
 		$this->show = $show;
 		$this->type = $type;
 		$this->auth = $auth;
-		$this->database = $database;
-		$this->mail = $mailbase;
+		$this->database = $di->obj('db');
+		$this->mail = $di->obj('mail');
 		
 		$this->col_num = count($col_en);
 		$this->uid = 0;

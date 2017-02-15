@@ -5,10 +5,11 @@ class Auth {
 	private $database;
 	
 	function __construct(){
-		global $database;
+		
+		global $di;
 		
 		$this->act = isset($_GET['method'])? $_GET['method']: '';
-		$this->database = $database;
+		$this->database = $di->obj('db');
 	}
 	
 	function __destruct(){

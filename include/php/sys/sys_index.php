@@ -5,13 +5,11 @@ class Index{
 	
 	function __construct(){
 		
-		global $cfg_brand;
-		global $cfg_title;
-		global $cfg_nav;
+		global $di;
 		
 		$tpl = new \Yatp('../include/html/form.tpl');
 		
-		$html = $tpl->block('index')->assign(array('title' => $cfg_title));
+		$html = $tpl->block('index')->assign(array('title' => $di->val('cfg_title')));
 		
 		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
 			$html->assign(
@@ -21,9 +19,8 @@ class Index{
 						array(
 							'user' => $_SESSION['user_name'],
 							'mail' => $_SESSION['user_mail'],
-							'brand'=> $cfg_brand,
-							'side' => $this->getSubMenu($cfg_nav),
-							
+							'brand'=> $di->val('cfg_brand'),
+							'side' => $this->getSubMenu($di->val('cfg_nav')),
 						)
 					),
 					'main' => $tpl->block('intro'),
@@ -37,8 +34,8 @@ class Index{
 					'nav'    => '',
 					'main'   => $tpl->block('login')->assign(
 						array(
-							'title' => $cfg_title,
-							'brand' => $cfg_brand,
+							'title' => $di->val('cfg_title'),
+							'brand' => $di->val('cfg_brand'),
 						)
 					),
 					'footer' => '',
