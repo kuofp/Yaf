@@ -485,6 +485,18 @@ $('#main').load('./?m=sys_intro');
 	<!-- @excel -->
 <!-- @table -->
 
+<!-- @crop-img -->
+<div class="thumbnail" style="display: inline-block; margin: 0px;">
+	<table style="width: 100px; height: 100px;">
+		<tr>
+			<td>
+				<img src="{url}" class="img-responsive" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- @crop-img -->
+
 <!-- @modal-detail -->
 <div class="modal fade" id="{unique_id}_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<!--div class="modal-dialog"><div class="modal-content"-->

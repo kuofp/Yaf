@@ -205,7 +205,7 @@ class Form{
 				$td[] = array(
 					'class' => $this->show[$j],
 					'name'  => $this->col_en[$j],
-					'text'  => htmlspecialchars($datas['data'][$i][$this->col_en[$j]])
+					'text'  => $this->e($datas['data'][$i][$this->col_en[$j]]),
 				);
 			}
 			
@@ -774,11 +774,12 @@ class Form{
 			else{ $datas = $this->database->select($this->table_name, $arr_chain, $arr_col, $where);}
 			
 			
-			
-			//translate checkbox
 			if($datas != ''){
 				$arr_checkbox_list = array();
+				$arr_uploadfile_list = array();
 				for($j = 0; $j < $this->col_num; $j++){
+					
+					//mark checkbox
 					if($this->type[$j] == 'checkbox'){
 						
 						$arr_tmp = preg_split('/[\s,]+/', $this->chain_chk[$j]);
@@ -788,10 +789,17 @@ class Form{
 							$arr_checkbox_list[$this->col_en[$j]][$arr[$arr_tmp[2]]] = $arr[$arr_tmp[1]];
 						}
 					}
+					
+					//mark uploadfile
+					if($this->type[$j] == 'uploadfile'){
+						$arr_uploadfile_list[$this->col_en[$j]] = 1;
+					}
 				}
 				
 				$cnt_datas = count($datas);
 				for($i = 0; $i < $cnt_datas; $i++){
+					
+					//translate checkbox
 					foreach($arr_checkbox_list as $key=>$arr){
 						if($datas[$i][$key] != ''){
 							$arr_vtmp = preg_split('/[\s,]+/', $datas[$i][$key]);
@@ -801,8 +809,14 @@ class Form{
 								$arr_result[] = $arr[$val];
 							}
 							
-							$datas[$i][$key] = htmlspecialchars(implode(',', $arr_result));
+							$datas[$i][$key] = $this->e(implode(',', $arr_result));
 						}
+					}
+					
+					//translate uploadfile
+					foreach($arr_uploadfile_list as $key=>$val){
+						$arr = json_decode($datas[$i][$key], true);
+						$datas[$i][$key] = $this->raw($this->tpl->block('crop-img')->nest($arr)->render(false));
 					}
 				}
 			}
@@ -893,5 +907,13 @@ class Form{
 		
 		$this->reviewTool();
 		
+	}
+	
+	public function raw($str){
+		return [$str];
+	}
+	
+	protected function e($str){
+		return is_array($str)? ($str[0] ?? ''): htmlspecialchars($str);
 	}
 }
