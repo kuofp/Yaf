@@ -631,6 +631,7 @@ class Form{
 						'value' => $pre,
 						'name'  => $this->col_en[$i],
 						'uid'   => $uid,
+						'url'   => '?m=plugin_files',
 					));
 					break;
 				default:

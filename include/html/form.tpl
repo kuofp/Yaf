@@ -561,7 +561,7 @@ $('#main').load('./?m=sys_intro');
 						<td align="center">{meta}</td>
 						<td>
 							<input class="form-control input-sm" type="text" value="{text}" id="{uid}_label"/>
-							<input class="form-control input-sm" name="{name}" type="hidden" value="{value}" id="{uid}"/>
+							<input class="hidden" name="{name}" value="{value}" id="{uid}"/>
 							<script>
 								bindInputAutoComplete('{uid}', '{url}', '{label}', '{val}');
 							</script>
@@ -579,9 +579,9 @@ $('#main').load('./?m=sys_intro');
 						<!-- @uploadfile -->
 						<td align="center">{meta}</td>
 						<td>
-							<input class="form-control input-sm" name="{name}" type="hidden" value="" id="{uid}"/>
+							<input class="hidden" name="{name}" value="{value}" id="{uid}"/>
 							<script>
-								$('#{uid}').uploadfile();
+								$('#{uid}').uploadfile({url: '{url}'});
 							</script>
 						</td>
 						<!-- @uploadfile -->

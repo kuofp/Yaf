@@ -310,6 +310,7 @@ function bindFormCreateTool(uid, url){
 	f.find('div.toollist').find('button.main').text('新增').addClass('create');
 	m.find('.modal-footer').find('div.create').append('<button class="btn btn-default create">新增</button>');
 	f.find('div.toollist').find('button.create').click(function(){
+		// http://stackoverflow.com/questions/2559616/javascript-true-form-reset-for-hidden-fields
 		m.find('form')[0].reset();
 		m.find('.modal-footer').children('div').hide();
 		m.find('.modal-footer').find('div.create').show();
@@ -560,8 +561,6 @@ function bindInputAjaxOnChange(uid, url, type, col){
 				
 				var jdata = JSON.parse(re);
 				pdata = jdata[0];
-				//wait for modal expand
-				m.on('shown', function() {
 				for(var i in col){
 					switch(type[i]){
 						case 'radiobox':
@@ -595,7 +594,6 @@ function bindInputAjaxOnChange(uid, url, type, col){
 							break;
 					}
 				}
-				});
 				c.trigger('change');
 			},
 			error: function(){
