@@ -70,7 +70,7 @@ jQuery.fn.extend({
 			// init
 			if(!arr.length) return;
 			
-			var gallery = $('<div class="gallery" style="opacity: 0; margin-top: 30px"><style>.icon-set{ white-space: nowrap; text-overflow: ellipsis; overflow: hidden; position: absolute; bottom: 25px; width: calc(100% - 32px); margin: 1px; padding: 7px; background-color: rgba(255,255,255,0.8);}</style></div>');
+			var gallery = $('<div class="gallery"><style>.icon-set{ white-space: nowrap; text-overflow: ellipsis; overflow: hidden; position: absolute; bottom: 20px; width: 100%; padding: 5px; background-color: rgba(0,0,0,0.8); color: white}</style></div>');
 			
 			$(this).after(gallery);
 			
@@ -81,72 +81,30 @@ jQuery.fn.extend({
 			
 			var html = '';
 			for(var i in arr){
+				
+				arr[i]['ext'] = (arr[i]['name'].split('.')[1] || 'na').toLowerCase();
+				
 				var dl = '<a href="' + arr[i]['url'] + '" download="' + arr[i]['name'] + '" target="_blank"><i class="fa fa-download"></i></a>';
 				var rm = ' | <a href="#" class="delete"><i class="fa fa-trash"></i></a> ';
-				html += '<div class="' + col + '"><div class="icon-set" title="' + arr[i]['name'] + '">' + dl + rm + arr[i]['name'] + '</div><a href="#" class="thumbnail"><img></a></div>';
+				
+				html += '<div style="position: relative; float: left; margin: 10px;"><a class="thumbnail" href="#"><table style="width: 100px; height: 100px;"><tr><td style="text-align: center"><img src="' + arr[i]['url'] + '" class="img-responsive" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/></td></tr></table></a>         <div class="icon-set" title="' + arr[i]['name'] + '">' + dl + rm + arr[i]['name'] + '</div></div>';
 			}
+			console.log(arr);
 			
 			// start loading
 			$(gallery).append(html);
 			
-			var job = arr.length;
-			
 			$(gallery).find('.thumbnail').each(function(i){
 				
-				var tmp = this;
-				var img = $(this).find('img');
+				$(this).imgEvent($(tar));
 				
-				$(img).on('load', function(){
-					job--;
+				$(this).find('img').on('load', function(){
+					
 				}).on('error', function(){
-					$(this).attr('url', $(this).attr('src')).attr('src', 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
-				}).attr('src', arr[i]['url']);
-			});
-			
-			var refreshIntervalId = setInterval(function(){
-				if(job == 0){
-					$(gallery).find('.thumbnail').each(function(i){
-						$(this).imgResize().imgEvent($(tar));
-					});
-					// smooth effect
-					$(gallery).css('height', '').animate({opacity: 1}, 1000);
-					clearInterval(refreshIntervalId);
-				}
-			}, 300);
-			
-			// resize event
-			$(window).resize(function(){
-				$(gallery).find('.thumbnail').each(function(){
-					$(this).imgResize().imgEvent($(tar));
+					$(this).addClass('hidden').after('<i class="fa fa-file fa-3x" style="position: relative;color: brown;"><span style="position: absolute; top: 25px; left: 6px; color: azure; font-size: 11px;">' + arr[i]['ext'] + '</span></i>');
 				});
 			});
 		});
-	},
-	// resize and center
-	imgResize: function(){
-		
-		var tar = this;
-		var img = $(tar).find('img');
-		$(img).attr('style', '');
-		
-		var w = $(tar).width();
-		var img_h = $(img).height();
-		var img_w = $(img).width();
-		
-		// debug tool
-		// console.log('div w: ' + w + 'px, img_h: ' + img_h + 'px, img_w: ' + img_w);
-		$(tar).attr('style', 'height: ' + (w+10) + 'px');
-		
-		if(img_h > img_w){
-			var width = img_w * w / img_h;
-			$(img).attr('style', 'height:' + w + 'px; width:' + width + 'px');
-		}else{
-			var margin_top = ((w-img_h)/2);
-			if(margin_top > 0){
-				$(img).attr('style', 'margin-top:' + margin_top + 'px');
-			}
-		}
-		return this;
 	},
 	// delete event
 	imgEvent: function(input){
@@ -155,7 +113,7 @@ jQuery.fn.extend({
 		var img = $(tar).find('img');
 		
 		$(tar).siblings('.icon-set').find('.delete').click(function(){
-			var url = $(img).attr('url') || $(img).attr('src');
+			var url = $(img).attr('src');
 			
 			var arr = JSON.parse($(input).val());
 			for(var i in arr){

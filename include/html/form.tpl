@@ -489,8 +489,9 @@ $('#main').load('./?m=sys_intro');
 <div class="thumbnail" style="display: inline-block; margin: 0px;">
 	<table style="width: 100px; height: 100px;">
 		<tr>
-			<td>
-				<img src="{url}" class="img-responsive" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/>
+			<td class="text-center">
+				<img src="{url}" class="img-responsive {img}" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/>
+				<i class="fa fa-file fa-3x {icon}" style="position: relative;color: brown;"><span style="position: absolute; top: 25px; left: 6px; color: azure; font-size: 11px;">{ext}</span></i>
 			</td>
 		</tr>
 	</table>
