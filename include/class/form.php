@@ -816,20 +816,24 @@ class Form{
 					
 					//translate uploadfile
 					foreach($arr_uploadfile_list as $key=>$val){
+						
 						$arr = json_decode($datas[$i][$key], true);
-						// check file
-						foreach($arr as $k=>$v){
-							
-							$ext = strtolower(explode('.', $v['name'])[1] ?? 'na');
-							
-							if(file_exists($v['url']) && explode('/', mime_content_type($v['url']))[0] == 'image'){
-								$arr[$k]['icon'] = 'hidden';
-							}else{
-								$arr[$k]['img'] = 'hidden';
-								$arr[$k]['ext'] = $ext;
+						
+						if(is_array($arr)){
+							// check file
+							foreach($arr as $k=>$v){
+								
+								$ext = strtolower(explode('.', $v['name'])[1] ?? 'na');
+								
+								if(file_exists($v['url']) && explode('/', mime_content_type($v['url']))[0] == 'image'){
+									$arr[$k]['icon'] = 'hidden';
+								}else{
+									$arr[$k]['img'] = 'hidden';
+									$arr[$k]['ext'] = $ext;
+								}
 							}
+							$datas[$i][$key] = $this->raw($this->tpl->block('crop-img')->nest($arr)->render(false));
 						}
-						$datas[$i][$key] = $this->raw($this->tpl->block('crop-img')->nest($arr)->render(false));
 					}
 				}
 			}
