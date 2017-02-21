@@ -262,7 +262,8 @@ class Form{
 			$pdata['data']['id'] = 0; //clear id, create don't need id
 			$err = $this->dataCheck($pdata['data']);
 			if($err == 'success'){//pass dataCheck
-				$result['id'] = $this->database->insert($this->table_name, $pdata['data']);
+				$this->database->insert($this->table_name, $pdata['data']);
+				$result['id'] = $this->database->id();
 			}else{
 				$result['err'] = $err;
 			}

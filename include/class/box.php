@@ -62,6 +62,6 @@ class Box{
 	}
 	
 	function db($arr){
-		return new medoo($arr);
+		return new Medoo\Medoo($arr);
 	}
 }
