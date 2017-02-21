@@ -89,7 +89,6 @@ jQuery.fn.extend({
 				
 				html += '<div style="position: relative; float: left; margin: 10px;"><a class="thumbnail" href="#"><table style="width: 100px; height: 100px;"><tr><td style="text-align: center"><img src="' + arr[i]['url'] + '" class="img-responsive" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/></td></tr></table></a>         <div class="icon-set" title="' + arr[i]['name'] + '">' + dl + rm + arr[i]['name'] + '</div></div>';
 			}
-			console.log(arr);
 			
 			// start loading
 			$(gallery).append(html);
@@ -101,7 +100,7 @@ jQuery.fn.extend({
 				$(this).find('img').on('load', function(){
 					
 				}).on('error', function(){
-					$(this).addClass('hidden').after('<i class="fa fa-file fa-3x" style="position: relative;color: brown;"><span style="position: absolute; top: 25px; left: 6px; color: azure; font-size: 11px;">' + arr[i]['ext'] + '</span></i>');
+					$(this).addClass('hidden').after('<i class="fa fa-file" style="position: relative; color: brown; font-size: 45px"><span style="position: absolute; top: 25px; left: 6px; color: white; font-size: 11px;">' + arr[i]['ext'] + '</span></i>');
 				});
 			});
 		});

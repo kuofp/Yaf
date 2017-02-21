@@ -491,7 +491,7 @@ $('#main').load('./?m=sys_intro');
 		<tr>
 			<td class="text-center">
 				<img src="{url}" class="img-responsive {img}" style="max-width: 100px; max-height: 100px; margin: 0 auto;"/>
-				<i class="fa fa-file fa-3x {icon}" style="position: relative;color: brown;"><span style="position: absolute; top: 25px; left: 6px; color: azure; font-size: 11px;">{ext}</span></i>
+				<i class="fa fa-file {icon}" style="position: relative; color: brown; font-size: 45px"><span style="position: absolute; top: 25px; left: 6px; color: white; font-size: 11px;">{ext}</span></i>
 			</td>
 		</tr>
 	</table>
