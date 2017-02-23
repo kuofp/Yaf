@@ -5,7 +5,9 @@ class Bulletin{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -36,7 +38,16 @@ class Bulletin{
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
 			array('hidden', 'datepicker', 'text', 'textarea', 'hidden', 'select'),
 			/*authority check*/
-			array('bulletin_review', 'bulletin_create', 'bulletin_modify', 'bulletin_delete')
+			array(
+				$_SESSION['auth']['bulletin_review'] ?? 0,
+				$_SESSION['auth']['bulletin_create'] ?? 0,
+				$_SESSION['auth']['bulletin_modify'] ?? 0,
+				$_SESSION['auth']['bulletin_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);

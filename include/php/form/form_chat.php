@@ -5,7 +5,9 @@ class Chat{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -36,7 +38,16 @@ class Chat{
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
 			array('hidden', 'hidden', 'hidden', 'text', 'text', 'hidden'),
 			/*authority check*/
-			array('chat_review', 'chat_create', 'chat_modify', 'chat_delete')
+			array(
+				$_SESSION['auth']['chat_review'] ?? 0,
+				$_SESSION['auth']['chat_create'] ?? 0,
+				$_SESSION['auth']['chat_modify'] ?? 0,
+				$_SESSION['auth']['chat_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);

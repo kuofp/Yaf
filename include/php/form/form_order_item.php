@@ -5,7 +5,9 @@ class OrderItem{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -36,7 +38,16 @@ class OrderItem{
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
 			array('hidden', 'text', 'autocomplete', 'autocomplete', 'text', 'text'),
 			/*authority check*/
-			array('order_review', 'order_create', 'order_modify', 'order_delete')
+			array(
+				$_SESSION['auth']['order_review'] ?? 0,
+				$_SESSION['auth']['order_create'] ?? 0,
+				$_SESSION['auth']['order_modify'] ?? 0,
+				$_SESSION['auth']['order_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);

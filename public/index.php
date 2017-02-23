@@ -1,7 +1,6 @@
 <?php
 require_once '../config/config.php';
 require_once '../include/class/control.php';
-require_once '../include/class/form.php';
 require_once '../include/class/auth.php';
 require_once '../include/class/helper.php';
 require_once '../include/class/box.php';

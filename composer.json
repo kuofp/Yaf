@@ -2,8 +2,15 @@
     "require": {
         "catfan/Medoo": "^1.0",
         "phpmailer/phpmailer": "^5.2",
-		"kuofp/Yatp": "@dev"
+		"kuofp/Yatp": "@dev",
+		"kuofp/Yapa": "@dev"
     },
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/kuofp/Yapa.git"
+		}
+	],
 	"autoload": {
         "classmap": [
 			"vendor/",

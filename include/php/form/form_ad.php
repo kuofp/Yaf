@@ -5,7 +5,9 @@ class Ad{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -34,7 +36,16 @@ class Ad{
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
 			array('hidden', 'uploadfile', 'text', 'select'),
 			/*authority check*/
-			array('admin_review', 'admin_create', 'admin_modify', 'admin_delete')
+			array(
+				$_SESSION['auth']['admin_review'] ?? 0,
+				$_SESSION['auth']['admin_create'] ?? 0,
+				$_SESSION['auth']['admin_modify'] ?? 0,
+				$_SESSION['auth']['admin_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);

@@ -5,7 +5,9 @@ class Product{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -39,7 +41,16 @@ class Product{
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
 			array('hidden', 'select', 'text', 'text', 'text', 'hidden', 'textarea', 'select', 'text'),
 			/*authority check*/
-			array('product_review', 'product_create', 'product_modify', 'product_delete')
+			array(
+				$_SESSION['auth']['product_review'] ?? 0,
+				$_SESSION['auth']['product_create'] ?? 0,
+				$_SESSION['auth']['product_modify'] ?? 0,
+				$_SESSION['auth']['product_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);

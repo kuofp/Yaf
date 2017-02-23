@@ -5,7 +5,9 @@ class User{
 	
 	function __construct(){
 		
-		$obj = new \Form(
+		global $di;
+		
+		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
 			/*db*/
@@ -45,7 +47,16 @@ class User{
 			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker */
 			array('hidden', 'text', 'password', 'text', 'select', 'datepicker', 'select', 'text', 'text', 'text', 'select', 'select', 'select', 'checkbox', 'select'),
 			/*authority check*/
-			array('account_review', 'account_create', 'account_modify', 'account_delete')
+			array(
+				$_SESSION['auth']['account_review'] ?? 0,
+				$_SESSION['auth']['account_create'] ?? 0,
+				$_SESSION['auth']['account_modify'] ?? 0,
+				$_SESSION['auth']['account_delete'] ?? 0,
+			),
+			/*medoo*/
+			$di->obj('db'),
+			/*phpmailer*/
+			$di->obj('mail')
 		);
 		
 		$arr = $obj->decodeJson($_POST);
