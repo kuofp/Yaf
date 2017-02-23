@@ -518,7 +518,7 @@ $('#main').load('./?m=sys_intro');
 						<!-- @hidden -->
 						<td class="hidden"></td>
 						<td class="hidden">
-							<input name="{name}"/>
+							<input name="{name}" value="{value}"/>
 						</td>
 						<!-- @hidden -->
 						<!-- @text -->
@@ -536,7 +536,7 @@ $('#main').load('./?m=sys_intro');
 						<!-- @textarea -->
 						<td align="center">{meta}</td>
 						<td>
-							<textarea class="form-control input-sm" name="{name}" type="text" rows="7"/>{value}</textarea>
+							<textarea class="form-control input-sm" name="{name}" type="text" rows="7">{value}</textarea>
 						</td>
 						<!-- @textarea -->
 						<!-- @select -->

@@ -63,21 +63,38 @@ function bindFormChkall(uid){
 function bindFormSort(uid){
 	var f = $('#' + uid + '_panel');
 	f.find('th.order').click(function(){
+		
+		var s = f.find('input.search_adv');
+		
 		var plus = '';
 		var t = $(this).children();
+		var n = $(this).attr('name');
+		var tmp = JSON.parse(s.val().replace(/'/g, '"')); //json in input
+		var obj = {};
+		
+		for(var i in tmp){
+			obj[i] = tmp[i];
+		}
+		
+		if(!('ORDER' in obj)){
+			obj['ORDER'] = {};
+		}
 		
 		if(t.hasClass('fa-sort-alpha-asc')){
-			f.find('input.search_adv').val('-order ' + $(this).attr('name') + ',DESC').trigger('change');
-			plus = 'fa-sort-alpha-desc';
+			obj['ORDER'][n] = 'DESC';
+			plus = 'fa fa-sort-alpha-desc';
 		}else if(t.hasClass('fa-sort-alpha-desc')){
-			f.find('input.search_adv').val('').trigger('change');
+			delete  obj['ORDER'][n];
 			plus = '';
 		}else{
-			f.find('input.search_adv').val('-order ' + $(this).attr('name') + ',ASC').trigger('change');
-			plus = 'fa-sort-alpha-asc';
+			obj['ORDER'][n] = 'ASC';
+			plus = 'fa fa-sort-alpha-asc';
 		}
-		f.find('th.order').children().removeClass('fa-sort-alpha-desc').removeClass('fa-sort-alpha-asc');
-		t.addClass(plus);
+		
+		var q = JSON.stringify(obj).replace(/"/g, '\'');  //json in input
+		
+		s.val(q).trigger('change');
+		t.attr('class', plus);
 	});
 }
 
@@ -186,7 +203,6 @@ function bindFormAjaxOnRefresh(uid, url, table){
 			var arr_like={};
 			var arr_or={};
 			var max_ = (typeof obj.max === 'undefined') ? 50 : obj.max;
-			var rule_ = (typeof obj.rule === 'undefined') ? {'id': 'DESC'} : obj.rule;
 			var keyword = f.find('input.search').val();
 			var keyword_adv = f.find('input.search_adv').val();
 	
@@ -194,7 +210,6 @@ function bindFormAjaxOnRefresh(uid, url, table){
 				case 'review':
 					c.val(0);
 				case 'append':
-					pdata['where']['ORDER'] = rule_;
 					pdata['where']['LIMIT'] = [c.val(), max_];
 					pdata['where']['SEARCH'] = keyword;
 					pdata['where']['SEARCH_ADV'] = keyword_adv;
@@ -480,7 +495,7 @@ function bindFormExportTool(uid, url, table){
 			success: function(re) {
 				var jdata = JSON.parse(re);
 				
-				open('POST', './?m=plugin_excel&method=print', {data: jdata.data}, '_blank');
+				open('POST', url + '&method=excel', {data: jdata.data}, '_blank');
 			}
 		});
 	});

@@ -30,9 +30,6 @@
 		'sys_index'        => 'Sys\Index',
 		'sys_intro'        => 'intro.html',
 		'sys_login'        => 'Sys\Login',
-		'plugin_analysis'  => 'Plugin\Analysis',
-		'plugin_excel'     => 'Plugin\Excel',
-		'plugin_files'     => 'Plugin\Files',
 		'form_bulletin'    => 'Form\Bulletin',
 		'form_ad'          => 'Form\Ad',
 		'form_user'        => 'Form\User',
@@ -63,5 +60,4 @@
 		),
 		array('<i class="fa fa-commenting"></i> 留言問答', 'form_chat', 'chat_review'),
 		array('<i class="fa fa-shopping-cart"></i> 訂單管理', 'form_order', 'order_review'),
-		array('<i class="fa fa-pie-chart"></i> 行為分析', 'plugin_analysis', 'analysis_review'),
 	);

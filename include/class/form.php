@@ -131,6 +131,9 @@ class Form{
 			
 			$this->act = $result['method'];
 			$this->arg = $result['pdata'];
+		}else{
+			$this->act = $_REQUEST['method'] ?? '';
+			$this->arg = '';
 		}
 		
 		return $result;
@@ -139,9 +142,9 @@ class Form{
 	//review
 	public function reviewTool(){
 		
-		$style = isset($_GET['style'])? $_GET['style']: '';
-		$query = isset($_GET['query'])? $_GET['query']: '';
-		$preset = isset($_GET['preset'])? $_GET['preset']: '';
+		$style  = $_REQUEST['style']  ?? '';
+		$query  = $_REQUEST['query']  ?? [];
+		$preset = $_REQUEST['preset'] ?? '';
 		
 		$result = 'success';
 		if($this->authCheck('review')){
@@ -162,7 +165,7 @@ class Form{
 			$this->tpl->block('main')->assign(array(
 				'unique_id'   => $this->unique_id,
 				'style_effect'=> $style_effect,
-				'query'       => $query,
+				'query'       => str_replace('"', '\'', json_encode($query)),
 				'url'         => $this->file,
 				'table'       => $this->table_name,
 				'tr'          => '',
@@ -189,7 +192,7 @@ class Form{
 		
 		$datas = $this->getData($pdata);
 		
-		$style = isset($_GET['style'])? $_GET['style']: '';
+		$style = $_REQUEST['style'] ?? '';
 		
 		$th = array_map(function($v){
 				return array('text' => $v);
@@ -423,19 +426,46 @@ class Form{
 		return $result;
 	}
 	
+	public function excel(){
+		
+		$result = array();
+		
+		if($this->authCheck('review')){
+			$result['err'] = 'err_auth';
+			return json_encode($result, JSON_UNESCAPED_UNICODE);
+			
+		}else{
+			header('Content-type:application/vnd.ms-excel;');
+			header('Content-Disposition:filename=' . 'Export_' . date('YmdHis') . '.xls');
+			return $_REQUEST['data'] ?? '';
+			
+		}
+	}
+	
+	public function upload(){
+		
+		$result = array();
+		
+		if($this->authCheck('create')){
+			$result['err'] = 'err_auth';
+			
+		}else{
+			$files = $_FILES ?? array();
+		
+			foreach($files as $file){
+				// {"name":"new 2.txt","type":"text\/plain","tmp_name":"\/tmp\/phpRJ91Ks","error":0,"size":1295}
+				$url = 'upload/' . md5(time() . rand());
+				$result[] = array('url' => $url, 'name' => $file['name'], 'size' => $file['size']);
+				move_uploaded_file($file['tmp_name'], $url);
+			}
+		}
+		
+		return json_encode($result, JSON_UNESCAPED_UNICODE);
+	}
+	
 	public function genFormModal($preset){
 		
 		$result = 'success';
-		
-		if($preset){
-			//靜態預設值(Preset)用於載入子分頁, 點擊新增時Reset可回復到預設值
-			$arr_pre = array();
-			$arr_tmp = explode(',', $preset);
-			foreach($arr_tmp as $arr){
-				$v = explode('=', $arr);
-				$arr_pre[$v[0]][] = $v[1];
-			}
-		}
 		
 		$tr = [];
 		for($i = 0; $i < $this->col_num; $i++){
@@ -447,16 +477,15 @@ class Form{
 				$star .= '(唯一)';
 			}
 			
-			$pre = '';
+			$pre = $preset[$this->col_en[$i]] ?? ''; //靜態預設值(Preset)用於載入子分頁, 點擊新增時Reset可回復到預設值
 			$tag = ''; //select: selected, radio/checkbox: checked, autocomplete: label
-			if(isset($arr_pre[$this->col_en[$i]])){
-				$pre = implode(',', $arr_pre[$this->col_en[$i]]);
-			}
+			
 			switch($this->type[$i]){
 				case 'hidden':
 					$td = $this->tpl->block('modal-detail.td.hidden')->assign(array(
 						'meta' => $this->col_ch[$i] . $star,
-						'name' => $this->col_en[$i]
+						'name' => $this->col_en[$i],
+						'value' => $pre,
 					));
 					break;
 				case 'text';
@@ -578,11 +607,13 @@ class Form{
 					
 					$datas = $this->database->select($arr_tmp[0], '*');
 					
+					$chk = is_array($pre)? $pre: explode(',', $pre);
+					
 					$tmp = [];
 					foreach($datas as $arr){
 						$tmp[] = array(
 							'value'   => $arr[$arr_tmp[2]],
-							'checked' => (in_array($arr[$arr_tmp[2]], $tmp))? 'checked': '',
+							'checked' => (in_array($arr[$arr_tmp[2]], $chk))? 'checked': '',
 							'text'    => $arr[$arr_tmp[1]],
 							'name'    => $this->col_en[$i],
 						);
@@ -632,7 +663,7 @@ class Form{
 						'value' => $pre,
 						'name'  => $this->col_en[$i],
 						'uid'   => $uid,
-						'url'   => '?m=plugin_files',
+						'url'   => $this->file . '&method=upload',
 					));
 					break;
 				default:
@@ -708,72 +739,29 @@ class Form{
 			}
 			
 			//search advance
-			if(isset($pdata['where']['SEARCH_ADV'])){
-				$keyword_adv = $pdata['where']['SEARCH_ADV'];
-				if(!empty($keyword_adv)){
-					$arr_tmp = preg_split('/[\s]+/', $keyword_adv);
-					$action = '';
-					for($i = 0; $i < count($arr_tmp); $i++){
-						if($action == ''){
-							$action = $arr_tmp[$i];
-							continue;
-						}
-						switch($action){
-							case '-period':
-								$arr_period = preg_split('/[\s,]+/', $arr_tmp[$i]);
-								if(count($arr_period) != 3){
-									array_push($err, 'err -period (wrong arg num): ' . count($arr_period) . ' total 3');
-									continue;
-								}
-								if(!in_array($arr_period[0], $this->col_en)){
-									array_push($err, 'err -period (col not found): ' . $arr_period[0]);
-									continue;
-								}
-								array_push($err, '-period : (' . $arr_period[0] . ') ' . $arr_period[1] . '~' . $arr_period[2]);
-								if($arr_period[1] == '~'){
-									if($arr_period[2] == '~'){
-										continue;
-									}
-									$pdata['where']['AND'][$arr_period[0] . '[<=]'] = $arr_period[2];
-								}else if($arr_period[2] == '~'){
-									$pdata['where']['AND'][$arr_period[0] . '[>=]'] = $arr_period[1];
-								}else{
-									$pdata['where']['AND'][$arr_period[0] . '[<>]'] = array($arr_period[1], $arr_period[2]);
-								}
-								break;
-							case '-order':
-								$arr_order = preg_split('/[\s,]+/', $arr_tmp[$i]);
-								if(count($arr_order) != 2){
-									array_push($err, 'err -order (wrong arg num): ' . count($arr_order) . ' total 2');
-									continue;
-								}
-								if(!in_array($arr_order[0], $this->col_en)){
-									array_push($err, 'err -order (col not found): ' . $arr_order[0]);
-									continue;
-								}
-								if(!in_array(strtoupper($arr_order[1]), array('ASC', 'DESC'))){
-									array_push($err, 'err -order (invalid arg): ' . $arr_order[1] . ' (ASC or DESC)');
-									continue;
-								}
-								array_push($err, '-order : (' . $arr_order[0] . ') ' . $arr_order[1]);
-								$pdata['where']['ORDER'] = array($arr_order[0] => $arr_order[1]);
-								break;
-							default:
-								array_push($err, 'err (unknown arg): ' . $arr_tmp[$i]);
-								break;
-						}
-						$action = '';
-					}
+			if($pdata['where']['SEARCH_ADV'] ?? 0){
+				
+				$adv = json_decode(str_replace('\'', '"', $pdata['where']['SEARCH_ADV']), true);
+				foreach($adv['AND'] ?? [] as $k=>$v){
+					//table.id (join)
+					$adv['AND'][$this->table_name . '.' . $k] = $v;
+					unset($adv['AND'][$k]);
 				}
 				unset($pdata['where']['SEARCH_ADV']);
+				
+				if(is_array($adv)){
+					$pdata['where'] = array_merge_recursive($pdata['where'], $adv);
+				}
 			}
 			
-			
+			if(!($pdata['where']['ORDER'] ?? 0)){
+				// default order
+				$pdata['where']['ORDER'] = ['id' => 'DESC'];
+			}
 			
 			$where = isset($pdata['where'])?$pdata['where']:'';
 			if(empty($arr_chain)){ $datas = $this->database->select($this->table_name, '*', $where);}
 			else{ $datas = $this->database->select($this->table_name, $arr_chain, $arr_col, $where);}
-			
 			
 			if($datas != ''){
 				$arr_checkbox_list = array();

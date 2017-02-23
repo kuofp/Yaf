@@ -4,12 +4,6 @@
         "phpmailer/phpmailer": "^5.2",
 		"kuofp/Yatp": "@dev"
     },
-	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/kuofp/Yatp.git"
-        }
-    ],
 	"autoload": {
         "classmap": [
 			"vendor/",
