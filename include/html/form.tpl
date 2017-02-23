@@ -39,7 +39,6 @@
 	
 	<!-- js -->
 	<script src="js/script.js"></script>
-	<script src="js/img.js"></script>
 	<script src="js/jquery-datepicker-zh-TW.js"></script>
 
 	<!-- css -->
