@@ -15,7 +15,7 @@ class Report{
 			/*table*/
 			't_account',
 			/*col*/
-			array('id', 'account_id', 'user', '#sum1', '#sum2'),
+			array('id', 'account_id', 'user', 'sum1', 'sum2'),
 			/*col_ch*/
 			array('代碼', '階層', '帳號', '總額', '總額'),
 			/*empty check*/
@@ -29,7 +29,7 @@ class Report{
 			/*show bootstrap grid class*/
 			array(
 				'hidden',
-				'hidden',
+				'col-md-4 col-sm-4 col-xs-7',
 				'col-md-4 col-sm-4 col-xs-4',
 				'col-md-1 col-sm-1 col-xs-1 text-right',
 				'col-md-1 col-sm-1 hidden-xs text-right',
@@ -37,7 +37,7 @@ class Report{
 				'col-md-1 col-sm-1 hidden-xs',
 			),
 			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker */
-			array('hidden', 'select', 'text', 'text', 'text', 'text'),
+			array('hidden', 'select', 'text', 'value', 'value', 'text'),
 			/*authority check*/
 			array(
 				$_SESSION['auth']['account_review'] ?? 0,
@@ -64,8 +64,8 @@ class Report{
 					
 					$r = $di->obj('db')->query('
 					SELECT
-						SUM(rda_result_amount) as "#sum2",
-						SUM(rda_bet_amount) as "#sum1",
+						SUM(rda_result_amount) as "sum2",
+						SUM(rda_bet_amount) as "sum1",
 						m.ant_pid as id
 					FROM rda
 					JOIN (
@@ -75,7 +75,7 @@ class Report{
 					ON rda.pid = m.ant_id
 					WHERE rda_bet_date >= ' . strtotime('2017-01-01') . ' AND rda_bet_date < ' . strtotime('2017-01-02') . '
 					GROUP BY m.ant_pid;
-					')->fetchAll();
+					')->fetchAll(\PDO::FETCH_ASSOC);
 					
 					$obj->bind($r);
 					break;

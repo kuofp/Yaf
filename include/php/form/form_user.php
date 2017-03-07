@@ -29,15 +29,15 @@ class User{
 			/*show bootstrap grid class*/
 			array(
 				'hidden',
-				'hidden',
-				'col-md-3 col-sm-3 col-xs-8',
+				'col-md-4 col-sm-4 col-xs-6',
+				'col-md-1 col-sm-1 col-xs-2',
 				'hidden',
 				'hidden',
 				'hidden',
 				'hidden',
 				'col-md-2 col-sm-2 col-xs-4',
 				'col-md-2 col-sm-2 hidden-xs',
-				'col-md-4 col-sm-4 hidden-xs',
+				'col-md-2 col-sm-2 hidden-xs',
 				'hidden',
 				'hidden',
 				'hidden',
