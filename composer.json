@@ -5,12 +5,6 @@
 		"kuofp/Yatp": "@dev",
 		"kuofp/Yapa": "@dev"
     },
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/kuofp/Yapa.git"
-		}
-	],
 	"autoload": {
         "classmap": [
 			"vendor/",

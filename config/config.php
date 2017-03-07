@@ -33,6 +33,7 @@
 		'form_bulletin'    => 'Form\Bulletin',
 		'form_ad'          => 'Form\Ad',
 		'form_user'        => 'Form\User',
+		'form_report'      => 'Form\Report',
 		'form_category'    => 'Form\Category',
 		'form_product'     => 'Form\Product',
 		'form_chat'        => 'Form\Chat',
@@ -49,6 +50,14 @@
 		),
 		
 		array('<i class="fa fa-users"></i> 帳號管理', 'form_user', 'account_review'),
+		array(array('<i class="fa fa-bar-chart"></i> 階層報表', '', 'account_review'),
+			array('AB', 'form_report', 'account_review'),
+			array('CB', 'form_report', 'account_review'),
+			array('MS', 'form_report', 'account_review'),
+			array('SA', 'form_report', 'account_review'),
+			array('GA', 'form_report', 'account_review'),
+		),
+		
 		
 		array(array('<i class="fa fa-folder-open-o"></i> 商品設置', '', 'product_review'),
 			array('<i class="fa fa-folder-open-o"></i> 商品類別', 'form_category', ''),
