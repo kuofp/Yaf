@@ -34,7 +34,7 @@ class Ad{
 				'col-md-2 col-sm-2 col-xs-4',
 			),
 			/*select/radiobox/checkbox/text/textarea/autocomplete/datepicker */
-			array('hidden', 'uploadfile', 'text', 'select'),
+			array('hidden', 'uploadfile', 'json', 'select'),
 			/*authority check*/
 			array(
 				$_SESSION['auth']['admin_review'] ?? 0,
@@ -45,7 +45,13 @@ class Ad{
 			/*medoo*/
 			$di->obj('db'),
 			/*phpmailer*/
-			$di->obj('mail')
+			$di->obj('mail'),
+			/*config*/
+			array(
+				'preset' => array(
+					'link' => array('API'=>'', 'KEY'=>'')
+				)
+			)
 		);
 		
 		$obj->decodeJson($_POST);
