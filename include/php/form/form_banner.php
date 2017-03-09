@@ -24,8 +24,6 @@ class Banner{
 			array(0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
 			array('', '', '', 't_status,alias,id'),
-			/*route(Ajax) check (file.php) for ajax files*/
-			array('', '', '', ''),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',

@@ -24,8 +24,6 @@ class User{
 			array(0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
 			array('', 't_account,user,id', '', '', 't_gender,alias,id', '', 't_code,alias,id', '', '', '', 't_job,alias,id', 't_income,alias,id', 't_title,alias,id', 't_auth,alias,id', 't_valid,alias,id'),
-			/*route(Ajax) check (file.php) for ajax files*/
-			array('', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',

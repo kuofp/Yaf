@@ -24,8 +24,6 @@ class OrderItem{
 			array(0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
 			array('', '', 't_account,name,id', 't_product,product,id', '', ''),
-			/*route(Ajax) check (file.php) for ajax files*/
-			array('', '', _url('Form\User'), _url('Form\Product'), '', ''),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',

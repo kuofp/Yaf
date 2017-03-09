@@ -24,8 +24,6 @@ class Order{
 			array(0, 0, 0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
 			array('', 't_order_status,alias,id', 't_account,name,id', '', '', '', '', ''),
-			/*route(Ajax) check (file.php) for ajax files*/
-			array('', '', _url('Form\User'), '', '', '', '', ''),
 			/*show bootstrap grid class*/
 			array(
 				'col-md-1 col-sm-1 col-xs-4',

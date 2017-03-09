@@ -24,8 +24,6 @@ class Bulletin{
 			array(0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
 			array('', '', '', '', 't_account,name,id', 't_valid,alias,id'),
-			/*route(Ajax) check (file.php) for ajax files*/
-			array('', '', '', '', '', ''),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',
