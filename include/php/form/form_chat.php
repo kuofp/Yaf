@@ -59,11 +59,11 @@ class Chat{
 			
 			//do the work
 			echo $obj->{$obj->act}($obj->arg);
-			exit;
 		}else{
 			$obj->render();
 		}
 		
 		unset($obj);
+		exit;
 	}
 }

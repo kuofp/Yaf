@@ -64,7 +64,6 @@ class Order{
 			
 			//do the work
 			echo $obj->{$obj->act}($obj->arg);
-			exit;
 		}else{
 			
 			$obj->render();
@@ -110,5 +109,6 @@ class Order{
 		}
 		
 		unset($obj);
+		exit;
 	}
 }

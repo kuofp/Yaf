@@ -4,9 +4,7 @@ namespace Sys;
 class Index{
 	
 	function __construct(){
-		
 		global $di;
-		
 		$tpl = new \Yatp('../include/html/form.tpl');
 		
 		$html = $tpl->block('index')->assign(array('title' => $di->val('cfg_title')));
@@ -28,6 +26,8 @@ class Index{
 			)->render();
 			
 		}else{
+			
+			@session_destroy();
 			$html->assign(
 				array(
 					'header' => '',
@@ -42,8 +42,9 @@ class Index{
 					
 				)
 			)->render();
-			session_destroy();
 		}
+		
+		exit;
 	}
 	
 	// bootstrap nav
