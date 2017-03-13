@@ -8,8 +8,6 @@ class OrderItem{
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
-			/*db*/
-			'db_report',
 			/*table*/
 			't_cart',
 			/*col*/

@@ -8,8 +8,6 @@ class User{
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
-			/*db*/
-			'db_shop',
 			/*table*/
 			't_account',
 			/*col*/

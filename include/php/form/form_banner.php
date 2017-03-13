@@ -8,8 +8,6 @@ class Banner{
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
-			/*db*/
-			'db_shop',
 			/*table*/
 			't_banner',
 			/*col*/
