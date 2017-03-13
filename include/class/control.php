@@ -11,7 +11,7 @@ class Control {
 	
 	function make(){
 		
-		$cfg_mod  = \Box::val('mod');
+		$mod = \Box::val('mod');
 		
 		// Reduce session lock
 		session_start();
@@ -28,16 +28,16 @@ class Control {
 		
 		if(class_exists($this->act)){
 			// new obj directly
-			$c = $this->act;
-			return new $c;
+			return new $this->act;
 			
-		}elseif(class_exists($cfg_mod[$this->act] ?? '')){
+		}elseif(class_exists($mod[$this->act] ?? '')){
 			// new obj via module table
-			return new $cfg_mod[$this->act];
+			return new $mod[$this->act];
 			
-		}elseif(file_exists($cfg_mod[$this->act] ?? '')){
+		}elseif(file_exists($mod[$this->act] ?? '')){
 			// include file
-			require $cfg_mod[$this->act];
+			require $mod[$this->act];
+			exit;
 		}
 	}
 }
