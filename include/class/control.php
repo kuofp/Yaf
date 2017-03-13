@@ -9,15 +9,9 @@ class Control {
 		$this->act = $_REQUEST['m'] ?? 'index';
 	}
 	
-	function __destruct(){
-		
-	}
-	
 	function make(){
 		
-		global $di;
-		
-		$cfg_mod  = $di->val('cfg_mod');
+		$cfg_mod  = \Box::val('cfg_mod');
 		
 		// Reduce session lock
 		session_start();

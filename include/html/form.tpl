@@ -13,24 +13,24 @@
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
 	<!-- jquery ui-->
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-	<script   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="   crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 	
 	
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	
-	<!-- Patch for Muti-Modal -->
+	<!-- Patch for Multi-Modal -->
 	<link rel="stylesheet" href="css/bootstrap-modal-bs3patch.css">
 	<link rel="stylesheet" href="css/bootstrap-modal.css">
 	
-	<!-- Patch for Muti-Menu -->
+	<!-- Patch for Multi-Menu -->
 	<link rel="stylesheet" href="css/bootstrap-menu-bs3patch.css">
 	
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
-	<!-- Patch for Muti-Modal -->
+	<!-- Patch for Multi-Modal -->
 	<script src="js/bootstrap-modalmanager.js"></script>
 	<script src="js/bootstrap-modal.js"></script>
 	
@@ -43,8 +43,6 @@
 
 	<!-- css -->
 	<link href="css/style.css" rel="stylesheet">
-
-	
 </head>
 
 <body>
@@ -121,19 +119,24 @@ body{
 }
 </style>
 
-<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4" style="max-width: 500px">
-<div id="login_panel" class="panel panel-default"><div class="panel-body"><h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
-	<form class="ajax" method="POST" action="./?m=sys_login&method=login">
-		<input type="text" name="user" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
-		<br/>
-		<input type="password" name="password" class="form-control input-sm" placeholder="密碼"/>
-		<br/>
-		<button type="submit" class="btn btn-primary login pull-right" data-loading-text="登入中...">登入<i class="fa fa-sign-in" aria-hidden="true"></i></button>
-	</form>
-</div><div class="panel-footer">{brand}</div></div>
+<div class="col-sm-6 col-md-4 center-block" style="max-width: 500px; float: none">
+	<div id="login_panel" class="panel panel-default">
+		<div class="panel-body">
+			<h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
+			<form class="ajax" method="POST" action="./?m=sys_login&method=login">
+				<input type="text" name="user" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
+				<br/>
+				<input type="password" name="password" class="form-control input-sm" placeholder="密碼"/>
+				<br/>
+				<button type="submit" class="btn btn-primary login pull-right" data-loading-text="登入中...">登入<i class="fa fa-sign-in" aria-hidden="true"></i></button>
+			</form>
+		</div>
+		<div class="panel-footer">{brand}
+			<div class="pull-right" style="margin-top: -5px;"><!-- @lang --><!-- @lang --></div>
+		</div>
+	</div>
 </div>
 <!-- @login -->
-
 
 <!-- @nav -->
 <style>
@@ -208,13 +211,14 @@ body{
 			{side}
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
-			<li class="hidden-md hidden-sm hidden-xs"><a href="#">{user}({mail})</a></li>
+			<li class="hidden-md hidden-sm hidden-xs"><a href="#">{user}</a></li>
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i> 設置 <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 				<!--li><a href="#">Action</a></li-->
 					<li><a href="#" class="intro">使用說明</a></li>
-					<li><a href="#" class="change_password">修改密碼</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#change_password_Modal">修改密碼</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#change_lang_Modal">切換語系</a></li>
 					<li class="divider"></li>
 					<li><a href="./?m=sys_login&method=logout">登出</a></li>
 				</ul>
@@ -227,13 +231,26 @@ body{
 
 <div id="change_password_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">修改密碼({mail})</h4>
+		<h4 class="modal-title">修改密碼({user})</h4>
 	</div>
 	<form class="ajax">
 	<div class="modal-body">
 		<input class="form-control" name="password" type="password" placeholder="請輸入新密碼"/>
 	</div>
 	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary modify">修改</button>
+	</div>
+	</form>
+</div>
+
+<div id="change_lang_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">切換語系</h4>
+	</div>
+	<form class="ajax">
+	<div class="modal-body">
+		<!-- @lang --><!-- @lang -->
+	</div>
+	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><!--button type="submit" class="btn btn-primary modify">修改</button-->
 	</div>
 	</form>
 </div>
@@ -247,11 +264,6 @@ $('.nav-sidebar a').click(function(){
 	$(this).addClass('active');
 	$(this).parents('li').addClass('active');
 	$('title').text('後台系統: ' + $(this).text());
-});
-
-$('.change_password').click(function(){
-	$('#change_password_Modal').find('[name=password]').val('');
-	$('#change_password_Modal').modal('show');
 });
 	
 $('.ajax').submit(function(){	
@@ -279,6 +291,13 @@ $('.intro').click(function(){ $('#main').load('./?m=sys_intro'); });
 </script>
 <!-- @nav -->
 
+<!-- @lang -->
+<select class="form-control input-sm" onChange="location='./?lang=' + $(this).val()">
+	<!-- @option -->
+	<option value="{value}" {selected}>{text}</option>
+	<!-- @option -->
+</select>
+<!-- @lang -->
 
 <!-- @intro -->
 <script>

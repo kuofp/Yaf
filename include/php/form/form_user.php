@@ -5,8 +5,6 @@ class User{
 	
 	function __construct(){
 		
-		global $di;
-		
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
@@ -52,9 +50,9 @@ class User{
 				$_SESSION['auth']['account_delete'] ?? 0,
 			),
 			/*medoo*/
-			$di->obj('db'),
+			\Box::obj('db'),
 			/*phpmailer*/
-			$di->obj('mail'),
+			\Box::obj('mail'),
 			/*config*/
 			array(
 				'perpage' => 0

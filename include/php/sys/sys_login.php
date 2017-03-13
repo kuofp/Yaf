@@ -7,11 +7,11 @@ class Login{
 	private $database;
 	
 	function __construct(){
-		header('P3P: CP="CAO PSA OUR"'); // Damn frameset on IE!!!!!!!
-		global $di;
 		
-		$this->act = isset($_GET['method'])? $_GET['method']: '';
-		$this->database = $di->obj('db');
+		header('P3P: CP="CAO PSA OUR"'); // Damn frameset on IE!!!!!!!
+		
+		$this->act = isset($_REQUEST['method'])? $_REQUEST['method']: '';
+		$this->database = \Box::obj('db');
 		
 		if(method_exists($this, $this->act)){
 			$this->{$this->act}();

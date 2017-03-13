@@ -4,41 +4,71 @@ class Box{
 	
 	protected $obj;
 	protected $val;
+	protected static $str = 'unique_di_name';
 	
-	function __construct(){
+	public static function init(){
 		
-		$this->obj = [];
-		$this->val = [];
+		$str = self::$str;
 		
+		global $$str;
+		
+		$di = &$$str;
+		
+		if(!$di){
+			$GLOBALS[(self::$str)] = array(
+				'obj' => array(),
+				'val' => array(),
+			);
+		}
 	}
 	
-	public function obj($namespace, $arg = '', $option = ''){
+	public static function obj($namespace, $arg = '', $option = ''){
 		
-		if($this->obj[$namespace] ?? 0){
+		self::init();
+		
+		$str = self::$str;
+		global $$str;
+		$di = &$$str;
+		
+		if($di['obj'][$namespace] ?? 0){
 			// obj exist
-		}elseif(method_exists($this, $namespace)){
-			$this->obj[$namespace] = $this->$namespace($arg);
+		}elseif(method_exists('Box', $namespace)){
+			$di['obj'][$namespace] = self::$namespace($arg);
 		}else{
-			$this->obj[$namespace] = new $namespace($arg);
+			$di['obj'][$namespace] = new $namespace($arg);
 		}
 		
-		return $this->obj[$namespace];
+		return $di['obj'][$namespace];
 	}
 	
-	public function val($key, $val = ''){
+	public static function val($key, $val = ''){
+		
+		self::init();
+		
+		$str = self::$str;
+		global $$str;
+		$di = &$$str;
+		
 		if(func_num_args() == 1){
-			return $this->val[$key] ?? '';
+			return $di['val'][$key] ?? '';
 		}else{
-			$this->val[$key] = $val;
-			return $this;
+			$di['val'][$key] = $val;
+			return 0;
 		}
 	}
 	
-	public function all(){
-		return $this->val;
+	public static function all(){
+		
+		self::init();
+		
+		$str = self::$str;
+		global $$str;
+		$di = &$$str;
+		
+		return $di['val'];
 	}
 	
-	function mail($arr){
+	public static function mail($arr){
 		$mail = new PHPMailer;
 		if($arr['isSMTP']){
 			$mail->isSMTP();                                  // Set mailer to use SMTP
@@ -61,7 +91,7 @@ class Box{
 		return $mail;
 	}
 	
-	function db($arr){
+	public static function db($arr){
 		return new Medoo\Medoo($arr);
 	}
 }

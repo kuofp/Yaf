@@ -5,8 +5,6 @@ class Ad{
 	
 	function __construct(){
 		
-		global $di;
-		
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
@@ -17,7 +15,7 @@ class Ad{
 			/*col*/
 			array('id', 'pic', 'link', 'status_id'),
 			/*col_ch*/
-			array('代碼', '圖片', '連結', '狀態'),
+			array(_('id'), _('picture'), _('link'), _('status')),
 			/*empty check*/
 			array(0, 0, 0, 0),
 			/*exist(duplicate) check*/
@@ -41,9 +39,9 @@ class Ad{
 				$_SESSION['auth']['admin_delete'] ?? 0,
 			),
 			/*medoo*/
-			$di->obj('db'),
+			\Box::obj('db'),
 			/*phpmailer*/
-			$di->obj('mail'),
+			\Box::obj('mail'),
 			/*config*/
 			array(
 				'preset' => array(

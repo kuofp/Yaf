@@ -4,10 +4,11 @@ namespace Sys;
 class Index{
 	
 	function __construct(){
-		global $di;
+		
 		$tpl = new \Yatp('../include/html/form.tpl');
 		
-		$html = $tpl->block('index')->assign(array('title' => $di->val('cfg_title')));
+		$html = $tpl->block('index')->assign(array('title' => \Box::val('cfg_title')));
+		$lang = $tpl->block('lang')->assign(array('option' => $tpl->block('lang.option')->nest(\Box::obj('Lang')->get())));
 		
 		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
 			$html->assign(
@@ -15,10 +16,10 @@ class Index{
 					'header' => '',
 					'nav'    => $tpl->block('nav')->assign(
 						array(
-							'user' => $_SESSION['user_name'],
-							'mail' => $_SESSION['user_mail'],
-							'brand'=> $di->val('cfg_brand'),
-							'side' => $this->getSubMenu($di->val('cfg_nav')),
+							'user' => $_SESSION['user_user'],
+							'brand'=> \Box::val('cfg_brand'),
+							'side' => $this->getSubMenu(\Box::val('cfg_nav')),
+							'lang' => $lang,
 						)
 					),
 					'main' => $tpl->block('intro'),
@@ -26,16 +27,15 @@ class Index{
 			)->render();
 			
 		}else{
-			
-			@session_destroy();
 			$html->assign(
 				array(
 					'header' => '',
 					'nav'    => '',
 					'main'   => $tpl->block('login')->assign(
 						array(
-							'title' => $di->val('cfg_title'),
-							'brand' => $di->val('cfg_brand'),
+							'title' => \Box::val('cfg_title'),
+							'brand' => \Box::val('cfg_brand'),
+							'lang'  => $lang,
 						)
 					),
 					'footer' => '',

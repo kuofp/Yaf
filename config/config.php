@@ -1,6 +1,6 @@
 <?php
-	$cfg_title = 'project name';
-	$cfg_brand = 'corporation';
+	$cfg_title = _('project name');
+	$cfg_brand = _('corporation');
 
 	$cfg_db_medoo = array(
 		'database_type' => 'mysql',

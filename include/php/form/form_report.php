@@ -5,8 +5,6 @@ class Report{
 	
 	function __construct(){
 		
-		global $di;
-		
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
@@ -44,9 +42,9 @@ class Report{
 				0,
 			),
 			/*medoo*/
-			$di->obj('db'),
+			\Box::obj('db'),
 			/*phpmailer*/
-			$di->obj('mail'),
+			\Box::obj('mail'),
 			/*config*/
 			array(
 				'perpage' => 0
@@ -60,7 +58,7 @@ class Report{
 			switch($obj->act){
 				case 'review':
 					
-					$r = $di->obj('db')->query('
+					$r = \Box::obj('db')->query('
 					SELECT
 						SUM(rda_result_amount) as "sum2",
 						SUM(rda_bet_amount) as "sum1",

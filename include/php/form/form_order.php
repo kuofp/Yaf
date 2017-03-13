@@ -5,8 +5,6 @@ class Order{
 	
 	function __construct(){
 		
-		global $di;
-		
 		$obj = new \Yapa(
 			/*file*/
 			_url(get_class($this)),
@@ -45,9 +43,9 @@ class Order{
 				$_SESSION['auth']['order_delete'] ?? 0,
 			),
 			/*medoo*/
-			$di->obj('db'),
+			\Box::obj('db'),
 			/*phpmailer*/
-			$di->obj('mail')
+			\Box::obj('mail')
 		);
 		
 		$obj->decodeJson($_POST);
