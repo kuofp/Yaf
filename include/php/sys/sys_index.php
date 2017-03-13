@@ -5,7 +5,7 @@ class Index{
 	
 	function __construct(){
 		
-		$tpl = new \Yatp('../include/html/form.tpl');
+		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
 		
 		$html = $tpl->block('index')->assign(array('title' => \Box::val('title')));
 		$lang = $tpl->block('lang')->assign(array('option' => $tpl->block('lang.option')->nest(\Box::obj('Lang')->get())));
