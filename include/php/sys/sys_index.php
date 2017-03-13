@@ -7,7 +7,7 @@ class Index{
 		
 		$tpl = new \Yatp('../include/html/form.tpl');
 		
-		$html = $tpl->block('index')->assign(array('title' => \Box::val('cfg_title')));
+		$html = $tpl->block('index')->assign(array('title' => \Box::val('title')));
 		$lang = $tpl->block('lang')->assign(array('option' => $tpl->block('lang.option')->nest(\Box::obj('Lang')->get())));
 		
 		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
@@ -17,8 +17,8 @@ class Index{
 					'nav'    => $tpl->block('nav')->assign(
 						array(
 							'user' => $_SESSION['user_user'],
-							'brand'=> \Box::val('cfg_brand'),
-							'side' => $this->getSubMenu(\Box::val('cfg_nav')),
+							'brand'=> \Box::val('brand'),
+							'side' => $this->getSubMenu(\Box::val('nav')),
 							'lang' => $lang,
 						)
 					),
@@ -33,8 +33,8 @@ class Index{
 					'nav'    => '',
 					'main'   => $tpl->block('login')->assign(
 						array(
-							'title' => \Box::val('cfg_title'),
-							'brand' => \Box::val('cfg_brand'),
+							'title' => \Box::val('title'),
+							'brand' => \Box::val('brand'),
 							'lang'  => $lang,
 						)
 					),

@@ -42,7 +42,7 @@ class Lang{
 		
 		putenv('LANG=' . $lang);
 		setlocale(LC_ALL, $lang . '.utf8');
-		bindtextdomain('admin', __DIR__ . '/../../public/locale');
+		bindtextdomain('admin', './locale');
 		textdomain('admin');
 	}
 	

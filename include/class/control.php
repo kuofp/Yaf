@@ -11,7 +11,7 @@ class Control {
 	
 	function make(){
 		
-		$cfg_mod  = \Box::val('cfg_mod');
+		$cfg_mod  = \Box::val('mod');
 		
 		// Reduce session lock
 		session_start();

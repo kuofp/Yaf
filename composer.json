@@ -1,14 +1,20 @@
 {
+	"name": "kuofp/yaf",
+	"type": "framework",
+	"description": "A PHP Framework",
+	"keywords": ["framework"],
+	"license": "MIT",
+	"authors": [
+		{"name": "Frank Kuo", "email": "kuofp@cs.nctu.edu.tw"}
+	],
     "require": {
+		"php": ">=7",
         "catfan/Medoo": "^1.0",
         "phpmailer/phpmailer": "^5.2",
 		"kuofp/Yatp": "@dev",
 		"kuofp/Yapa": "@dev"
     },
 	"autoload": {
-        "classmap": [
-			"vendor/",
-			"include/"
-		]
-    }
+		"files": ["yaf.php"]
+	}
 }

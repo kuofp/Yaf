@@ -1,17 +1,21 @@
 <?php
-	$cfg_title = _('project name');
-	$cfg_brand = _('corporation');
 
-	$cfg_db_medoo = array(
+return [
+	
+	'title' => _('project name'),
+	
+	'brand' => _('corporation'),
+	
+	'medoo' => [
 		'database_type' => 'mysql',
 		'database_name' => 'test',
 		'server'        => 'localhost',
 		'username'      => 'root',
 		'password'      => 'Ab12345',
 		'charset'       => 'utf8',
-	);
+	],
 	
-	$cfg_mail_PHPMailer = array(
+	'PHPMailer' => [
 		'isSMTP'     => true,
 		'Host'       => 'smtp.gmail.com',
 		'SMTPAuth'   => true,
@@ -21,11 +25,11 @@
 		'Port'       => 465,
 		'isHTML'     => true,
 		'CharSet'    => 'utf-8',
-		'FromName'   => $cfg_brand,
-	);
+		'FromName'   => 'system',
+	],
 	
 	// module table
-	$cfg_mod = array(
+	'mod' => [
 		'index'            => 'Sys\Index',
 		'sys_index'        => 'Sys\Index',
 		'sys_intro'        => 'intro.html',
@@ -40,10 +44,10 @@
 		'form_order'       => 'Form\Order',
 		'form_order_item'  => 'Form\OrderItem',
 		'form_banner'      => 'Form\Banner',
-	);
+	],
 	
 	// nav table
-	$cfg_nav = array(
+	'nav' => [
 		array(array('<i class="fa fa-television"></i> 前台設置', '', 'admin_review'),
 			array('<i class="fa fa-television"></i> 輪播區塊', 'form_banner', ''),
 			array('<i class="fa fa-bullhorn"></i> 廣告區塊', 'form_ad', ''),
@@ -69,4 +73,5 @@
 		),
 		array('<i class="fa fa-commenting"></i> 留言問答', 'form_chat', 'chat_review'),
 		array('<i class="fa fa-shopping-cart"></i> 訂單管理', 'form_order', 'order_review'),
-	);
+	],
+];
