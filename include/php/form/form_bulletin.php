@@ -50,7 +50,7 @@ class Bulletin{
 			//additional settings
 			switch($obj->act){
 				case 'create':
-					$obj->arg['data']['user_id'] = $_SESSION['user_id'];
+					$obj->arg['data']['user_id'] = $_SESSION['user']['id'];
 					break;
 				default:
 					break;

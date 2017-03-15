@@ -40,33 +40,22 @@ class Login{
 		}else{
 			echo 'success';
 			
-			if(!empty($datas[0]['auth'])){
-				
-				$datas_auth = $this->database->select('t_auth', '*');
-				$arr_auth = array();
-				$arr_tmp = preg_split("/[\s,]+/", $datas[0]['auth']);
-				
-				foreach($datas_auth as $item){
-					if(in_array($item['id'], $arr_tmp)){
-						$arr_auth[$item['name']] = $item['id'];
-					}
-				}
+			$datas_auth = $this->database->select('t_auth', '*');
+			$arr_auth = array();
+			$arr_tmp = preg_split("/[\s,]+/", $datas[0]['auth'] ?? '');
+			
+			foreach($datas_auth as $v){
+				$arr_auth[$v['name']] = in_array($v['id'], $arr_tmp);
 			}
 			
-			$_SESSION['user_id'] = $datas[0]['id'];
-			$_SESSION['user_user'] = $datas[0]['user'];
-			$_SESSION['user_name'] = $datas[0]['name'];
-			$_SESSION['user_mail'] = $datas[0]['mail'];
 			$_SESSION['auth'] = $arr_auth;
+			$_SESSION['user'] = $datas[0];
 		}
 	}
 	
 	function logout(){
 		
-		unset($_SESSION['user_id']);
-		unset($_SESSION['user_user']);
-		unset($_SESSION['user_name']);
-		unset($_SESSION['user_mail']);
+		unset($_SESSION['user']);
 		unset($_SESSION['auth']);
 		
 		echo 'logout';
@@ -85,7 +74,7 @@ class Login{
 		}else if($user[0]['password'] != $password){
 			$password = md5($password);
 			
-			$this->database->update('t_account', array('password'=>$password), array('id'=>$_SESSION['user_id']));
+			$this->database->update('t_account', array('password'=>$password), array('id'=>$_SESSION['user']['id']));
 			
 			echo 'success';
 		}

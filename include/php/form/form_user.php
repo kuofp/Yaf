@@ -11,15 +11,15 @@ class User{
 			/*table*/
 			't_account',
 			/*col*/
-			array('id', 'account_id', 'user', 'password', 'gender_id', 'birth', 'code_id', 'mail', 'mobile', 'address', 'job_id', 'income_id', 'title_id', 'auth', 'valid_id'),
+			array('id', 'account_id', 'user', 'password', 'gender_id', 'birth', 'mobile', 'address', 'job_id', 'auth', 'valid_id'),
 			/*col_ch*/
-			array('代碼', '階層', '帳號', '密碼', '性別', '生日', '生辰', '信箱', '手機', '地址', '職業', '收入', '職稱', '權限', '狀態'),
+			array('代碼', '階層', '帳號', '密碼', '性別', '生日', '圖示', '地址', '職業', '權限', '狀態'),
 			/*empty check*/
-			array(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+			array(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0),
 			/*exist(duplicate) check*/
-			array(0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+			array(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
-			array('', 't_account,user,id', '', '', 't_gender,alias,id', '', 't_code,alias,id', '', '', '', 't_job,alias,id', 't_income,alias,id', 't_title,alias,id', 't_auth,alias,id', 't_valid,alias,id'),
+			array('', 't_account,user,id', '', '', 't_gender,alias,id', '', '', '', 't_job,alias,id', 't_auth,alias,id', 't_valid,alias,id'),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',
@@ -28,18 +28,14 @@ class User{
 				'hidden',
 				'hidden',
 				'hidden',
-				'hidden',
 				'col-md-2 col-sm-2 col-xs-4',
 				'col-md-2 col-sm-2 hidden-xs',
 				'col-md-2 col-sm-2 hidden-xs',
 				'hidden',
-				'hidden',
-				'hidden',
-				'hidden',
 				'col-md-1 col-sm-1 hidden-xs',
 			),
 			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker */
-			array('hidden', 'select', 'text', 'password', 'select', 'datepicker', 'select', 'text', 'text', 'text', 'select', 'select', 'select', 'checkbox', 'select'),
+			array('hidden', 'select', 'text', 'password', 'radiobox', 'datepicker', 'uploadfile', 'textarea', 'autocomplete', 'checkbox', 'select'),
 			/*authority check*/
 			array(
 				$_SESSION['auth']['account_review'] ?? 0,

@@ -10,13 +10,13 @@ class Index{
 		$html = $tpl->block('index')->assign(array('title' => \Box::val('title')));
 		$lang = $tpl->block('lang')->assign(array('option' => $tpl->block('lang.option')->nest(\Box::obj('Lang')->get())));
 		
-		if(isset($_SESSION['auth']) && isset($_SESSION['user_id'])){
+		if(isset($_SESSION['auth']) && isset($_SESSION['user'])){
 			$html->assign(
 				array(
 					'header' => '',
 					'nav'    => $tpl->block('nav')->assign(
 						array(
-							'user' => $_SESSION['user_user'],
+							'user' => $_SESSION['user']['user'],
 							'brand'=> \Box::val('brand'),
 							'side' => $this->getSubMenu(\Box::val('nav')),
 							'lang' => $lang,
