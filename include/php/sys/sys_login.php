@@ -65,7 +65,7 @@ class Login{
 	// change password
 	function change(){
 		
-		$user = $this->database->select('t_account', '*', array('id'=>$_SESSION['user_id']));
+		$user = $this->database->select('t_account', '*', array('id'=>$_SESSION['user']['id']));
 		$password = isset($_POST['password'])? $_POST['password']: '';
 		
 		if(empty($password)){

@@ -49,6 +49,7 @@ class User{
 			\Box::obj('mail'),
 			/*config*/
 			array(
+				'root' => ($_SESSION['user']['account_id'] ?? 0)? $_SESSION['user']['id']: 0,
 				'perpage' => 0
 			)
 		);
@@ -62,8 +63,8 @@ class User{
 					$obj->arg['data']['password'] = md5($obj->arg['data']['password']);
 					break;
 				case 'modify':
-					$user = $obj->getData(array('where' => array($obj->getTable() . '.id' => $obj->arg['data']['id'])));
-					if($user['data'][0]['password'] != $obj->arg['data']['password']){
+					$user = \Box::obj('db')->select('t_account', '*', ['id'=>$obj->arg['data']['id']]);
+					if($user[0]['password'] != $obj->arg['data']['password']){
 						$obj->arg['data']['password'] = md5($obj->arg['data']['password']);
 					}
 					break;
