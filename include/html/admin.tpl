@@ -119,12 +119,12 @@ body{
 }
 </style>
 
-<div class="col-sm-6 col-md-4 center-block" style="max-width: 500px; float: none">
+<div class="col-sm-6 col-md-4 center-block" style="max-width: 400px; float: none">
 	<div id="login_panel" class="panel panel-default">
 		<div class="panel-body">
 			<h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
 			<form class="ajax" method="POST" action="./?m=sys_login&method=login">
-				<input type="text" name="user" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
+				<input type="text" name="account" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
 				<br/>
 				<input type="password" name="password" class="form-control input-sm" placeholder="密碼"/>
 				<br/>

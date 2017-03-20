@@ -22,16 +22,16 @@ class Login{
 	function login(){
 		
 		//check parameter
-		if(empty($_POST['user']) || empty($_POST['password'])){
+		if(empty($_POST['account']) || empty($_POST['password'])){
 			echo 'err_empty';
 			exit;
 		}
 		
-		$user = $_POST["user"];
-		$password = md5($_POST["password"]);
+		$account = $_POST['account'];
+		$password = md5($_POST['password']);
 		
 		
-		$datas = $this->database->select('t_account', '*', array('AND' => array('user'=>$user, 'password'=>$password, 'valid_id'=>3) ) );
+		$datas = $this->database->select('t_account', '*', array('AND' => array('account'=>$account, 'password'=>$password, 'status_id'=>1) ) );
 
 		//set session
 		if(empty($datas)){

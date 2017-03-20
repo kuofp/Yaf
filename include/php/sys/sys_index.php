@@ -16,7 +16,7 @@ class Index{
 					'header' => '',
 					'nav'    => $tpl->block('nav')->assign(
 						array(
-							'user' => $_SESSION['user']['user'],
+							'user' => $_SESSION['user']['account'],
 							'brand'=> \Box::val('brand'),
 							'side' => $this->getSubMenu(\Box::val('nav')),
 							'lang' => $lang,
