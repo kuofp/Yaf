@@ -1,6 +1,5 @@
 <?php
 
-require_once '../yaf.php';
 $path = __DIR__ . '/../config/config.php';
 
 // Third-Party Dependencies

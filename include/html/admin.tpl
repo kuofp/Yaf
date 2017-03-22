@@ -231,7 +231,7 @@ body{
 
 <div id="change_password_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">修改密碼({user})</h4>
+		<h4 class="modal-title"><i class="fa fa-key" aria-hidden="true"></i>修改密碼({user})</h4>
 	</div>
 	<form class="ajax">
 	<div class="modal-body">
@@ -244,7 +244,7 @@ body{
 
 <div id="change_lang_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">切換語系</h4>
+		<h4 class="modal-title"><i class="fa fa-language" aria-hidden="true"></i>切換語系</h4>
 	</div>
 	<form class="ajax">
 	<div class="modal-body">

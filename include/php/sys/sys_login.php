@@ -22,34 +22,29 @@ class Login{
 	function login(){
 		
 		//check parameter
-		if(empty($_POST['account']) || empty($_POST['password'])){
-			echo 'err_empty';
-			exit;
-		}
-		
-		$account = $_POST['account'];
-		$password = md5($_POST['password']);
-		
-		
-		$datas = $this->database->select('t_account', '*', array('AND' => array('account'=>$account, 'password'=>$password, 'status_id'=>1) ) );
-
-		//set session
-		if(empty($datas)){
-			echo 'err_fail';
+		if(($_POST['account'] ?? 0) && ($_POST['password'] ?? 0)){
+			$datas = $this->database->select('t_account', '*', array('AND' => array('account'=>$_POST['account'], 'status_id'=>1) ) );
 			
+			//set session
+			if($datas && password_verify($_POST['password'], $datas[0]['password'])){
+				echo 'success';
+				
+				$datas_auth = $this->database->select('t_auth', '*');
+				$arr_auth = array();
+				$arr_tmp = preg_split('/[\s,]+/', $datas[0]['auth'] ?? '');
+				
+				foreach($datas_auth as $v){
+					$arr_auth[$v['name']] = in_array($v['id'], $arr_tmp);
+				}
+				
+				$_SESSION['auth'] = $arr_auth;
+				$_SESSION['user'] = $datas[0];
+				
+			}else{
+				echo 'err_fail';
+			}	
 		}else{
-			echo 'success';
-			
-			$datas_auth = $this->database->select('t_auth', '*');
-			$arr_auth = array();
-			$arr_tmp = preg_split("/[\s,]+/", $datas[0]['auth'] ?? '');
-			
-			foreach($datas_auth as $v){
-				$arr_auth[$v['name']] = in_array($v['id'], $arr_tmp);
-			}
-			
-			$_SESSION['auth'] = $arr_auth;
-			$_SESSION['user'] = $datas[0];
+			echo 'err_empty';
 		}
 	}
 	
@@ -59,24 +54,18 @@ class Login{
 		unset($_SESSION['auth']);
 		
 		echo 'logout';
-		header("Location: ./");
+		header('Location: ./');
 	}
 	
 	// change password
 	function change(){
 		
-		$user = $this->database->select('t_account', '*', array('id'=>$_SESSION['user']['id']));
-		$password = isset($_POST['password'])? $_POST['password']: '';
-		
-		if(empty($password)){
-			echo 'err_empty';
-			
-		}else if($user[0]['password'] != $password){
-			$password = md5($password);
-			
-			$this->database->update('t_account', array('password'=>$password), array('id'=>$_SESSION['user']['id']));
-			
+		if($_POST['password'] ?? 0){
+			$this->database->update('t_account', ['password' => password_hash($_POST['password'], PASSWORD_DEFAULT)], ['id' => $_SESSION['user']['id']]);
 			echo 'success';
+			
+		}else{
+			echo 'err_empty';
 		}
 	}
 }
