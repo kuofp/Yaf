@@ -12,16 +12,19 @@ $(function(){
 	}, 10000);
 });
 
-function customAlert(msg, arg){
-	var arg = arg || 0;
-	var info = ['<i class="fa fa-times-circle"></i> 錯誤', '<i class="fa fa-check-circle"></i> 成功', '<i class="fa fa-exclamation-circle"></i> 警告'];
-	var type = ['danger', 'success', 'warning'];
+function customAlert(arr){
+	var code = arr.code || 0;
+	var text = arr.text || '';
+	var info = ['<i class="fa fa-check-circle"></i> 成功', '<i class="fa fa-times-circle"></i> 錯誤', '<i class="fa fa-exclamation-circle"></i> 警告'];
+	var type = ['success', 'danger', 'warning'];
 	
-	var alert = $('<div style="height: 1px; width: 100%; position: fixed; top: 0px; z-index: 1500;"><div class="alert alert-' + type[arg] + '" style="width: 320px; position: relative; margin: auto;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p><strong>' + info[arg] + ': </strong>' + msg + '</p></div></div>');
-	setTimeout(function(){
-		$(alert).fadeOut(function(){
-			$(this).remove();
-		});
-	}, 3000);
-	$('body').append(alert);
+	if(text){
+		var alert = $('<div style="height: 1px; width: 100%; position: fixed; top: 0px; z-index: 1500;"><div class="alert alert-' + type[code] + '" style="width: 320px; position: relative; margin: auto;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p><strong>' + info[code] + ': </strong>' + text + '</p></div></div>');
+		setTimeout(function(){
+			$(alert).fadeOut(function(){
+				$(this).remove();
+			});
+		}, 3000);
+		$('body').append(alert);
+	}
 }

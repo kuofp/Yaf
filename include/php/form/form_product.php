@@ -42,9 +42,7 @@ class Product{
 				$_SESSION['auth']['product_delete'] ?? 0,
 			),
 			/*medoo*/
-			\Box::obj('db'),
-			/*phpmailer*/
-			\Box::obj('mail')
+			\Box::obj('db')
 		);
 		
 		$obj->decodeJson($_POST);

@@ -11,15 +11,15 @@ class User{
 			/*table*/
 			't_account',
 			/*col*/
-			array('id', 'account_id', 'account', 'password', 'gender_id', 'birth', 'mobile', 'address', 'job_id', 'auth', 'status_id'),
+			array('id', 'account_id', 'account', 'password', 'gender_id', 'birth', 'avatar', 'flavor', 'address', 'job_id', 'auth', 'status_id'),
 			/*col_ch*/
-			array('代碼', '階層', '帳號', '密碼', '性別', '生日', '圖示', '地址', '職業', '權限', '狀態'),
+			array('代碼', '階層', '帳號', '密碼', '性別', '生日', '圖示', '色調', '地址', '職業', '權限', '狀態'),
 			/*empty check*/
-			array(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0),
+			array(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0),
 			/*exist(duplicate) check*/
-			array(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+			array(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 			/*chain(join) check (table, content, id)*/
-			array('', 't_account,account,id', '', '', 't_gender,alias,id', '', '', '', 't_job,alias,id', 't_auth,alias,id', 't_status,alias,id'),
+			array('', 't_account,account,id', '', '', 't_gender,alias,id', '', '', '', '', 't_job,alias,id', 't_auth,alias,id', 't_status,alias,id'),
 			/*show bootstrap grid class*/
 			array(
 				'hidden',
@@ -29,13 +29,14 @@ class User{
 				'hidden',
 				'hidden',
 				'col-md-2 col-sm-2 col-xs-4',
+				'hidden',
 				'col-md-2 col-sm-2 hidden-xs',
 				'col-md-2 col-sm-2 hidden-xs',
 				'hidden',
 				'col-md-1 col-sm-1 hidden-xs',
 			),
-			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker */
-			array('hidden', 'select', 'text', 'password', 'radiobox', 'datepicker', 'uploadfile', 'textarea', 'autocomplete', 'checkbox', 'select'),
+			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker/colorpicker/uploadfile/json/module */
+			array('hidden', 'select', 'text', 'password', 'radiobox', 'datepicker', 'uploadfile', 'colorpicker', 'textarea', 'autocomplete', 'checkbox', 'select'),
 			/*authority check*/
 			array(
 				$_SESSION['auth']['account_review'] ?? 0,
@@ -45,8 +46,6 @@ class User{
 			),
 			/*medoo*/
 			\Box::obj('db'),
-			/*phpmailer*/
-			\Box::obj('mail'),
 			/*config*/
 			array(
 				'root' => ($_SESSION['user']['account_id'] ?? 0)? $_SESSION['user']['id']: 0,
@@ -60,12 +59,12 @@ class User{
 			//additional settings
 			switch($obj->act){
 				case 'create':
-					$obj->arg['data']['password'] = md5($obj->arg['data']['password']);
+					$obj->arg['data']['password'] = password_hash($obj->arg['data']['password'], PASSWORD_DEFAULT);
 					break;
 				case 'modify':
 					$user = \Box::obj('db')->select('t_account', '*', ['id'=>$obj->arg['data']['id']]);
 					if($user[0]['password'] != $obj->arg['data']['password']){
-						$obj->arg['data']['password'] = md5($obj->arg['data']['password']);
+						$obj->arg['data']['password'] = password_hash($obj->arg['data']['password'], PASSWORD_DEFAULT);
 					}
 					break;
 				default:

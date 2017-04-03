@@ -73,7 +73,6 @@
 <!-- @login -->
 <script>
 $(function(){
-	
 	$('.ajax').submit(function(){
 		
 		var btn = $(this).find('[type=submit]').button('loading');
@@ -82,17 +81,17 @@ $(function(){
 			url: $(this).attr('action'),
 			type: 'POST',
 			data: $(this).serialize(),
-			success: function(re) {
-				if(re == 'success'){
-					location.reload();
+			success: function(re){
+				var jdata = JSON.parse(re);
+				if(jdata['code']){
+					// fail
 				}else{
-					if(re == 'err_fail') customAlert('帳號或密碼錯誤');
-					else if(re == 'err_empty') customAlert('所有欄位必填');
-					else customAlert(re);
-					btn.button('reset');
+					location.reload();
 				}
+				customAlert(jdata);
+				btn.button('reset');
 			},
-			error: function() {
+			error: function(){
 				alert('Register ajax ERROR!!!');
 			}
 		});
@@ -101,10 +100,9 @@ $(function(){
 	});
 
 	// alphanumeric check
-	$( '.alphanumeric_check' ).keyup(function(){
+	$('.alphanumeric_check').keyup(function(){
 		$(this).val($(this).val().replace(/[^\w]/g,''));
 	});
-	
 });
 </script>
 
@@ -257,37 +255,42 @@ body{
 
 
 <script>
-
-//add active class script
-$('.nav-sidebar a').click(function(){
-	$('.nav li').removeClass('active');
-	$(this).addClass('active');
-	$(this).parents('li').addClass('active');
-	$('title').text('後台系統: ' + $(this).text());
-});
-	
-$('.ajax').submit(function(){	
-	
-	$.ajax({
-		url: './?m=sys_login&method=change',
-		type: 'POST',
-		data: $(this).serialize(),
-		success: function(re) {
-			if(re == 'success'){
-				customAlert('密碼修改成功', 1);
-				$('#change_password_Modal').modal('hide');
-			}else if(re == 'err_empty'){
-				customAlert('密碼務必填寫');
-			}else console.log(re);
-		},
-		error: function() {alert('ajax ERROR!!!');}
+$(function(){
+	//add active class script
+	$('.nav-sidebar a').click(function(){
+		$('.nav li').removeClass('active');
+		$(this).addClass('active');
+		$(this).parents('li').addClass('active');
+		$('title').text('後台系統: ' + $(this).text());
 	});
 	
-	return false;
+	$('.ajax').submit(function(){	
+		
+		$.ajax({
+			url: './?m=sys_login&method=change',
+			type: 'POST',
+			data: $(this).serialize(),
+			success: function(re){
+				var jdata = JSON.parse(re);
+				if(jdata['code']){
+					// fail
+				}else{
+					$('#change_password_Modal').modal('hide');
+				}
+				customAlert(jdata);
+			},
+			error: function(){
+				alert('ajax ERROR!!!');
+			}
+		});
+		
+		return false;
+	});
+	
+	$('.intro').click(function(){
+		$('#main').load('./?m=sys_intro');
+	});
 });
-
-$('.intro').click(function(){ $('#main').load('./?m=sys_intro'); });
-
 </script>
 <!-- @nav -->
 

@@ -19,7 +19,6 @@ class Yaf{
 		// shared item
 		$cfg = require $path; // use require instead of require_once
 		\Box::obj('db',    $cfg['medoo']);
-		\Box::obj('mail',  $cfg['PHPMailer']);
 		
 		\Box::val('title', $cfg['title']);
 		\Box::val('brand', $cfg['brand']);
