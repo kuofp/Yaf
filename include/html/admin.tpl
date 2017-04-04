@@ -154,6 +154,13 @@ body{
 		left: 0px;
 		width: 100%;
 	}
+	.navbar{
+		margin-bottom: -1px;
+	}
+	#main{
+		padding: 0px;
+		height: calc(100% - 51px);
+	}
 }
 
 @media screen and (min-width: 992px) {
