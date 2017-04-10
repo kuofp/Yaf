@@ -81,6 +81,6 @@ class Index{
 	}
 	
 	function authCheck($item, $offset=2){
-		return ($item[$offset]=='') || isset($_SESSION['auth'][$item[$offset]]);
+		return ($item[$offset]=='') || ($_SESSION['auth'][$item[$offset]] ?? 0);
 	}
 }
