@@ -30,14 +30,14 @@ return [
 	// nav table
 	'nav' => [
 		
-		array('<i class="fa fa-users"></i> 帳號管理', 'form_user', 'account_review'),
+		array('帳號管理', 'form_user', 'account_review'),
 		
-		array(array('<i class="fa fa-folder-open-o"></i> 商品設置', '', 'product_review'),
-			array('<i class="fa fa-folder-open-o"></i> 商品類別', 'form_category', ''),
-			array('<i class="fa fa-newspaper-o"></i> 商品總覽', 'form_product', ''),
-			/*array(array('<i class="fa fa-folder-open-o"></i> 商品設置', '', ''),
-					array('<i class="fa fa-folder-open-o"></i> 商品類別', '', ''),
-					array('<i class="fa fa-newspaper-o"></i> 商品總覽', 'form_product', ''),
+		array(array('商品設置', '', ''),
+			array('商品類別', 'form_category', ''),
+			array('商品總覽', 'form_product', ''),
+			/*array(array('商品設置', '', ''),
+				array('商品類別', '', ''),
+				array('商品總覽', 'form_product', ''),
 			),*/
 		),
 	],

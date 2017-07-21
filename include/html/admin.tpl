@@ -69,7 +69,6 @@
 </html>
 <!-- @index -->
 
-
 <!-- @login -->
 <script>
 $(function(){
@@ -97,11 +96,6 @@ $(function(){
 		});
 		
 		return false;
-	});
-
-	// alphanumeric check
-	$('.alphanumeric_check').keyup(function(){
-		$(this).val($(this).val().replace(/[^\w]/g,''));
 	});
 });
 </script>
@@ -139,10 +133,10 @@ body{
 <!-- @nav -->
 <style>
 /*NAV*/
-/*nav.navbar{
+nav.navbar{
 	-webkit-box-shadow: 0 3px 6px rgba(0,0,0,.175);
 	box-shadow: 0 3px 6px rgba(0,0,0,.175);
-}*/
+}
 
 #main{
 	position: absolute;
@@ -196,7 +190,6 @@ body{
 }
 </style>
 
-
 <nav class="navbar navbar-default">
 <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -213,7 +206,16 @@ body{
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
 		<ul class="nav navbar-nav nav-sidebar">
-			{side}
+			<!-- @submenu -->
+			<li class="dropdown-submenu">
+				<a href="#">{name}</a>
+				<ul class="dropdown-menu">
+					<!-- @submenu-li -->
+					<li><a href="#" onclick="$('#main').loadTab('', {m: '{link}'}, '{name}');">{name}</a></li>
+					<!-- @submenu-li -->
+				</ul>
+			</li>
+			<!-- @submenu -->
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="hidden-md hidden-sm hidden-xs"><a href="#">{user}</a></li>
@@ -232,7 +234,6 @@ body{
 	</div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
-
 
 <div id="change_password_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -260,12 +261,11 @@ body{
 	</form>
 </div>
 
-
 <script>
 $(function(){
 	//add active class script
 	$('.nav-sidebar a').click(function(){
-		$('.nav li').removeClass('active');
+		$('.nav-sidebar li').removeClass('active');
 		$(this).addClass('active');
 		$(this).parents('li').addClass('active');
 		$('title').text('後台系統: ' + $(this).text());

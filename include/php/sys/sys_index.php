@@ -18,7 +18,7 @@ class Index{
 						array(
 							'user' => $_SESSION['user']['account'],
 							'brand'=> \Box::val('brand'),
-							'side' => $this->getSubMenu(\Box::val('nav')),
+							'submenu' => $this->getSubMenu(\Box::val('nav')),
 							'lang' => $lang,
 						)
 					),
@@ -51,36 +51,60 @@ class Index{
 	function getSubMenu($list, $sub=0){
 		$html = '';
 		
-		$i = 1;
+		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
+		$arr = [];
 		foreach($list as $item){
-			if($i==1 && $sub==1){
+			// skip first
+			if($sub == 1){
 				if($this->authCheck($item)){
-					$html .= ' <li class="dropdown-submenu"><a href="#">' . $item[0] . '</a><ul class="dropdown-menu">';
-					$i = 0;
+					$sub = 2;
 					continue;
 				}else{
-					// break this sub-menu
-					return '';
+					break;
 				}
 			}
-			if(is_array($item[0])){
-				$html .= $this->getSubMenu($item, 1);
+			
+			if(is_array($item[0] ?? '')){
+				// sub-menu case
+				$menu = $this->getSubMenu($item, 1);
+				if($menu){
+					$arr[] = ['submenu-li' => $menu];
+				}
+				
 			}else{
 				if($this->authCheck($item)){
-					$html .= '<li><a href="#" ' . $this->getOnClick($item[1]) . '>' . $item[0] . '</a></li>';
+					$arr[] = [
+						'submenu-li' => $tpl->block('submenu-li')->assign([
+							'link' => ($item[1] ?? ''),
+							'name' => ($item[0] ?? ''),
+						])
+					];
 				}
 			}
 		}
-		$html .= '</ul></li>';
+		
+		$html = $tpl->block('submenu-li')->nest($arr)->render(false);
+		$cnt = count($arr);
+		if($sub && $cnt){
+			$html = $tpl->block('submenu')->assign([
+				'name' => ($list[0][0] ?? '') . ' (' . $cnt . ')',
+				'submenu-li' => $html,
+			])->render(false);
+		}else if($sub && $cnt==0){
+			// remove sub-menu
+			$html = '';
+		}
 		
 		return $html;
 	}
 	
-	function getOnClick($link){
-		return ($link=='')? '': 'onclick="' . "$('#main').load('', {m: '" . $link . "'});" . '"';
-	}
-	
 	function authCheck($item, $offset=2){
-		return ($item[$offset]=='') || ($_SESSION['auth'][$item[$offset]] ?? 0);
+		$auth = preg_split('/[\s|]+/', $item[$offset]);
+		$pass = false;
+		foreach($auth as $v){
+			$pass = $pass || ($_SESSION['auth'][$v] ?? 0);
+		}
+		
+		return ($item[$offset]=='') || $pass;
 	}
 }

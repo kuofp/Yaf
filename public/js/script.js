@@ -28,3 +28,43 @@ function customAlert(arr){
 		$('body').append(alert);
 	}
 }
+
+jQuery.fn.extend({
+	loadTab: function(){
+		var url = arguments[0] || '';
+		var obj = arguments[1] || '';
+		var txt = arguments[2] || '';
+		
+		var tar = this;
+		var tpl = '<style>.btn-tab-del{position: absolute; top: -5px; right: 0px; cursor: pointer; padding: 2px; font-size: 20px} .btn-tab-del:hover{ color: red; }</style><ul class="nav nav-tabs"></ul><div class="tab-content" style="height: 100%"></div>';
+		
+		var id = 'tab' + (new Date().getTime()) + Math.round(Math.random() * 1000);
+		
+		var tab = $('<li class="active"><a data-toggle="tab" href="#' + id + '" style="padding: 0 15px 0 6px">' + txt + '</a></li>');
+		var col = $('<div id="' + id + '" class="tab-pane fade in active" style="height: 100%"></div>');
+		var btn = $('<span class="btn-tab-del" aria-hidden="true">&times</span>');
+		
+		if($(tar).children('.nav-tabs').length){
+			$(tar).children('.nav-tabs').children('li').removeClass('active');
+			$(tar).children('.tab-content').children('div').removeClass('active in');
+		}else{
+			$(tar).empty().append(tpl);
+		}
+		
+		$(btn).click(function(){
+			var del = $(this).closest('li').find('a').attr('href');
+			
+			if($(this).closest('.nav-tabs').find('li').length > 1){
+				$(del).remove();
+				$(this).closest('li').remove();
+			}else{
+				$(tar).empty()
+			}
+		});
+		
+		$(tab).find('a').append(btn);
+		$(tar).children('.nav-tabs').append(tab);
+		$(tar).children('.tab-content').append(col);
+		$('#' + id).load(url, obj);
+	}
+});
