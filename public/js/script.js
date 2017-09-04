@@ -57,6 +57,10 @@ jQuery.fn.extend({
 			if($(this).closest('.nav-tabs').find('li').length > 1){
 				$(del).remove();
 				$(this).closest('li').remove();
+				
+				if(!$(tar).children('.nav-tabs').children('li.active').length){
+					$(tar).children('.nav-tabs').children('li').last().find('a').tab('show');
+				}
 			}else{
 				$(tar).empty()
 			}
