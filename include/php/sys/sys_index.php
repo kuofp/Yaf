@@ -29,9 +29,9 @@ class Index{
 		}else{
 			$html->assign(
 				array(
-					'header' => '',
+					'main'   => '',
 					'nav'    => '',
-					'main'   => $tpl->block('login')->assign(
+					'header' => $tpl->block('login')->assign(
 						array(
 							'title' => \Box::val('title'),
 							'brand' => \Box::val('brand'),

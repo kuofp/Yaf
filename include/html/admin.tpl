@@ -55,14 +55,13 @@
 	<div id="nav">
 		{nav}
 	</div>
-	<div id="main" class="col-sm-12 col-md-12 col-lg-12">
+	<div id="main" class="col-sm-12 col-md-12 col-lg-12" style="max-width: 1280px">
 		{main}
 	</div>
 	<div id="footer">
 		<!-- @footer -->
-		<div style="height: 60px;" class="hidden-sm hidden-xs">&nbsp;</div>
-		<div style="position: fixed;height: 60px;width: 100%;background-color: #000;bottom: 0px;margin-top:50px;padding-top:20px;padding-bottom:20px;color:#777;z-index:10;" class="hidden-sm hidden-xs">
-			<p style="margin: 0 0 0 30px;">
+		<div style="position: fixed;height: 30px;width: 100%;background-color: #000;bottom: 0px;padding: 8px 30px;color:#777;z-index:10;" class="hidden-sm hidden-xs">
+			<p>
 				<small id="random_tips"></small>
 			</p>
 		</div>
@@ -305,7 +304,7 @@ $(function(){
 <!-- @nav -->
 
 <!-- @lang -->
-<select class="form-control input-sm" onChange="location='./?lang=' + $(this).val()">
+<select class="form-control input-sm" onChange="location='?lang=' + $(this).val()">
 	<!-- @option -->
 	<option value="{value}" {selected}>{text}</option>
 	<!-- @option -->
