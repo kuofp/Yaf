@@ -7,7 +7,7 @@
 	<title>{title}</title>
 	
 	<!-- icon-->
-	<link rel="shortcut icon" href="img/logo/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/logo/favicon.ico" type="image/x-icon">
 
 	<!-- jquery-->
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
@@ -21,28 +21,31 @@
 
 	
 	<!-- Patch for Multi-Modal -->
-	<link rel="stylesheet" href="css/bootstrap-modal-bs3patch.css">
-	<link rel="stylesheet" href="css/bootstrap-modal.css">
+	<link rel="stylesheet" href="/css/bootstrap-modal-bs3patch.css">
+	<link rel="stylesheet" href="/css/bootstrap-modal.css">
 	
 	<!-- Patch for Multi-Menu -->
-	<link rel="stylesheet" href="css/bootstrap-menu-bs3patch.css">
+	<link rel="stylesheet" href="/css/bootstrap-menu-bs3patch.css">
 	
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<!-- Patch for Multi-Modal -->
-	<script src="js/bootstrap-modalmanager.js"></script>
-	<script src="js/bootstrap-modal.js"></script>
+	<script src="/js/bootstrap-modalmanager.js"></script>
+	<script src="/js/bootstrap-modal.js"></script>
 	
 	<!-- font-awesome-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<!-- js -->
-	<script src="js/script.js"></script>
-	<script src="js/jquery-datepicker-zh-TW.js"></script>
+	<script src="/js/script.js"></script>
+	<script src="/js/jquery-datepicker-zh-TW.js"></script>
 
 	<!-- css -->
-	<link href="css/style.css" rel="stylesheet">
+	<link href="/css/style.css" rel="stylesheet">
+	
+	<script src="//cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
+	<script src="//cdn.ckeditor.com/4.7.0/full/adapters/jquery.js"></script>
 </head>
 
 <body>
@@ -102,7 +105,7 @@ $(function(){
 
 <style>
 @media screen and (min-width: 768px) {
-    #login_panel{
+	#login_panel{
 		margin-top: 200px;
 	}
 }
@@ -115,7 +118,7 @@ body{
 	<div id="login_panel" class="panel panel-default">
 		<div class="panel-body">
 			<h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
-			<form class="ajax" method="POST" action="./?m=sys_login&method=login">
+			<form class="ajax" method="POST" action="?m=sys_login&method=login">
 				<input type="text" name="account" class="form-control input-sm alphanumeric_check" placeholder="帳號"/>
 				<br/>
 				<input type="password" name="password" class="form-control input-sm" placeholder="密碼"/>
@@ -158,9 +161,9 @@ nav.navbar{
 }
 
 @media screen and (min-width: 992px) {
-    .nav-sidebar{
-        padding: 20px 0px; width: 200px; position: fixed; top: 52px; left: 0px; z-index: 10;
-    }
+	.nav-sidebar{
+		padding: 20px 0px; width: 200px; position: fixed; top: 52px; left: 0px; z-index: 10;
+	}
 	
 	.nav-sidebar li{
 		width: 100%;
@@ -192,8 +195,8 @@ nav.navbar{
 
 <nav class="navbar navbar-default">
 <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
 		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
@@ -203,8 +206,8 @@ nav.navbar{
 		<a class="navbar-brand" href="#"><!--img alt="Brand" src="img/logo/logo.png" style="display: inline-block"--><span style=" font-weight: bold; font-size: 20px; font-family:Microsoft JhengHei;">{brand}</span></a>
 	</div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
 		<ul class="nav navbar-nav nav-sidebar">
 			<!-- @submenu -->
 			<li class="dropdown-submenu">
@@ -227,7 +230,7 @@ nav.navbar{
 					<li><a href="#" data-toggle="modal" data-target="#change_password_Modal">修改密碼</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#change_lang_Modal">切換語系</a></li>
 					<li class="divider"></li>
-					<li><a href="./?m=sys_login&method=logout">登出</a></li>
+					<li><a href="?m=sys_login&method=logout">登出</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -274,7 +277,7 @@ $(function(){
 	$('.ajax').submit(function(){	
 		
 		$.ajax({
-			url: './?m=sys_login&method=change',
+			url: '?m=sys_login&method=change',
 			type: 'POST',
 			data: $(this).serialize(),
 			success: function(re){
@@ -295,7 +298,7 @@ $(function(){
 	});
 	
 	$('.intro').click(function(){
-		$('#main').load('./?m=sys_intro');
+		$('#main').load('?m=sys_intro');
 	});
 });
 </script>
@@ -311,6 +314,6 @@ $(function(){
 
 <!-- @intro -->
 <script>
-$('#main').load('./?m=sys_intro');
+$('#main').load('?m=sys_intro');
 </script>
 <!-- @intro -->

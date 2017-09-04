@@ -1,7 +1,7 @@
 <?php
 
 function _url($str){
-	return './?m=' . urlencode($str);
+	return '?m=' . urlencode($str);
 }
 
 if(!function_exists('dd')){
