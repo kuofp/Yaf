@@ -21,8 +21,8 @@
 
 	
 	<!-- Patch for Multi-Modal -->
-	<link rel="stylesheet" href="/css/bootstrap-modal-bs3patch.css">
-	<link rel="stylesheet" href="/css/bootstrap-modal.css">
+	<!--link rel="stylesheet" href="/css/bootstrap-modal-bs3patch.css">
+	<link rel="stylesheet" href="/css/bootstrap-modal.css"-->
 	
 	<!-- Patch for Multi-Menu -->
 	<link rel="stylesheet" href="/css/bootstrap-menu-bs3patch.css">
@@ -31,8 +31,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<!-- Patch for Multi-Modal -->
-	<script src="/js/bootstrap-modalmanager.js"></script>
-	<script src="/js/bootstrap-modal.js"></script>
+	<!--script src="/js/bootstrap-modalmanager.js"></script>
+	<script src="/js/bootstrap-modal.js"></script-->
 	
 	<!-- font-awesome-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -42,7 +42,7 @@
 	<script src="/js/jquery-datepicker-zh-TW.js"></script>
 
 	<!-- css -->
-	<link href="/css/style.css" rel="stylesheet">
+	<!--link href="/css/style.css" rel="stylesheet"-->
 	
 	<script src="//cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
 	<script src="//cdn.ckeditor.com/4.7.0/full/adapters/jquery.js"></script>
@@ -155,7 +155,7 @@ nav.navbar{
 	}
 	#main{
 		padding: 0px;
-		height: calc(100% - 51px);
+		height: calc(100% - 75px);
 	}
 }
 
@@ -238,6 +238,7 @@ nav.navbar{
 </nav>
 
 <div id="change_password_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal-dialog"><div class="modal-content">
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title"><i class="fa fa-key" aria-hidden="true"></i>修改密碼({user})</h4>
 	</div>
@@ -248,9 +249,11 @@ nav.navbar{
 	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button type="submit" class="btn btn-primary modify">修改</button>
 	</div>
 	</form>
+</div></div>
 </div>
 
 <div id="change_lang_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal-dialog"><div class="modal-content">
 	<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title"><i class="fa fa-language" aria-hidden="true"></i>切換語系</h4>
 	</div>
@@ -261,6 +264,7 @@ nav.navbar{
 	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><!--button type="submit" class="btn btn-primary modify">修改</button-->
 	</div>
 	</form>
+</div></div>
 </div>
 
 <script>
