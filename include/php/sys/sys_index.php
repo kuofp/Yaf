@@ -87,7 +87,7 @@ class Index{
 		$cnt = count($arr);
 		if($sub && $cnt){
 			$html = $tpl->block('submenu')->assign([
-				'name' => ($list[0][0] ?? '') . ' (' . $cnt . ')',
+				'name' => ($list[0][0] ?? ''),
 				'submenu-li' => $html,
 			])->render(false);
 		}else if($sub && $cnt==0){

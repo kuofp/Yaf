@@ -21,9 +21,6 @@
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
-	<!-- Patch for Multi-Menu -->
-	<link rel="stylesheet" href="/css/bootstrap-menu-bs3patch.css">
-	
 	<!-- font-awesome-->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
@@ -200,47 +197,68 @@ nav.navbar{
 	box-shadow: 0 3px 6px rgba(0,0,0,.175);
 }
 
+.nav-sidebar{
+	height: calc(100% - 80px);
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.nav-sidebar .active > a,
+.nav-sidebar .active > a:hover,
+.nav-sidebar .active > a:focus,
+.nav-sidebar a:hover{
+	color: #000;
+	background-color: #EEE !important;
+}
+
+.nav-sidebar a{
+	color: #000 !important;
+	padding: 10px 15px !important;
+}
+
+.nav-sidebar li{
+	width: 100%;
+}
+
+.dropdown-submenu .dropdown-menu{
+	position: relative;
+	width: 100%;
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,.175);
+	border: 1px solid #cecece;
+	background-color: #FFF;
+	padding-left: 10px;
+}
+
 #main{
 	position: absolute;
 	height: calc(100% - 100px);
 }
 
-@media screen and (max-width: 768px) {
-	.dropdown-submenu>.dropdown-menu{
-		left: 0px;
-		width: 100%;
-	}
+@media screen and (max-width: 768px){
 	.navbar{
 		margin-bottom: -1px;
+		height: 52px;
 	}
+	
+	.navbar-collapse{
+		width: 170px;
+		background-color: #f8f8f8;
+		z-index: 200;
+		position: relative;
+		float: right;
+		-webkit-box-shadow: 0 3px 6px rgba(0,0,0,.175);
+		box-shadow: 0 3px 6px rgba(0,0,0,.175);
+	}
+	
 	#main{
 		padding: 0px;
 		height: calc(100% - 75px);
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 768px){
 	.nav-sidebar{
 		padding: 20px 0px; width: 200px; position: fixed; top: 52px; left: 0px; z-index: 10;
-	}
-	
-	.nav-sidebar li{
-		width: 100%;
-	}
-	
-	.nav-sidebar a{
-		color: #000 !important;
-		padding: 10px 15px !important;
-	}
-
-	.nav-sidebar a:hover{
-		background-color: #EEE !important;
-	}
-	
-	.nav-sidebar .active > a, .nav-sidebar .active > a:hover, .nav-sidebar .active > a:focus{
-		color: #000;
-		background-color: #EEE;
-		border-right:thick double #ff0000;
 	}
 	
 	#main{
@@ -321,7 +339,7 @@ nav.navbar{
 	<div class="modal-body">
 		<!-- @lang --><!-- @lang -->
 	</div>
-	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button><!--button type="submit" class="btn btn-primary modify">修改</button-->
+	<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 	</div>
 	</form>
 </div></div>
@@ -335,6 +353,10 @@ $(function(){
 		$(this).addClass('active');
 		$(this).parents('li').addClass('active');
 		$('title').text('後台系統: ' + $(this).text());
+	});
+	
+	$('.dropdown-submenu').children('a').click(function(){
+		$(this).next('.dropdown-menu').slideToggle();
 	});
 	
 	$('.ajax').submit(function(){	
