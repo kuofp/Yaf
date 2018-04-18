@@ -30,15 +30,18 @@ class Box{
 		global $$str;
 		$di = &$$str;
 		
-		if($di['obj'][$namespace] ?? 0){
+		$arr = preg_split('/[\(\)]+/', $namespace);
+		$key = $arr[1] ?? $arr[0];
+		$cls = $arr[0] ?? 0;
+		
+		if($di['obj'][$key] ?? 0){
 			// obj exist
-		}elseif(method_exists('Box', $namespace)){
-			$di['obj'][$namespace] = self::$namespace($arg);
-		}else{
-			$di['obj'][$namespace] = new $namespace($arg);
+		}else if($cls){
+			// class_name(alias) e.g. \Medoo\Medoo(db)
+			$di['obj'][$key] = new $cls($arg);
 		}
 		
-		return $di['obj'][$namespace];
+		return $di['obj'][$key] ?? null;
 	}
 	
 	public static function val($key, $val = ''){
@@ -66,9 +69,5 @@ class Box{
 		$di = &$$str;
 		
 		return $di['val'];
-	}
-	
-	public static function db($arr){
-		return new Medoo\Medoo($arr);
 	}
 }
