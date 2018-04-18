@@ -56,7 +56,7 @@ class Index{
 		foreach($list as $item){
 			// skip first
 			if($sub == 1){
-				if($this->authCheck($item)){
+				if($item[2] ?? 0){
 					$sub = 2;
 					continue;
 				}else{
@@ -72,7 +72,7 @@ class Index{
 				}
 				
 			}else{
-				if($this->authCheck($item)){
+				if($item[2] ?? 0){
 					$arr[] = [
 						'submenu-li' => $tpl->block('submenu-li')->assign([
 							'link' => ($item[1] ?? ''),
@@ -96,15 +96,5 @@ class Index{
 		}
 		
 		return $html;
-	}
-	
-	function authCheck($item, $offset=2){
-		$auth = preg_split('/[\s|]+/', $item[$offset]);
-		$pass = false;
-		foreach($auth as $v){
-			$pass = $pass || ($_SESSION['auth'][$v] ?? 0);
-		}
-		
-		return ($item[$offset]=='') || $pass;
 	}
 }

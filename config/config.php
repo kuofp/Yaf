@@ -30,14 +30,14 @@ return [
 	// nav table
 	'nav' => [
 		
-		array('帳號管理', 'form_user', 'account_review'),
+		array('帳號管理', 'form_user', $_SESSION['auth']['account_review'] ?? 0),
 		
-		array(array('商品設置', '', ''),
-			array('商品類別', 'form_category', ''),
-			array('商品總覽', 'form_product', ''),
-			/*array(array('商品設置', '', ''),
-				array('商品類別', '', ''),
-				array('商品總覽', 'form_product', ''),
+		array(array('商品設置', '', $_SESSION['auth']['product_review'] ?? 0),
+			array('商品類別', 'form_category', 1),
+			array('商品總覽', 'form_product', 1),
+			/*array(array('商品設置', '', 1),
+				array('商品類別', '', 1),
+				array('商品總覽', 'form_product', 1),
 			),*/
 		),
 	],
