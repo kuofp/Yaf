@@ -7,16 +7,16 @@
 	"authors": [
 		{"name": "Frank Kuo", "email": "kuofp@cs.nctu.edu.tw"}
 	],
-    "require": {
+	"require": {
 		"php": ">=7",
-        "catfan/Medoo": "1.4.*",
+		"catfan/Medoo": "1.5.*",
 		"kuofp/Yatp": "@dev",
 		"kuofp/Yapa": "@dev"
-    },
+	},
 	"autoload": {
 		"files": ["yaf.php"],
 		"classmap": [
-            "include"
-        ]
+			"include"
+		]
 	}
 }
