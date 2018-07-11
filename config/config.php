@@ -21,10 +21,9 @@ return [
 		'sys_index'        => 'Sys\Index',
 		'sys_intro'        => 'intro.html',
 		'sys_login'        => 'Sys\Login',
-		'form_bulletin'    => 'Form\Bulletin',
 		'form_user'        => 'Form\User',
-		'form_category'    => 'Form\Category',
-		'form_product'     => 'Form\Product',
+		'form_log'         => 'Form\Log',
+		'form_show'        => 'Form\Show',
 	],
 	
 	// nav table
@@ -32,13 +31,14 @@ return [
 		
 		array('帳號管理', 'form_user', $_SESSION['auth']['account_review'] ?? 0),
 		
-		array(array('商品設置', '', $_SESSION['auth']['product_review'] ?? 0),
-			array('商品類別', 'form_category', 1),
-			array('商品總覽', 'form_product', 1),
-			/*array(array('商品設置', '', 1),
-				array('商品類別', '', 1),
-				array('商品總覽', 'form_product', 1),
-			),*/
+		array('<i class="fa fa-repeat"></i> All type', 'form_show', 1),
+		
+		array(array('階層', '', 1),
+			array('階層2', '', 1),
+			array(array('階層2', '', 1),
+				array('階層3', '', 1),
+				array('階層3', '', 1),
+			),
 		),
 	],
 ];
