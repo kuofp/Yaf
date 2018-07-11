@@ -1,8 +1,8 @@
 <!-- @index -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>{title}</title>
 	
@@ -36,33 +36,13 @@
 	<div id="nav">
 		{nav}
 	</div>
-	<div id="main" class="col-sm-12 col-md-12 col-lg-12" style="max-width: 1280px">
+	<div id="main" class="col-xs-12" style="max-width: 1280px">
 		{main}
 	</div>
 	<div id="footer">
-		<!-- @footer -->
-		<div style="position: fixed;height: 30px;width: 100%;background-color: #000;bottom: 0px;padding: 8px 30px;color:#777;z-index:10;" class="hidden-sm hidden-xs">
-			<p>
-				<small id="random_tips"></small>
-			</p>
-		</div>
-		<!-- @footer -->
 	</div>
 </body>
 <script>
-var tips = [
-	'註冊帳號以後要待管理員審核後方可使用',
-	'如果權限不足將看不到功能按鈕',
-	'點擊欄位可以查看內容',
-	'點擊欄位標題將可以使用排序功能',
-	'搜尋功能可以針對所有欄位使用'
-];
-
-$(function(){
-	setInterval(function(){
-		$('#random_tips').text("-" + tips[Math.floor(Math.random() * tips.length)] + "-");
-	}, 10000);
-});
 
 function customAlert(arr){
 	var code = arr.code || 0;
@@ -291,7 +271,7 @@ nav.navbar{
 				<a href="#">{name}</a>
 				<ul class="dropdown-menu">
 					<!-- @submenu-li -->
-					<li><a href="#" onclick="$('#main').loadTab('', {m: '{link}'}, '{name}');">{name}</a></li>
+					<li><a href="#" onclick="$('#main').loadTab('', {m: '{link}'}, $(this).text());">{name}</a></li>
 					<!-- @submenu-li -->
 				</ul>
 			</li>
