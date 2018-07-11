@@ -7,7 +7,7 @@ class Log{
 		
 		$obj = new \Yapa(
 			// url
-			_url(get_class($this)),
+			_url(get_class()),
 			// table
 			't_log',
 			// column
@@ -16,15 +16,15 @@ class Log{
 			array('代碼', '項目', '內容', '建立時間'),
 			// join (table,column,id)
 			array('', 't_show,text,id', '',''),
-			// class (func/hidden-create/hidden-modify)
+			// class (func/hidden-create/hidden-modify/disabled/disabled-create/disabled-modify)
 			array(
 				'hidden',
 				'hidden',
-				'col-md-4 col-sm-4 col-xs-4',
-				'col-md-4 col-sm-4 col-xs-4 hidden-create',
+				'w120',
+				'w160 hidden-create disabled',
 			),
 			// type (select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker/colorpicker/uploadfile/json/editor/value)
-			array('hidden', 'hidden', 'textarea', 'datepicker,{"disabled": true, "format": "Y-m-d H:i:s"}'),
+			array('hidden', 'hidden', 'textarea', 'datepicker,{"format": "Y-m-d H:i:s"}'),
 			// auth
 			array(
 				1,
