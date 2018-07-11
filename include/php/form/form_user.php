@@ -6,63 +6,47 @@ class User{
 	function __construct(){
 		
 		$obj = new \Yapa(
-			/*file*/
-			_url(get_class($this)),
-			/*table*/
+			// url
+			_url(get_class()),
+			// table
 			't_account',
-			/*col*/
-			array('id', 'account_id', 'account', 'password', 'gender_id', 'birth', 'avatar', 'flavor', 'address', 'job_id', 'auth', 'status_id'),
-			/*col_ch*/
-			array('代碼', '階層', '帳號', '密碼', '性別', '生日', '圖示', '色調', '地址', '職業', '權限', '狀態'),
-			/*empty check*/
-			array(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0),
-			/*exist(duplicate) check*/
-			array(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-			/*chain(join) check (table, content, id)*/
-			array('', 't_account,account,id', '', '', 't_gender,alias,id', '', '', '', '', 't_job,alias,id', 't_auth,alias,id', 't_status,alias,id'),
-			/*show bootstrap grid class*/
+			// column
+			array('id', 'account', 'password', 'auth', 'status_id'),
+			// label
+			array('代碼', '帳號', '密碼', '權限', '狀態'),
+			// join (table,column,id)
+			array('', '', '', 't_auth,alias,id', 't_status,alias,id'),
+			// class (func/hidden-create/hidden-modify)
 			array(
 				'hidden',
 				'col-md-4 col-sm-4 col-xs-6',
-				'col-md-1 col-sm-1 col-xs-2',
-				'hidden',
-				'hidden',
 				'hidden',
 				'col-md-2 col-sm-2 col-xs-4',
-				'hidden',
 				'col-md-2 col-sm-2 hidden-xs',
 				'col-md-2 col-sm-2 hidden-xs',
-				'hidden',
 				'col-md-1 col-sm-1 hidden-xs',
 			),
-			/*select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker/colorpicker/uploadfile/json/module */
-			array('hidden', 'select', 'text', 'password', 'radiobox', 'datepicker', 'uploadfile', 'colorpicker', 'textarea', 'autocomplete', 'checkbox', 'select'),
-			/*authority check*/
+			// type (select/radiobox/checkbox/text/password/textarea/autocomplete/datepicker/colorpicker/uploadfile/json/editor/value)
+			array('hidden', 'text,{"search": true}', 'password', 'checkbox,{"search": true}', 'select,{"search": true}'),
+			// auth
 			array(
 				$_SESSION['auth']['account_review'] ?? 0,
 				$_SESSION['auth']['account_create'] ?? 0,
 				$_SESSION['auth']['account_modify'] ?? 0,
 				$_SESSION['auth']['account_delete'] ?? 0,
 			),
-			/*medoo*/
-			\Box::obj('db'),
-			/*config*/
-			array(
-				'root' => ($_SESSION['user']['account_id'] ?? 0)? $_SESSION['user']['id']: 0,
-				'perpage' => 0
-			)
+			// medoo orm
+			\Box::obj('db')
 		);
 		
-		$arr = $obj->decodeJson($_POST);
-
-		if(!empty($obj->act)){
-			//additional settings
+		if($obj->act){
+			// additional settings (review/create/modify/delete)
 			switch($obj->act){
 				case 'create':
 					$obj->arg['data']['password'] = password_hash($obj->arg['data']['password'], PASSWORD_DEFAULT);
 					break;
 				case 'modify':
-					$user = \Box::obj('db')->select('t_account', '*', ['id'=>$obj->arg['data']['id']]);
+					$user = \Box::obj('db')->select('t_account', '*', ['id' => $obj->arg['data']['id']]);
 					if($user[0]['password'] != $obj->arg['data']['password']){
 						$obj->arg['data']['password'] = password_hash($obj->arg['data']['password'], PASSWORD_DEFAULT);
 					}
@@ -71,13 +55,12 @@ class User{
 					break;
 			}
 			
-			//do the work
+			// do the work
 			echo $obj->{$obj->act}($obj->arg);
 		}else{
 			$obj->render();
 		}
-
-		unset($obj);
+		
 		exit;
 	}
 }
