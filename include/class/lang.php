@@ -9,12 +9,12 @@ class Lang{
 		$this->val = array(
 			'繁體中文'   => 'zh_TW',
 			'简体中文'   => 'zh_CN',
-			'English'    => 'en',
+			'English'    => 'en_US',
+			'tiếng Việt' => 'vi_VN',
+			'ภาษาไทย'      => 'th_TH',
 			/*
 			'日本語'     => 'ja',
 			'한글'         => 'ko',
-			'ภาษาไทย'      => 'th',
-			'tiếng Việt' => 'vi',
 			'Melayu'     => 'ms_MY',
 			'Español'    => 'es',
 			'Indonesia'  => 'id',
