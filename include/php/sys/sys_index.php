@@ -8,7 +8,16 @@ class Index{
 		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
 		
 		$html = $tpl->block('index')->assign(array('title' => \Box::val('title')));
-		$lang = $tpl->block('lang')->assign(array('option' => $tpl->block('lang.option')->nest(\Box::obj('Lang')->get())));
+		
+		$lang = [];
+		foreach(\Box::val('lang')['list'] as $k=>$v){
+			$lang[] = [
+				'text' => $k,
+				'value' => $v,
+				'selected' => ((\Box::val('lang')['default']) == $v? 'selected': ''),
+			];
+		}
+		$lang = $tpl->block('lang')->assign(['option' => $tpl->block('lang.option')->nest($lang)]);
 		
 		if(isset($_SESSION['auth']) && isset($_SESSION['user'])){
 			$html->assign(

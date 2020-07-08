@@ -1,6 +1,11 @@
 <?php
 
 return [
+	'lang' => [
+		'繁體中文'   => 'zh_TW',
+		'简体中文'   => 'zh_CN',
+		'English'    => 'en_US',
+	],
 	
 	'title' => _('project name'),
 	

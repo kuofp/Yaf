@@ -7,10 +7,14 @@ class Yaf{
 	public function __construct($path = ''){
 		
 		require_once 'include/class/box.php';
-		require_once 'include/class/lang.php';
 		
 		// i18n
-		\Box::obj('Lang')->set();
+		$lang = $_REQUEST['lang'] ?? $_COOKIE['lang'] ?? 'zh_TW';
+		setcookie('lang', $lang, time() + (86400 * 30), '/');
+		putenv('LANG=' . $lang);
+		setlocale(LC_ALL, $lang . '.utf8');
+		bindtextdomain('admin', './locale');
+		textdomain('admin');
 		
 		require_once 'include/class/helper.php';
 		
@@ -20,6 +24,7 @@ class Yaf{
 		// shared item
 		$cfg = require $path; // use require instead of require_once
 		\Box::obj('\Medoo\Medoo(db)', $cfg['medoo']);
+		\Box::val('lang',  ['default' => $lang, 'list' => $cfg['lang']]);
 		\Box::val('title', $cfg['title']);
 		\Box::val('brand', $cfg['brand']);
 		\Box::val('mod',   $cfg['mod']);
