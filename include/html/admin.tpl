@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>{title}</title>
+	<title>Admin</title>
 	
 	<!-- jquery -->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css">
@@ -36,8 +36,7 @@
 	<div id="main" class="col-xs-12" style="max-width: 1280px">
 		{main}
 	</div>
-	<div id="footer">
-	</div>
+	<div id="footer"></div>
 </body>
 <script>
 
@@ -125,9 +124,6 @@ $(function(){
 				}
 				customAlert(jdata);
 				btn.button('reset');
-			},
-			error: function(){
-				alert('Register ajax ERROR!!!');
 			}
 		});
 		
@@ -150,7 +146,7 @@ body{
 <div class="col-sm-6 col-md-4 center-block" style="max-width: 400px; float: none">
 	<div id="login_panel" class="panel panel-default">
 		<div class="panel-body">
-			<h1 style="font-family:Microsoft JhengHei; font-weight: bold">{title}</h1>
+			<h1 style="font-family:Microsoft JhengHei; font-weight: bold">Login</h1>
 			<form class="ajax" method="POST" action="?m=sys_login&method=login">
 				<input type="text" name="account" class="form-control input-sm" placeholder="帳號"/>
 				<br/>
@@ -159,8 +155,8 @@ body{
 				<button type="submit" class="btn btn-primary login pull-right" data-loading-text="登入中...">登入<i class="fa fa-sign-in" aria-hidden="true"></i></button>
 			</form>
 		</div>
-		<div class="panel-footer">{brand}
-			<div class="pull-right" style="margin-top: -5px;"><!-- @lang --><!-- @lang --></div>
+		<div class="panel-footer">
+			<!-- @lang --><!-- @lang -->
 		</div>
 	</div>
 </div>
@@ -249,7 +245,6 @@ nav.navbar{
 
 <nav class="navbar navbar-default">
 <div class="container-fluid">
-	<!-- Brand and toggle get grouped for better mobile display -->
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
 			<span class="sr-only">Toggle navigation</span>
@@ -257,10 +252,8 @@ nav.navbar{
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="#"><!--img alt="Brand" src="img/logo/logo.png" style="display: inline-block"--><span style=" font-weight: bold; font-size: 20px; font-family:Microsoft JhengHei;">{brand}</span></a>
+		<a class="navbar-brand" href="#"><span style=" font-weight: bold; font-size: 20px; font-family:Microsoft JhengHei;">Admin</span></a>
 	</div>
-
-	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
 		<ul class="nav navbar-nav nav-sidebar">
 			<!-- @submenu -->
@@ -288,8 +281,8 @@ nav.navbar{
 				</ul>
 			</li>
 		</ul>
-	</div><!-- /.navbar-collapse -->
-</div><!-- /.container-fluid -->
+	</div>
+</div>
 </nav>
 
 <div id="change_password_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -329,14 +322,13 @@ $(function(){
 		$('.nav-sidebar li').removeClass('active');
 		$(this).addClass('active');
 		$(this).parents('li').addClass('active');
-		$('title').text('後台系統: ' + $(this).text());
 	});
 	
 	$('.dropdown-submenu').children('a').click(function(){
 		$(this).next('.dropdown-menu').slideToggle();
 	});
 	
-	$('.ajax').submit(function(){	
+	$('.ajax').submit(function(){
 		
 		$.ajax({
 			url: '?m=sys_login&method=change',
@@ -350,9 +342,6 @@ $(function(){
 					$('#change_password_Modal').modal('hide');
 				}
 				customAlert(jdata);
-			},
-			error: function(){
-				alert('ajax ERROR!!!');
 			}
 		});
 		
@@ -367,7 +356,7 @@ $(function(){
 <!-- @nav -->
 
 <!-- @lang -->
-<select class="form-control input-sm" onChange="location='?lang=' + $(this).val()">
+<select class="form-control input-sm" onchange="location='?lang=' + $(this).val()">
 	<!-- @option -->
 	<option value="{value}" {selected}>{text}</option>
 	<!-- @option -->

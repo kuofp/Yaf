@@ -3,7 +3,7 @@
 namespace kuofp;
 
 class Yaf{
-
+	
 	public function __construct($path = ''){
 		
 		require_once 'include/class/box.php';
@@ -25,8 +25,6 @@ class Yaf{
 		$cfg = require $path; // use require instead of require_once
 		\Box::obj('\Medoo\Medoo(db)', $cfg['medoo']);
 		\Box::val('lang',  ['default' => $lang, 'list' => $cfg['lang']]);
-		\Box::val('title', $cfg['title']);
-		\Box::val('brand', $cfg['brand']);
 		\Box::val('mod',   $cfg['mod']);
 		\Box::val('nav',   $cfg['nav']);
 		

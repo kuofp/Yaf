@@ -2,14 +2,10 @@
 
 return [
 	'lang' => [
-		'繁體中文'   => 'zh_TW',
-		'简体中文'   => 'zh_CN',
-		'English'    => 'en_US',
+		'zh_TW' => '繁體中文',
+		'zh_CN' => '简体中文',
+		'en_US' => 'English',
 	],
-	
-	'title' => _('project name'),
-	
-	'brand' => _('corporation'),
 	
 	'medoo' => [
 		'database_type' => 'mysql',
@@ -22,13 +18,13 @@ return [
 	
 	// module table
 	'mod' => [
-		'index'            => 'Sys\Index',
-		'sys_index'        => 'Sys\Index',
-		'sys_intro'        => 'intro.html',
-		'sys_login'        => 'Sys\Login',
-		'form_user'        => 'Form\User',
-		'form_log'         => 'Form\Log',
-		'form_show'        => 'Form\Show',
+		'index'         => 'Sys\Index',
+		'sys_index'     => 'Sys\Index',
+		'sys_intro'     => 'intro.html',
+		'sys_login'     => 'Sys\Login',
+		'form_user'     => 'Form\User',
+		'form_log'      => 'Form\Log',
+		'form_show'     => 'Form\Show',
 	],
 	
 	// nav table

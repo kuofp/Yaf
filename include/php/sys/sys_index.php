@@ -7,50 +7,36 @@ class Index{
 		
 		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
 		
-		$html = $tpl->block('index')->assign(array('title' => \Box::val('title')));
+		$html = $tpl->block('index');
 		
 		$lang = [];
 		foreach(\Box::val('lang')['list'] as $k=>$v){
 			$lang[] = [
-				'text' => $k,
-				'value' => $v,
-				'selected' => ((\Box::val('lang')['default']) == $v? 'selected': ''),
+				'text' => $v,
+				'value' => $k,
+				'selected' => ((\Box::val('lang')['default']) == $k? 'selected': ''),
 			];
 		}
 		$lang = $tpl->block('lang')->assign(['option' => $tpl->block('lang.option')->nest($lang)]);
 		
 		if(isset($_SESSION['auth']) && isset($_SESSION['user'])){
-			$html->assign(
-				array(
-					'header' => '',
-					'nav'    => $tpl->block('nav')->assign(
-						array(
-							'user' => $_SESSION['user']['account'],
-							'brand'=> \Box::val('brand'),
-							'submenu' => $this->getSubMenu(\Box::val('nav')),
-							'lang' => $lang,
-						)
-					),
-					'main' => $tpl->block('intro'),
-				)
-			)->render();
+			$html->assign([
+				'header' => '',
+				'nav' => $tpl->block('nav')->assign([
+					'user' => $_SESSION['user']['account'],
+					'submenu' => $this->getSubMenu(\Box::val('nav')),
+					'lang' => $lang,
+				]),
+				'main' => $tpl->block('intro'),
+			])->render();
 			
 		}else{
-			$html->assign(
-				array(
-					'main'   => '',
-					'nav'    => '',
-					'header' => $tpl->block('login')->assign(
-						array(
-							'title' => \Box::val('title'),
-							'brand' => \Box::val('brand'),
-							'lang'  => $lang,
-						)
-					),
-					'footer' => '',
-					
-				)
-			)->render();
+			$html->assign([
+				'main' => '',
+				'nav' => '',
+				'header' => $tpl->block('login')->assign(['lang'  => $lang]),
+				'footer' => '',
+			])->render();
 		}
 		
 		exit;
