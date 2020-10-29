@@ -9,7 +9,7 @@
 	],
 	"require": {
 		"php": ">=7",
-		"catfan/medoo": "1.5.*",
+		"catfan/medoo": "1.7.*",
 		"kuofp/yatp": "@dev",
 		"kuofp/yapa": "@dev"
 	},
