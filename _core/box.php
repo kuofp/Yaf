@@ -15,10 +15,10 @@ class Box{
 		$di = &$$str;
 		
 		if(!$di){
-			$GLOBALS[(self::$str)] = array(
-				'obj' => array(),
-				'val' => array(),
-			);
+			$GLOBALS[(self::$str)] = [
+				'obj' => [],
+				'val' => [],
+			];
 		}
 	}
 	

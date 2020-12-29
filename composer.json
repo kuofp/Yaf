@@ -14,9 +14,6 @@
 		"kuofp/yapa": "@dev"
 	},
 	"autoload": {
-		"files": ["yaf.php"],
-		"classmap": [
-			"include"
-		]
+		"classmap": ["_core"]
 	}
 }

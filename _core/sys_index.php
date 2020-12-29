@@ -5,7 +5,7 @@ class Index{
 	
 	function __construct(){
 		
-		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
+		$tpl = new \Yatp(__DIR__ . '/admin.html');
 		
 		$html = $tpl->block('index');
 		
@@ -46,7 +46,7 @@ class Index{
 	function getSubMenu($list, $sub=0){
 		$html = '';
 		
-		$tpl = new \Yatp(__DIR__ . '/../../html/admin.tpl');
+		$tpl = new \Yatp(__DIR__ . '/admin.html');
 		$arr = [];
 		foreach($list as $item){
 			// skip first

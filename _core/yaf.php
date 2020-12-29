@@ -6,7 +6,7 @@ class Yaf{
 	
 	public function __construct($path = ''){
 		
-		require_once 'include/class/box.php';
+		require_once 'box.php';
 		
 		// i18n
 		$lang = $_REQUEST['lang'] ?? $_COOKIE['lang'] ?? 'zh_TW';
@@ -16,7 +16,7 @@ class Yaf{
 		bindtextdomain('admin', './locale');
 		textdomain('admin');
 		
-		require_once 'include/class/helper.php';
+		require_once 'helper.php';
 		
 		// session
 		session_start();
@@ -24,9 +24,9 @@ class Yaf{
 		// shared item
 		$cfg = require $path; // use require instead of require_once
 		\Box::obj('\Medoo\Medoo(db)', $cfg['medoo']);
-		\Box::val('lang',  ['default' => $lang, 'list' => $cfg['lang']]);
-		\Box::val('mod',   $cfg['mod']);
-		\Box::val('nav',   $cfg['nav']);
+		\Box::val('lang', ['default' => $lang, 'list' => $cfg['lang']]);
+		\Box::val('mod', $cfg['mod']);
+		\Box::val('nav', $cfg['nav']);
 		
 		$mod = \Box::val('mod');
 		$act = $_REQUEST['m'] ?? 'index';

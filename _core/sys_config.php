@@ -9,7 +9,7 @@ return [
 	
 	'medoo' => [
 		'database_type' => 'mysql',
-		'database_name' => 'test',
+		'database_name' => 'yaf',
 		'server'        => 'localhost',
 		'username'      => 'root',
 		'password'      => 'Ab12345',
