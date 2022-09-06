@@ -23,7 +23,9 @@ class Yaf{
 		
 		// shared item
 		$cfg = require $path; // use require instead of require_once
-		\Box::obj('\Medoo\Medoo(db)', $cfg['medoo']);
+		foreach($cfg['medoo'] ?? [] as $k=>$v){
+			\Box::obj('Medoo\Medoo(' . $k . ')', $v);
+		}
 		\Box::val('lang', ['default' => $lang, 'list' => $cfg['lang']]);
 		\Box::val('mod', $cfg['mod']);
 		\Box::val('nav', $cfg['nav']);

@@ -22,7 +22,7 @@ class Box{
 		}
 	}
 	
-	public static function obj($namespace, $arg = '', $option = ''){
+	public static function obj($namespace, $arg = ''){
 		
 		self::init();
 		
@@ -38,7 +38,11 @@ class Box{
 			// obj exist
 		}else if($cls){
 			// class_name(alias) e.g. \Medoo\Medoo(db)
-			$di['obj'][$key] = new $cls($arg);
+			try{
+				$di['obj'][$key] = new $cls($arg);
+			}catch(Exception $e){
+				$di['obj'][$key] = $e->getMessage();
+			}
 		}
 		
 		return $di['obj'][$key] ?? null;
